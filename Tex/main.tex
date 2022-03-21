@@ -1,0 +1,119 @@
+\documentclass[11pt]{article}
+\usepackage[utf8]{inputenc}
+\usepackage[a4paper, total={6.5in, 9in}]{geometry}
+\linespread{1.2}
+\usepackage{amsmath}
+\usepackage{amsthm}
+%===== FONT ====%
+\usepackage{palatino}
+\usepackage{bm}
+\usepackage{dsfont}
+\usepackage{cancel}
+\usepackage{amssymb}
+\usepackage{commath}
+\usepackage{mathtools}
+\usepackage{float}
+\usepackage{accents}
+\usepackage{algorithm}
+
+
+\usepackage[numbers]{natbib}
+\bibliographystyle{abbrvnat}
+
+\usepackage{subcaption}
+\usepackage{graphicx}
+
+
+\usepackage{color}
+\usepackage{tcolorbox}
+\usepackage{tikz}
+\usetikzlibrary{matrix}
+\newtcolorbox{mybox}[3][]
+{
+%   colframe = #2!25,
+%   colback  = #2!10,
+%   coltitle = #2!20!black,  
+%   title    = {#3},
+%   #1,
+colframe = black,
+  colback  = black,
+  coltitle = white,  
+  coltext = white,
+  title    = {#3},
+  #1,
+}
+
+\usepackage{xcolor}
+\usepackage[colorlinks,linkcolor=blue,citecolor=blue,urlcolor = violet]{hyperref}
+
+\usepackage[capitalise]{cleveref}%nameinlink,
+
+% MATH OPERATOR
+\input{theoremSetup}
+
+\newcommand{\rr}[1]{\textcolor{red}{#1}}
+\newcommand{\bb}[1]{\textcolor{blue}{#1}}
+
+% Keywords command
+\providecommand{\keywords}[1]
+{
+  \small	
+  \textbf{\textit{Keywords ---}} \textit{#1}
+}
+
+%========== Title ==========%
+\usepackage{authblk}
+\makeatletter
+\renewcommand\AB@affilsepx{; \protect\Affilfont}
+\makeatother
+\renewcommand\Authfont{\large}
+\renewcommand\Affilfont{\small}
+\renewcommand\Authsep{, }
+
+
+\usepackage[symbol]{footmisc}
+\renewcommand{\thefootnote}{\fnsymbol{footnote}}
+
+\usepackage{fancyhdr}
+\pagestyle{fancy}
+
+\fancyhf{}
+\renewcommand{\headrulewidth}{0.2pt}
+
+\fancyfoot[C]{\scriptsize\thepage}
+\fancypagestyle{firststyle}
+{
+   \fancyhf{}
+   \renewcommand{\headrulewidth}{0pt}
+   \fancyfoot[C]{\scriptsize\thepage}
+}
+
+\date{\vspace{-1em}\normalsize{\today}}
+
+\begin{document}
+ 
+%=============================%
+\input{TitlePage}
+\renewcommand{\thefootnote}{\arabic{footnote}}
+%=============================%
+\cleardoublepage
+\pagenumbering{roman}
+\tableofcontents
+%=============================%
+%\listoffigures
+%\listoftables
+%=============================%
+\cleardoublepage
+\pagenumbering{arabic}
+%\input{Abstract}
+\input{Introduction}
+\input{FB/Chapter 2}
+%\input{Conclusion}
+%=============================%
+\bibliography{refFB.bib}
+%=============================%
+%\appendix
+%\input{Appendix}
+
+\end{document}
+
