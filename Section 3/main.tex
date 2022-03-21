@@ -1,18 +1,167 @@
 \section{Applications in Finance}
 
-%\subsection{Level Set Representation}
-Let us present how our method applies to common contracts traded on options exchanges or over-the-counter. % (OTC). 
-Throughout this section,  the payoff function is assumed to be  of the form%\footnote{With a slight abuse of notation, we may also write $\varphi(z), \ \alpha(z), \, \beta(z)$ with $x=(z,\nu)$.   } 
+Let us present how our method applies to common contracts traded on options exchanges or over-the-counter. 
+Throughout this section,  the payoff function is assumed to be  of the form
 \begin{equation}\label{eq:payoff}
     \varphi(x) = \left( \eta  (\alpha(x) - \beta(x)-K)\right)^+, \quad x = (z,\nu), 
 \end{equation}
 where $\alpha, \beta: \calX \to \R_+$ 
-are nonnegative projection maps independent of $\nu$. Recall that we may regard $\varphi$ as a function of $z$ only and the same holds for $\alpha$ and $\beta$.  %Again, we assume that 
+are nonnegative projection maps independent of $\nu$. Recall that we may regard $\varphi$ as a function of $z$ only and the same holds for $\alpha$ and $\beta$.  
 The function $\beta$ is used to encompass spread options (\cref{ex:spread}) and  floating strike options (\cref{ex:Asian,ex:lookback}). Moreover, the parameter  $\eta \in \{\pm 1\}$ determines the option type (call  if $\eta=1$ and  put  if $\eta=-1$).
 %This class of payoffs encompasses vanilla and most of the exotic options. 
 
-\input{FB/Section 3/CompleteMarket}
-%\input{FB/Section 3/Convexity}
-%\input{FB/Section 3/Symmetry}
-\input{FB/Section 3/IncompleteMarket}
+%\subsection{Complete Markets}
+%options and the most common exotic derivatives.  %\bb{(We may impose this structure later but this covers already many payoffs, including exotic ones as shown in the examples below)} 
+  With little assumptions on $\alpha,\beta$, we can derive a useful geometric property of the stopping region, termed \textit{ray-connectedness} by  \citet{BroadieDetemple}. %
+We first need a scaling property on the  process  $Z_t = (S_t,Y_t) \in \calZ$, $t\in[0,T]$,  with $\calZ$ defined in $\eqref{eq:Z}$. 
+
+\begin{asm} \label{asm:scale}
+    Given $0\le t \le u \le T$ and $\calV_t = \nu$, the stochastic flow $z \mapsto Z_u^{t,(z,\nu)}$  scales  linearly, i.e. 
+    $Z_u^{t,(\gamma z,\nu)} = \gamma Z_u^{t,(z,\nu)}$ $\ \forall \ \gamma \ge 0$.
+\end{asm}
+
+The next result is an adaptation of  Proposition A.5 in  \cite{BroadieDetemple}. 
+
+\begin{proposition}
+\label{prop:star}
+Let $\eta =1$ and assume that $\alpha,\beta$ are homogeneous in $z$, i.e. $\pi(\gamma z)=\gamma \pi(z)$  for all $\gamma>0$,  $\pi \in \{\alpha,\beta\}$. Then \cref{asm:star} holds with the homeomorphism
+\begin{equation}\label{eq:homeo}
+A=(\alpha,\Xi): \calX  \mapsto \calA \times \calE, \quad 
+\Xi(x) = \left(\frac{z}{\alpha(z)},\nu\right), \quad x = (z,\nu). 
+\end{equation}
+
+ Put differently,  $(z,\nu)\in \calS_t$ implies that $(\gamma z,\nu) \in \calS_t$ for all $\gamma > 1$.
+
+\end{proposition} 
+\begin{proof}
+First, the map $A$ given in $\eqref{eq:homeo}$ is clearly a homeomorphism. Indeed, its inverse $A^{-1}(a,\xi) = (a \xi_z,\xi_\nu)$, $\xi = (\xi_z,\xi_\nu) \in \calE$ is well-defined and continuous. Now let  $x = (z,\nu)$, $x' =(z',\nu')$  such that $\Xi(x')=\Xi(x)$ and $\alpha(z') \le \alpha(z)$. Consequently,   $z'= \gamma z$ with $\gamma := \frac{\alpha(z')}{\alpha(z)} \ge 1$ and $\nu = \nu'$. 
+
+Next, assume that $x\in \calS_t$ for some $t\in [0,T]$. For any  stopping time $\tau \in \calT_{\!t}$, observe for $\pi \in \{\alpha,\beta\}$ that 
+$$\pi(X^{t,x'}_{\tau})=\pi(Z^{t,(z',\nu)}_{\tau})=\pi(\gamma Z^{t,(z,\nu)}_{\tau})=\gamma \pi(X^{t,x}_{\tau}), $$ 
+using Assumption \ref{asm:scale} and the homogeneity of $\pi$.
+Therefore, we obtain
+\begin{align*}
+    \E^{\Q}\left[ D_{0,\tau} \varphi(X^{t,x'}_{\tau})\right] &= \E^{\Q}\left[ D_{0,\tau} \left(\alpha(X^{t,x'}_{\tau}) -\beta(X^{t,x'}_{\tau}) -K\right)^+ \right]\\
+    &= \E^{\Q}\left[ D_{0,\tau} \left(\gamma \alpha(X^{t,x}_{\tau}) -\gamma \beta(X^{t,x}_{\tau}) -K\right)^+ \right]\\
+   &\le \gamma \E^{\Q}\left[ D_{0,\tau} \varphi(X^{t,x}_{\tau}) \right] + (\gamma  - 1)K\\
+   &\le \gamma \ \varphi(x) + (\gamma  - 1)K\\
+   &= \varphi(x').
+\end{align*}
+In the first inequality, we used  $D_{t,u} \le 1$ and the subadditivity of $x \to x^+$. In the last equality, we noticed that the positive part  in $\varphi$ can be dropped as $x$ belongs to the  stopping region. 
+
+\end{proof}
+
+\begin{remark}
+For put payoffs, i.e. $\eta =-1$,  \cref{prop:star} applies with the same homeomorphism but different conclusion, namely  $(z,\nu)\in \calS_t \Longrightarrow (\gamma z,\nu) \in \calS_t$ for all $\gamma \in (0,1)$. Moreover, the threshold function $\eqref{eq:thres}$ is given instead by 
+$f(t,\xi) = \sup \calA_{t,\xi}$ and is  non-decreasing in $t$  thanks to the time  monotonicity of $\calS$ with respect to  $\subseteq$ (\cref{prop:monot}). 
+\end{remark}
+
+\begin{remark}
+We recall that the optimal stopping decision is also achieved by comparing 
+$\varphi(x)$, oftentimes called the \textit{intrinsic value}, to the \textit{continuation value}
+\begin{equation} \label{eq:contValue}
+c(t,x) := \underset{\tau \, \in\,  \vartheta(\calT_{t+})}{\text{sup}} \
+\E^{\Q}\! \left[ D_{t,\tau}\ \varphi(X^{t,x}_\tau)\ \right],\quad  \calT_{t+} = \calT_t \setminus\{t\}, \quad (t,x)\in [0,T]\times \calX.
+\end{equation}
+Using $\eqref{eq:payoff}$ and the fact that $\varphi(x)>0$ when $x\in \calS_t$, $t<T$, we obtain for call options that  
+$$x \in \calS_t \ \Longleftrightarrow \ \varphi(x) \ge c(t,x) \ \Longleftrightarrow \ \alpha(x) \ge K + \beta(x) + c(t,x).$$
+Thus, $f(t,\Xi(x)) = K+ \beta(x)  +  c(t,x)$. The knowledge of the threshold function is therefore equivalent to the knowledge of the continuation value.  Parametrizing  the latter
+ has given rise to efficient pricing algorithms as demonstrated by \citet{LSMC} using least square regression and 
+ \citet{Kohler} using neural networks.
+
+The key advantage of our  approach  is the guarantee of producing  rational decisions$-$in the sense of Proposition \ref{prop:star}$-$as we exploit the geometric structure of the problem. 
+\end{remark}
+
+\subsubsection*{Path-independent Payoffs}
+Let us now present important families of path-independent payoffs. Unless stated otherwise,  we assume that no exogenous factors are needed  and write $X=S$. 
+
+\begin{example}\label{ex:vanilla}
+
+Consider vanilla  options of American type. 
+Then \cref{asm:star} is fulfilled with the homeomorphism $A = (\alpha,\Xi)$ given by $\alpha(s) = s$, $\beta \equiv 0$ and $\Xi(s) \equiv 1$. 
+As $\Xi$ is constant, the threshold function $f$ depends solely on time, as we shall see in  \cref{sec:putHeston}.   In a factor model, i.e. $x = (s,\nu)$, we have instead $\alpha(x)=s$, and $\Xi(x) \equiv (1,\nu)$. For a put option, this implies that $(s,\nu) \in \calS_t$ if and only if $s\le f(t,\nu)$; see \cref{sec:putHeston}.   
+
+\end{example}
+
+\begin{example}\label{ex:bskt}
+Consider the class of \textit{basket} options,
+$$
+\varphi(s)= \left( \eta \left( w^{\top} s - K \right) \right)^{+},
+$$
+with  weight vector $w$  belonging to the simplex $\Delta_{d} := \{w \in [0,1]^d \ | \ w^\top \mathds{1}=1\} $.
+A generalization is given by \textit{index options} where the weights are allowed to vary over time. An example would be a vanilla option written on the S\&P $500$. 
+In light of $\eqref{eq:payoff}$, we thus choose $\alpha(s) =  w^{\top} s$ and $\beta \equiv 0$.  
+Notice that the image of  $\Xi$ is given by 
+$\calE = \{ \xi \in \R_+^d \ | \ w^{\top} \xi =1 \}.$ 
+When the weights are uniform, i.e. $\alpha(s) = \frac{1}{d}\sum_{i=1}^d s_i$, the payoff is symmetric in the underlying assets and satisfy interesting properties as outlined in . 
+
+\end{example}
+
+\begin{example}\label{ex:max}
+\textit{Max-options} are call options  on the best-performing stock, that is
+$$
+\varphi(s)= \left(  \max_{i=1,...,d} s_i - K  \right)^{+}.
+$$
+This gives $\alpha(s)=\max_{i=1,...,d} s_i$ and $\beta\equiv 0$.  
+Moreover, observe that 
+$\calE$  is formed by the faces of the  hypercube $[0,1]^d $ not containing the origin. 
+
+This seemingly innocent family of payoffs reveals many counterintuitive results, as beautifully articulated by \citet{BroadieDetemple}. Among other things, the authors showed that it is never optimal to prematurely exercise a max-call option when more than one asset attains the maximum. In the case $d=2$, this means that the diagonal $\{s \in \R^2_+ \ | \  s_1 = s_2\}$ is entirely contained in the continuation region prior to maturity. As we shall see in \cref{sec:maxCallSym},  the stopping region consists of one connected
+component on each side of the diagonal. 
+
+Max-options have become a standard for numerical methods of high-dimensional options; see \cite{Becker1,Becker2} and references therein.  
+In contrasts, \textit{put} options on the maximum of $d$ assets are less popular in the literature due to their low premium and are not discussed here. 
+Also, one can imagine an option on the \textit{minimum} of several underlyings; see \cite[Chapter 6]{DetempleBook} and \cite{DetempleMin} for a thorough treatment in the two-dimensional case. 
+\end{example}
+
+\begin{example}\label{ex:spread}
+Consider the family of \textit{spread options} \cite{Carmona},  that is 
+$$
+\varphi(s)= \left( \eta  \left ( s_1 - \sum_{i=2}^{d}\gamma_i s_i - K \right) \right)^{+},
+$$
+where  $(\gamma_{i})_{i=2}^d \in \R^{d-1}_+$ are conversion factors. We naturally set $\alpha(s)=s_1$, $\beta(s)=\sum_{i=2}^{d}\gamma_i s_i$. The corresponding homeomorphism is therefore given by 
+$A=(\alpha,\Xi)$ with  $\Xi(s)=\frac{s}{s_1}.$ The threshold function thus depends on all stock prices expressed in terms of $s_1$. 
+Choosing an asset as numéraire %(here $s_1$)  
+was originated by \citet{Margrabe} for exchange options (i.e. the case $d=2$  and $\gamma_2=1$). 
+\end{example}
+
+
+\subsubsection*{Path-dependent Claims}
+We assume throughout that $d=1$, although multi-asset path-dependent options may exist (see  Example \ref{ex:Asian}). 
+
+\begin{example}\label{ex:Asian}
+\textit{Asian options} 
+are 
+derivatives with payoff involving the running average of the  underlying asset(s).  With this in mind, it is therefore natural to set $Y_t=\Upsilon(\SSS_t) = \frac{1}{t} \int_0^t S_u du$. It is easily seen that $X=(S,Y)$ is a Markov process.
+There are two types of Asian payoffs, namely (i) Fixed strike: $\varphi(x) = \left(\eta (y - K)\right)^{+}$ and (ii) Floating strike:  $\varphi(x) = \left(\eta (s - \gamma y)\right)^{+}$ ($\gamma$: scaling factor).
+
+The projection functions are therefore $\alpha(x)=y$, $\beta \equiv 0$ and  $\alpha(x)=s$, $\beta(x) = \gamma y$ for fixed and floating strike options, respectively.
+A multi-dimensional extension  could be obtained for instance by replacing the underlying by a stock index, e.g.
+$$ \Phi(\SSS_t) = \left( \frac{1}{t} \int_0^t w_u^{\top} S_u du - K\right)^{+}, \quad S_u\in \R^d, \quad w_u\in \Delta_{d},\quad d\ge 2.$$
+
+\end{example}
+
+
+\begin{example}\label{ex:lookback}
+\textit{Lookback options} 
+provides exposure to the minimum or maximum values attained by the stock so far. This suggests to choose $$Y_t=\Upsilon(\SSS_t) = \left(\max_{u\in[0,t]} S_u,\min_{u\in[0,t]} S_u\right).$$
+It is easily seen that $X=(S,Y)$ is a  Markov process with state space $\calX = \{x=(s,y_1,y_2) \in \R_+^3 \ | \ y_2 \le s \le y_1\}$. Both fixed and floating contracts exist as in Example \ref{ex:Asian}. The most common contracts with their corresponding projection functions are listed in Table \ref{tab:lkbk}. The scaling factor $\gamma$ appearing in the payoff of floating strike options is introduced to reduce the price of these otherwise expensive contracts. We therefore choose $\gamma \in [1,\infty)$ and $\gamma \in (0,1]$ for call and put options, respectively.  
+When $\gamma=1$, the payoff of a floating strike lookback call (put) option is precisely the
+drawdown (drawup) of the stock. See \citet{DaiKwok} for a thorough treatment of American lookback claims.  
+
+\begin{table}[H]
+    \centering
+    \begin{tabular}{r|c|c|c}
+        Option & $\Phi(\SSS_t)$ & $\alpha(x)$ & $\beta(x)$ \\ \hline \hline
+         Fixed Strike Call & $(\max_{u\in[0,t]} S_u - K)^{+} $ & $y_1$ & $0$ \\[0.2em] \hline
+       Fixed Strike Put & $(K - \min_{u\in[0,t]}S_u )^{+} $ & $y_2$ & $0$ \\[0.2em] \hline
+        Floating Strike Call & $S_t - \gamma\min_{u\in[0,t]} S_u$  & $s$ & $\gamma  y_2$ \\[0.2em] \hline
+        Floating Strike Put & $\gamma\max_{u\in[0,t]} S_u - S_t$ & $\gamma y_1$ & $s$ \\[0.2em] \hline \hline
+    \end{tabular}
+    \caption{Lookback Options, $x=(s,y_1,y_2)$.}
+    \label{tab:lkbk}
+\end{table}
+
+\end{example}
+
 
