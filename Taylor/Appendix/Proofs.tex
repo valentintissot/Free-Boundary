@@ -1,0 +1,119 @@
+\section{Proofs}
+
+\subsection{\cref{thm:FME}}
+\label{app:FME}
+\begin{proof} We carry out an induction on $K \ge 1$. If $K=1$,  \Cref{thm:FSF} gives (as $f\in \C^{1,1}$ by assumption)
+\begin{align*}
+    f(X_t) &= f(X_0) + \int_0^t \Delta_t f(X_s)  ds + \int_0^t\Delta_x f(X_s) \circ dx_s\\
+        &= \Delta_{\emptyset}f(X_0) \calS_{\emptyset}(X_t)+ \underbrace{\int_{\triangle_{1,t}} \Delta_t f(X_{t_1})  \circ  dx^{0} +\int_{\triangle_{1,t}} \Delta_x f(X_{t_1}) \circ  dx^{1}}_{= \, r_1(X_t)}.
+\end{align*}
+ Now if $f\in \C^{K+1,K+1}$, $K\ge 1$, then trivially $f\in  \C^{K,K}$ and the induction hypothesis yields
+\begin{align*}
+    f(X_t) &= \sum_{|\alpha|< K}  \Delta_{\alpha}f(X_0) \calS_{\alpha}(X_t) + r_{K}(X_t).
+\end{align*}
+As  $\Delta_{\alpha}f$ is at least $\C^{1,1}$ for $|\alpha| = K$, we can apply the functional Stratonovich formula to the integrands constituting the remainder functional. That is,
+\begin{align*}
+    r_{K}(X_t) &= \sum_{|\alpha| = K} \int_{\triangle_{K,t}} \Delta_{\alpha}f(X_{t_1}) \circ \, dx^{\alpha}\\
+    &= \sum_{|\alpha| = K}\int_{\triangle_{K,t}} \left[ \Delta_{\alpha}f(X_{0})   + \int_0^{t_1} \Delta_t \, \Delta_{\alpha}f(X_{t_0})\, dt_0 + \int_0^{t_1} \Delta_x \, \Delta_{\alpha}f(X_{t_0})\circ \, dx_{t_0} \right] \circ \, dx^{\alpha} \\
+    &= \sum_{|\alpha| = K} \Delta_{\alpha}f(X_{0})\calS_{\alpha}(X_t) 
+    + \sum_{\substack{|\alpha| = K+1 \\ \alpha_1 =\,0\phantom{+2}}} \int_{\triangle_{K+1,t}} \Delta_{\alpha}f(X_{t_0}) \circ \, dx^{\alpha} 
+    + \sum_{\substack{|\alpha| = K+1 \\ \alpha_1 = \,1\phantom{+2}}} \int_{\triangle_{K+1,t}} \Delta_{\alpha}f(X_{t_0}) \circ \, dx^{\alpha}.
+\end{align*}
+Bundling the terms together completes the proof. 
+\end{proof}  
+
+\subsection{\cref{thm:FTE}}
+\label{app:FTE}
+
+\begin{proof} The proof is analogous  \Cref{thm:FTE} when $t>s$; we  apply the same arguments  to the interval $[s,t]$ instead of $[0,t]$. On the other hand, some care is needed when $s>t$. For simplicity, write $W =X|_{[t,s]}$ so that  $\overleftarrow{W}=Y$ and $X_r = X_t \oplus W_{r-t}$ for $r\in [t,s]$. We now rearrange the functional Stratonovich formula and  iterate to obtain
+\begin{align*}
+    f(X_t) 
+    &= f(X_s) - \sum_{|\alpha|=1}\int_t^s \Delta_{\alpha} f(X_{t_1}) \circ  dx^{\alpha}\\ 
+    &= f(X_s) - \sum_{|\alpha|=1}\int_{0}^{u} \Delta_{\alpha} f(X_{t} \oplus W_{\! t_1}) \circ  dw_{t_1}^{\alpha}\\ 
+    &= f(X_s) - \sum_{|\alpha|=1}\Delta_{\alpha} f(X_s) \int_{\overleftarrow{\triangle}_{1,u} } \circ  dw^{\alpha} + \sum_{|\alpha|=2}\int_{\overleftarrow{\triangle}_{2,u} }  \Delta_{\alpha} f(X_t \oplus W_{t_1})  \circ  dw^{\alpha}
+\end{align*}
+with the time-reversed simplexes $\overleftarrow{\triangle}_{k,t}=  \{(t_1,\ldots,t_k)\in [0,t]^k\,|\, t_1 \ge \ldots \ge t_k\}$. % (hence $\overleftarrow{\triangle}_{1,t}=  \triangle_{1,t}$).
+Proceeding until $K$ yields 
+\begin{align}\label{eq:intermediate}
+    f(X_t) =  \sum_{|\alpha|<K} \Delta_{\alpha} f(X_{s}) \ (-1)^{|\alpha|} \ \int_{\overleftarrow{\triangle}_{|\alpha|,u} }   \circ \ dw^{\alpha} + (-1)^K \sum_{|\alpha|=K}  \int_{\overleftarrow{\triangle}_{K,u} }  \Delta_{\alpha} f(X_t \oplus W_{t_1})  \circ  dw^{\alpha}.
+\end{align}
+We now claim that for every integrable functional $\varphi:\Lambda \to \R$ and word $\alpha$, we have 
+\begin{equation}\label{eq:claim}
+    \int_{\overleftarrow{\triangle}_{|\alpha|,u} } \varphi(X_t \oplus W_{t_1})  \circ  dw^{\alpha} = (-1)^{|\alpha|}  \int_{\triangle_{|\alpha|,u} } \varphi(X_s \oplus Y_{t_1})  \circ  dy^{\alpha}. 
+\end{equation}
+Indeed, for each $k \in \N$,  consider the affine involution $T_u:[0,u]^k \to [0,u]^k$ given by $T_u(t_1,\ldots, t_k) = (u-t_1,\ldots,u-t_k)$. In particular,  $T_u(\overleftarrow{\triangle}_{k,u}) = \triangle_{k,u}$,  $w^{\alpha}= y^{\alpha} \circ T_u $ and $|\text{det}(\nabla T_u)| \equiv 1$.  Noticing also that $X_t \oplus W_{t_1} = X_s \oplus Y_{u-t_1}$, changing variables yields 
+\begin{align*}
+        \int_{\overleftarrow{\triangle}_{k,u} } \varphi(X_t \oplus W_{t_1})  \circ  dw^{\alpha} &=
+          \int_{0}^u  \int_{t_k}^u \cdots \int_{t_2}^u   \varphi(X_s \oplus Y_{u-t_1}) \circ d \left(y^{\alpha} \circ T_u\right) \\ %\circ  dy_{u-t_1}^{\alpha_1} \cdots \circ  dy_{u-t_k}^{\alpha_k} \\ 
+        &= \int_{u}^0  \int_{t_k}^{0} \cdots \int_{t_2}^0   \varphi(X_s \oplus Y_{t_1})  \circ  dy_{t_1}^{\alpha_1} \cdots \circ  dy_{t_k}^{\alpha_k}\\
+          &=
+        (-1)^{k}  \int_{\triangle_{k,u} } \varphi(X_s \oplus Y_{t_1})  \circ  dy^{\alpha}. 
+\end{align*}
+
+% We show $\eqref{eq:claim}$ by induction on $|\alpha|$ for all functionals $\varphi$ and  $  0\le t < s \le T$ with $u = |t-s|$.  First, observe that $X_t \oplus W_{t_1} = X_s \oplus Y_{u-t_1}$. Therefore, 
+% \begin{align*}
+%     \int_{\overleftarrow{\triangle}_{1,u} } \varphi(X_t \oplus W_{t_1})  \circ  dw_{t_1}^{\alpha} = \int_{0}^u \varphi(X_s \oplus Y_{u-t_1})  \circ  dy_{u-t_1}^{\alpha} = -\int_{0}^u \varphi(X_s \oplus Y_{t_1})  \circ  dy_{t_1}^{\alpha},
+% \end{align*}
+% which shows the result for $|\alpha|=1$. Now assume the claim to hold true for $k \ge 1$ and pick any word $\alpha$ of length $k+1$. Writing $\beta= \alpha_2\ldots \alpha_{k+1}$ and $\bar{\varphi}() =  \int_{t_2}^{u}  \varphi(X_t \oplus W_{t_1})  \circ dw_{t_1}^{\alpha_{1}}$, this gives%Writing $\alpha_{-}= \alpha_1\ldots \alpha_k$, this gives  
+% \begin{align*}
+%     \int_{\overleftarrow{\triangle}_{k+1,u} } \varphi(X_t \oplus W_{t_1})  \circ  dw^{\alpha} &=  \int_{\overleftarrow{\triangle}_{k,u}} \int_{t_2}^{u}  \varphi(X_t \oplus W_{t_1})  \circ dw_{t_1}^{\alpha_{1}} \circ dw^{\beta} \\
+%     &= (-1)^k \int_{\triangle_{k,u}} \bar{\varphi}(X_s \oplus Y_{t_2}) \circ dy^{\beta} =
+% \end{align*}
+% \begin{align*}
+%     \int_{\overleftarrow{\triangle}_{k+1,u} } \varphi(X_t \oplus W_{t_1})  \circ  dw^{\alpha} &=  \int_{0}^{u} \int_{\overleftarrow{\triangle}_{k,r} }  \varphi(X_t \oplus W_{t_1})  \circ  dw^{\alpha_{-}}   \circ dw_{r}^{\alpha_{k+1}} \\
+%     &= (-1)^k\int_{0}^{u}    \int_{\triangle_{k,r} } \varphi(X_s \oplus Y_{t_1})  \circ  dy^{\alpha_{-}}  \circ dw_{r}^{\alpha_{k+1}} \\
+%      &= (-1)^{k+1}    \int_{\triangle_{k+1,u} } \varphi(X_s \oplus Y_{t_1})  \circ  dy^{\alpha}. 
+% \end{align*}
+This proves the claim. In light of $\eqref{eq:intermediate}$, we choose  $\varphi \equiv 1$ and $\varphi=\Delta_{\alpha}f$ in $\eqref{eq:claim}$,  giving respectively the signature elements $\calS_{\alpha}(Y_u)$ and  terms in the remainder. The proof is now complete.  
+    
+\end{proof}
+
+%====================================%
+
+\subsection{\cref{prop:Martingale}}
+\label{app:Martingale}
+
+
+\begin{proof} First,  $(iii) \Longrightarrow (i)$ is immediate as  It\^o iterated integrals only depends on the final value of the path; see  $\eqref{eq:Hermite}$. %, the $k-$fold It\^o iterated integrals only depends on the final value of the path, hence $(iii)$ implies $(i)$.
+We now show that $(i) \Longrightarrow (ii)$ and $(ii) \Longrightarrow (iii)$.
+
+\begin{enumerate}
+
+    \item $(i) \Longrightarrow (ii)$ 
+    
+    The case $k=0$ is trivial so we proceed with $k=1$. Since $f(X_T)=g(X_T)$ and $X$ has unit tangent process, the expression in \Cref{lem:Tangent} simply reads
+
+\begin{equation}\label{eq:martingale}
+    \Delta_xf(X_t) = \E^{\Q}[\Delta_{x}g(X^{t,x}_T)]\big |_{x=x_t} = \E^{\Q}[\Delta_{x}f(X_T) \, | \, X_t], 
+\end{equation}
+as desired. For $k =2$, notice that $\tilde{g} :=\Delta_{x}f\big |_{\Lambda_T}$ is itself a smooth path-independent payoff. We can thus apply a similar argument to $\tilde{g}$ and $\tilde{f}(X_t)=\E^{\Q}[\tilde{g}(X_T)\,|\,X_t]$, which is exactly $\Delta_{x}f(X_t)$ thanks to $\eqref{eq:martingale}$. Hence $\Delta_{xx}f(X_t) = \E^{\Q}[\Delta_{xx}f(X_T) \, | \, X_t]$ and the same holds for higher %order 
+derivatives.
+
+\item $(ii) \Longrightarrow (iii)$
+
+Recall from \Cref{prop:MRT_Chaos} that $g(X_T) = \sum_{k=0}^{\infty} J_k \phi_k (X_T)$ with
+$$\phi_0 = (\calA_T g)(X_0) , \quad   \phi_k(t_1,...,t_k) = \E^{\Q}[(\calA_{t_2...t_kT}g)(Y_{t_1})].$$
+If we show that  $\phi_k \equiv \Delta_{\mathds{1}_k}f(X_0)$   for each $k\ge 0$, then 
+$J_k \phi_k (X_T) = \Delta_{\mathds{1}_k}f(X_0) J_k(X_T)$ as desired. %Hence fix $k\ge 0$ and notice by induction that 
+% The result  follows as soon as  $J_k \phi_k (X_T) = \Delta_{\mathds{1}_k}f(X_0) J_k(X_T)$ $\forall \, k\ge 0$.
+We  prove by induction the slightly stronger claim, 
+$$\phi^{t_0}_k(t_1,...,t_k) := \E^{\Q}[(\calA_{t_2...t_kT}g)(Y_{t_1})\,|\, X_{t_0}] \equiv \Delta_{\mathds{1}_k}f(X_{t_0}), \quad (t_0,t_1,\ldots,t_k)\in \triangle_{k+1,T}.$$
+If $k=0$, then obviously $\phi_0 = f(X_0) = \Delta_{\emptyset} f(X_0) $. For $k\ge 1$,  we have
+\begin{align*}
+\phi^{t_0}_k(t_1,...,t_k) %&= 
+    %\E^{\Q}[(\calA_{t_2...t_kT}g)(X_{t_1}) \,|\, X_{t_0} ] \\
+    &= \E^{\Q}[\Delta_x \E^{\Q}[(\calA_{t_3...t_kT}g)(Y_{t_2})\,|\, X_{t_1}]\,|\, X_{t_0} ]\\
+    &= \E^{\Q}[\Delta_x \phi^{t_1}_k(t_2,...,t_k)\,|\, X_{t_0} ]\\
+    &= \E^{\Q}[ \Delta_{\mathds{1}_k}f(Y_{t_1})\,|\, X_{t_0} ]\\
+    &=  \Delta_{\mathds{1}_k}f(X_{t_0}),
+\end{align*}
+where the martingality of $\Delta_{\mathds{1}_k}f(X)$  is used in the last equality.  Taking $t_0=0$ yields the result.
+\end{enumerate}
+
+
+\end{proof}
+
+
+
+
+

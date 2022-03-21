@@ -1,0 +1,57 @@
+\subsection{Embedding of $T$-functionals}
+We aim at defining a smooth embedding $\iota: \Lambda_T \hookrightarrow \Lambda$. That is, we couple every $T-$functional $g$ with a (running) functional $f=\iota \circ  g$ endowed with some regularity. Although many maps may exist, we focus our attention on the following class of embeddings which resonates with many meanings in finance. 
+
+Let $\sigma \ge 0$ and $\Q_\sigma$ the measure on $\Lambda$ such that the scaled canonical process $X/ \sigma$ is %an $\Q_\sigma-$
+Brownian motion. We then set 
+$$f_{\sigma}= \iota_\sigma \circ  g = \E^{\Q_{\sigma}}[g(X_T) \,|\, \cdot\, ].$$ If $g$ is seen as the payoff of an exotic option with maturity $T$, then $f_{\sigma}$ gives its price in a Bachelier model with volatility $\sigma$.
+An important case arises when $\sigma \downarrow 0$, leading to the \textit{intrinsic functional} $f_0(X_t) = g(X_{t,T-t})$. %As expectations tend to smooth out random variables, we do not 
+
+\begin{example}
+Let $g(X_T)= \max_{0 \le t \le T}x_t$ be the running maximum. A natural way to extend $g$ to a functional is by setting $f(X_t)= \max_{0 \le s \le t}x_s$. This clearly corresponds to the intrinsic functional. 
+\end{example}
+
+\begin{example}
+Floating strike option. $g(X_T) = (x_T - x_{T/2})^{+}$. We can therefore use \cref{thm:FTE}. 
+\end{example}
+
+\begin{example}(A $T-$functional without natural functional embedding)
+\end{example}
+
+\subsection{Incremental Basis in $L^2(\Lambda)$ and Unique Embedding}
+
+
+Let $\calA_1$ consist of all the words ending with $1$. Then clearly $|\{\alpha \in \calA_1 \,|\, |\alpha|\le K \}| = 2^K-1.$ 
+
+\subsection{Pricing of Exotic Options}
+
+Let $g$ be $T-$functional. Then is $f$ embeds $g$ smoothly  in $L^2(\Lambda)$, the functional Taylor expansion of order $K$ for $f$ gives the price estimate
+$$\E^{\Q}[g(X_T)] = \E^{\Q}[f(X_T)] =\sum_{|\alpha| \le K}\Delta_{\alpha}f(X_0) \E^{\Q}[f(X_T)] $$
+
+
+
+%\subsection{Connection with Hedging}
+
+
+
+
+
+
+
+
+
+% $$\E^{\Q}[g(X_T)]-\E^{\hat{\Q}}[g(X_T)] = \E^{\mu}[r_{K+1}(X_T)],$$
+% $$f_{\sigma}= \iota_\sigma \circ  g = \E^{\Q_{\sigma}}[g(X_T) \,|\, \cdot\, ].$$ If $g$ is seen as the payoff of an exotic option with maturity $T$, then $f_{\sigma}$ gives its price in a Bachelier model with volatility $\sigma$.
+% \begin{example}
+% \end{example}
+% \subsection{Embedding of $T$-functionals}
+% \subsection{Pricing of Exotic Options}
+% \textbf{(Running maximum)} 
+% An important case arises when $\sigma \downarrow 0$, leading to the \textit{intrinsic functional} $f_0(X_t) = g(X_{t,T-t})$.
+% Brownian motion. We then set 
+% for the signed measure $\mu=\Q - \hat{\Q}$ s.t. $\mu(\Lambda)=0$. 
+% Let $\sigma \ge 0$ and $\Q_\sigma$ the measure on $\Lambda$ such that the scaled canonical process $X/ \sigma$ is %an $\Q_\sigma-$
+% Let $g:\Lambda_T \to \R$ be a terminal payoff. If we can extend it with $f:\Lambda \to \R$ s.t. $f(X_T)$, then the error of a cubature $\hat{\Q}$ of order $K$ is 
+% We aim at defining a smooth embedding $\iota: \Lambda_T \hookrightarrow \Lambda$. That is, we couple every $T-$functional $g$ with a (running) functional $f=\iota \circ  g$ endowed with some regularity. Although many maps may exist, we focus our attention on the following class of embeddings which resonates with many meanings in finance.
+
+
+%\subsection{Connection with Hedging}

@@ -1,0 +1,80 @@
+%\subsection{Path Signature}
+
+%We now recall the concept of path \textit{signature}.
+
+\subsection{Path Signature} 
+We briefly recall the definition of the signature (see \cref{sec:sigLegendre})  which is here defined for  c\`adl\`ag  paths.%  which is central in the functional Taylor expansion. 
+%The expansion of functionals entails a collection of objects that characterizes the underlying path in its entirety. This is given by the \textit{signature}, which can be seen as the infinite
+%skeleton of a path. %, where  each "bone" contains inherent information.  
+% A key ingredient in the expansion of functionals is the \textit{path signature}. In essence, the signature extract  from a path an infinite-dimensional skeleton, where  each "bone" contains inherent information about a trajectory. 
+%We start off with a few definitions. 
+A \textit{word} is a sequence  $\alpha = \alpha_1 \ldots \alpha_k$ of letters %(or indexes) 
+from the alphabet $\{0,1\}$.  The number of $0$'s and $1$'s contained in $\alpha$ is denoted by $|\alpha|_0$, $|\alpha|_1$, respectively. The \textit{length} of $\alpha$ is therefore $|\alpha| := |\alpha|_0 + |\alpha|_1$. We will often use the special words $\boldsymbol{0}_k := \underbrace{0\ldots 0}_{k}$ and $\mathds{1}_k := \underbrace{1\ldots 1}_{k}$.
+%When $|\alpha|_0 = |\alpha| = k$ ($|\alpha|_1 = |\alpha| = k$), we simply write $\alpha = \boldsymbol{0}_k$).  % and define $\calA_k = \{\alpha \, | \, l(\alpha) = k\}$ ($\calA_0 = \emptyset$). 
+
+%For reasons explained later, 
+We enlarge a path $X \in \Lambda$ with the time itself %$t \mapsto t$  
+and henceforth set %, with a slight abuse of notation,
+$x^0_{t} = t$, $x^1_{t} = x_t$.  The indexes $0,1$ are therefore identified with the time $t$ and path $x$, respectively.  
+% If   $f: \Lambda \to \R$ is an $\Q-a.s.$ integrable functional and $B$ a Borel set of $[0,t]^k$, we employ the compact notation 
+% $$\int_{B} f(X_{t_1}) \circ \, dx^{\alpha} = \int_{[0,t]^k} f(X_{t_1}) \mathds{1}_{B}(t_1,\ldots,t_k)\circ \, dx^{\alpha_1}_{t_1} \cdots \circ dx^{\alpha_k}_{t_k}.$$
+%  The symbol $\circ$ indicates that when $X$ is a  semimartingale, the integral is in the sense of Stratonovich. For trajectories with finite variation $\Q-a.s.$, the latter boils down to a Riemann-Stieltjes integral. 
+ 
+ \begin{definition}\label{def:Sig}
+     The \textit{signature in $\Lambda$} is a collection  of functionals $\calS = \{\calS_{\alpha}: \Lambda \to \R\}$ such that
+     \begin{align*}
+     \calS_{\emptyset}(X_t) &= 1, \\
+         \calS_{\alpha}(X_t) &= \int_{\triangle_{k,t}} \circ \, dx^{\alpha} =\int_{0}^{t} \int_{0}^{t_k} \cdots \int_{0}^{t_2} \circ \, dx^{\alpha_1}_{t_1} \cdots \circ dx^{\alpha_k}_{t_k}, \quad |\alpha|=k,
+     \end{align*}
+     for  the simplexes $\triangle_{k,t}= \{(t_1,\ldots,t_k)\in [0,t]^k\,|\, t_1 \le \ldots \le t_k\}$, $\, k\ge 1$.  The circle $\circ$ denotes Stratonovich integration. 
+ \end{definition}
+% Observe that integrals in  \Cref{def:Sig} are in the Riemann-Stieltjes sense when either the integrand or integrator is of bounded variation. In such situation, the symbol $\circ$ is omitted. 
+% The first signature functionals read
+% \begin{align*}
+%     \calS_{0}(X_t) &= \int_0^t d t_1 = t, &&\calS_{1}(X_t) = \int_0^t \circ \,d x_{t_1} = x_t - x_0,\\
+%   \calS_{00}(X_t) &= \int_0^t \int_0^{t_2} d t_1 d t_2 =\frac{t^2}{2}, &&\calS_{01}(X_t) = \int_0^t \int_0^{t_2} d t_1 d x_{t_2} =\int_0^t (x_{t} - x_s) ds, \\
+%   \calS_{10}(X_t) &= \int_0^t \int_0^{t_2} dx_{t_1}  d t_2 =\int_0^t (x_{s} - x_0) ds, &&\calS_{11}(X_t) = \int_0^t \int_0^{t_2}\circ \, d x_{t_1} \circ d x_{t_2}=\frac{(x_t-x_0)^2}{2},
+% \end{align*}
+% or hierarchically,% representation,
+% % A hierarchical representation of the signature is given by the following infinite tree, 
+% \begin{align}\label{eq:tree}
+%   \begin{pmatrix} 
+% & &  \calS_{\emptyset}& &  \\
+% &  \calS_{0} & &   \calS_{1} &\\
+% \calS_{00} &    \calS_{01} & &  \calS_{10}  & \calS_{11}\\
+% \vdots & \vdots & &\vdots & \vdots
+%  \end{pmatrix} \;=\; \begin{pmatrix} 
+% & &  {1} & &  \\
+% &  {t} & &  {x_t} &\\
+% {\frac{t^2}{2}} &  
+% {\int_0^t s \, dx_s} & & {\int_0^t x_s ds} & {\frac{x_t^2}{2}}
+%  \\
+% \vdots & \vdots & &\vdots & \vdots
+%  \end{pmatrix}.
+%  \end{align} 
+% As can be seen, 
+% each entry %in the above infinite pyramid 
+% generates two descendants by either integrating the former with respect to $t \sim 0$ or $x \sim 1$. 
+It is important to note that  $\calS_{\alpha}$ may not be well-defined for all paths in $\Lambda$. We can thus define the \textit{domain} $\calD_{\alpha} \subseteq \Lambda$ of the signature functional associated to $\alpha$. The stochastic basis  naturally plays a role here. For instance, $\calD_{11}$ is the topological support of all $(\Q,\F)-$semimartingales so that the Stratonovich integral is well defined. 
+%For instance % time or the path. %($0$) or the path ($1$).
+
+% The signature is a fascinating object with many questions still to be adressed: Are the signature functionals linearly independent? Do they form a basis? If yes, in which sense? We easily see that for  fixed time point, say $t\in [0,T]$, the signature elements are linearly dependent. For instance, using integration by parts,
+% $$\calS_{10} + \calS_{01}= \int_0^t x_s ds + \int_0^t s dx_s  = t \, x_t= \calS_{0}\calS_{1}.$$
+% With $t$ known, it can be treated as a coefficient, implying that $\calS_1, \calS_{01}, \calS_{10}$ are linearly dependent. However, when the signature elements are seen as  (running) functionals, they become linearly independent. 
+
+%Another interesting 
+
+% The signature can also be represented as an infinite tree, where each node generates two leaves by either integrating it w.r.t. time or the path itself:
+
+% \begin{align*}
+%  \begin{pmatrix} 
+% & &  \calS_{\emptyset} & &  \\
+% &  \calS_{0} & &  \calS_{1} &\\
+%  \calS_{00} &   \calS_{01} & & \calS_{10} & \calS_{11}\\
+% \vdots & \vdots & &\vdots & \vdots
+%  \end{pmatrix}
+% \end{align*} 
+
+% Keeping track of the passage of time  is crucial. Otherwise, the signature would bear barely any information about the path. Indeed, notice that
+% $\calS_{\alpha}(X_t) = \frac{(x_t-x_0)^{k}}{k!}$ for  $\alpha =  1...1$ %\underbrace{1...1}_{k}$
+% , $|\alpha| = k$. In the alphabet $\{1\}$, the signature would therefore only characterizes the ditribution of $x_T$, or in financial  terms, the volatility smile.

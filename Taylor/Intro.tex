@@ -1,0 +1,62 @@
+%\section*{Introduction}
+
+
+The stochastic Taylor expansion  \cite{KP} %[Chapter~5] 
+ lies at the core of numerical 
+ integration of 
+ stochastic differential equations.
+It provides explicit weak/strong 
+error bounds for discretization
+schemes, which is of great relevance for the valuation of European derivatives. %, e.g. Euler-Maruyama, Milstein-Platen, to name a few.
+ %It permits the construction of numerical schemes where the approximation error (weak or strong) can be made explicit. 
+ %It seems therefore natural to extend this tool to the framework of path-dependent functionals. 
+% For instance, the Monte Carlo pricing error with trajectories from the Euler schemes  is controlled by the step size of the discretization in a linear fashion.
+% In the valuation of European options, the Euler-Maruyama scheme yields a pricing (or weak) error proportional to the step size of the discretization. For path-dependent payoffs, one is rather interested in the hedging (or strong) error of a numerical method.
+%For instance, the Euler-Maruyama method (\cite{Maruyama}) yields a pricing/weak error for power options that is proportional to the discretization step size.
+For instance, the Euler-Maruyama method \cite{Maruyama} yields a weak error for the expectation of monomials %—or in financial terms, the price of European power options—
+that is proportional to the time step.  %discretization step size. %In financial terms, this means that power options are priced 
+By extension, it seems natural to seek %look for 
+test functionals akin to monomials which characterize weak convergence for path-dependent payoffs. 
+
+A good candidate is the family of \textit{signature functionals}. The path signature has gained much attention in recent years, due in particular %to its  ability to compress a path efficiently and 
+to its universal approximation property \cite{LyonsNum,Szpruch}. In fact, a density result à la Stone-Weierstrass exists \cite{Hao}. %for these functionals,
+In light of this, the signature functionals
+plays therefore the role of monomials in the path space. %therefore 
+This parallel is further reinforced %also
+%apparent
+in cubature methods \cite{LyonsVictoir,Crisan}   generalizing Gaussian quadrature rules to the Wiener space; %orthogonal polynomials %whose integral must match under a discrete measure 
+%are replaced by signature elements.
+the exact integration of orthogonal polynomials 
+turns into a perfect fit of expectated signature elements. \bb{+ \ldots}
+%under a discrete measure 
+% boils down to matching expectation of signature elements. turns into a perfect fit of expectated signature elements.
+
+%becomes a moment matching condition for signature elements. %whose integral must match under a discrete measure 
+%are replaced by signature elements.
+
+%The matching of integrals 
+%  matching the expectation of signature elements under the Wiener measure. 
+ 
+%In this paper
+In response to this appeal, % these challenges, 
+we shed further light on the stochastic Taylor expansion for  path-dependent payoffs, which we call the \textit{functional Taylor expansion}. %Without much surprise, 
+This is made possible by 
+tools from the functional Itô calculus \cite{Dupire}. To the best of our knowledge, this generalization has been first proposed by \cite{LittererOberhauser} %where the underyling path is 
+in the diffusion case.    
+In this is work, we intend to bring  clarity to this deep result and establish a parallel with the Wiener-chaos expansion \cite{DiNunno,Nualart}. 
+%\bb{+\ldots}
+
+
+%Fréchet (Hille-Phillips) vs Functional Itô expansion? 
+
+%We believe that this connection will help the reader 
+%to further gain intuition into this beautiful yet technical result.
+% in a natural framework.
+%Due to their density property, the signature functionals play the role of the monomials in the space of functionals.
+
+%The remainder of this work is organized as follows. \bb{...}
+
+ 
+   
+ 
+%  \bb{Cubature:} Lyons-Victoir, Crisan, Filipovic et al. (towards American options).

@@ -1,0 +1,66 @@
+
+Suppose that the payoff involves a parameter $K>0$, e.g. the strike of a vanilla option.  We write $\varphi_K$, $v_K$, $\calS_{t,K}$ and $f_K$ with the obvious notations. 
+\begin{asm} \label{asm:homo}
+The payoff is homogeneous in the sense that $\varphi_{K\gamma}(\gamma x)=\gamma \varphi_{K}(x)$, $\forall \  \gamma>0$. 
+\end{asm}
+
+\begin{proposition}\label{lem:homogen}
+If  \cref{asm:scale} and \ref{asm:homo} hold,
+then 
+$\calS_{t,K}=K\calS_{t,1}:= \{Ks \,|\, s \in \calS_{t,1}\}.$
+\end{proposition}
+\begin{proof}
+If $\varphi_K$ is homogeneous, then for all $t\in [0,T]$ and $\tau \in \calT_t$,
+$$ \E[D_{t,\tau}\varphi_K(X^{t,x}_{\tau})] = \E[D_{t,\tau}\varphi_K(K X^{t,x/K}_{\tau})] =  K \E[D_{t,\tau} \varphi_1(X^{t,x/K}_{\tau})].$$
+Thus $v_K(t,x) = K v(t,x/K)$, which finally gives 
+\begin{align*}
+    x \in \calS_{t,K} \Longleftrightarrow \varphi_K(x) = v_K(t,x)
+    \Longleftrightarrow \varphi_1(x/K) = v_1(t,x/K)
+    \Longleftrightarrow x \in K\calS_{t,1}.
+\end{align*}
+\end{proof}
+
+% \begin{corollary}
+% Suppose that the inverse function $A^{-1}: \R \times \calR \mapsto \R_+^d$ is homogeneous of degree $1$, i.e. $A^{-1}(a\gamma,x\gamma) = \gamma A^{-1}(a,x)$, $\gamma>0$. Then the exercise boundary satisfies
+% $$f_K(t,x)= K \, f_1(t,x/K), \quad x \in \calR.$$
+% \end{corollary}
+
+% \begin{proof}
+% Lemma \ref{lem:homogen} and the definition of $f_K$ directly give
+% \begin{align*}
+%     f_K(t,x) &= \sup \{a \in \R \,|\, A^{-1}(a,x) \in \calS_{t,K} \}\\
+% &= \sup \{a \in \R \,|\, A^{-1}(a,x) \in K\calS_{t,1} \}\\
+% &= \sup \left \{a \in \R \,|\, A^{-1}(a/K,x/K) \in \calS_{t,1}\right \}\\
+% &= K f_1(t,x/K).
+% \end{align*}
+
+% \end{proof}
+
+% \begin{example}
+% Consider a basket
+% option. A valid homeomorphism is  $A=(\alpha,\Xi)$ with  $$\alpha(s) = \frac{1}{d} \sum_{i=1}^d s_i, \quad \Xi(s) = s - \alpha(s).$$
+% Then the inverse map $A^{-1}(a,x)=a+x$ is clearly homogeneous and the same therefore holds for $f_K$.
+% \end{example}
+
+% \begin{corollary}
+% If the inverse map satisfies $A^{-1}(a\gamma,x) = \gamma A^{-1}(a,x)$, $\gamma>0$, then 
+% $$f_K(t,x)= K \, f_1(t,x), \quad x \in \calR.$$
+% \end{corollary}
+
+% \begin{proof}
+% Same argument as in the previous Corollary.
+% \end{proof}
+
+% \begin{example}
+% For a max option, take $A=(\alpha,\Xi)$ with  $$\alpha(s) = s_1, \quad \Xi(s) = \frac{s}{s_1}.$$
+% Then  $A^{-1}(a,x)=a x$ clearly verifies $A^{-1}(a\gamma,x) = \gamma A^{-1}(a,x)$ and thus $f_K(t,x)= K \, f_1(t,x) \; \forall  x \in \calR.$ Notice that this also holds for spread options.
+% \end{example}
+
+% \begin{corollary}
+% The exercise boundary of American, single asset, vanilla options is homogeneous, i.e.
+% $$f_K(t)= K \, f_1(t).$$
+% \end{corollary}
+% \begin{proof} It is clear that vanilla payoffs fulfill assumption \ref{asm:homo}.
+% For  American puts, we get
+% $$f_K(t) = \sup  \calS_{t,K} = \sup  K  \calS_{t,1} = K \sup \calS_{t,1} = K \, f_1(t).$$
+% For  American calls, use infima instead.

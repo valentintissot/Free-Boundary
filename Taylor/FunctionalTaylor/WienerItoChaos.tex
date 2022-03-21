@@ -1,0 +1,747 @@
+\section{Connection with the Wiener-It\^o Chaos Expansion}
+\label{sec:chaos}
+As  random variables in the Wiener space can be casted as path functionals and vice versa, we expect the functional Taylor expansion to share   similarities with the Wiener chaos expansion \cite{Oksendal,Nualart}.
+We recall the essence of 
+this elegant theory, seen through the lens of functionals on the Wiener space.
+%while changing the perspective slightly. %Wiener-It\^o chaos
+%expansion %in the same spirit as  \cite{Oksendal} 
+%while adapting the notations to our context. 
+%In essence, they address the same question: how to fractionate randomness?
+%the randomness in the Wiener space?
+
+\subsection{Chaos Expansion for $T-$Functionals}
+Let $\Q$ be the Wiener measure (so $X_0$ is equal to the \textit{null path} $\boldsymbol{0}\in \Lambda_0$,  $\Q-$a.s.) and  $L^2(\Lambda_T)$  the space of \textit{square integrable $T-$functionals}.  %$g: \Lambda_T \to \R$ such that   $$\lVert g \rVert_{L^2(\Lambda_T)} := \lVert g(X_T) \rVert_{L^2(\Q)} < \infty.$$
+We introduce the integral  operators %\footnote{To alleviate notations, we write  $J_k \phi_k(X_T)$ instead of $(J_k \phi_k)(X_T)$.} %However, the latter would be more accurate. } 
+$J_k:L^2(\triangle_{k,T}) \to L^2(\Lambda) $, $k\in \N$, ($L^2(\triangle_{0,T}) =\R$) given by  $J_{0}\phi_0(X_t) \equiv  \phi_0 \in \R$ and 
+ \begin{align} \label{eq:chaosOperator}
+  J_{k}\phi_k(X_t) &= \int_{\triangle_{k,t}} \phi_k\, dx^{\otimes k} :=\int_{0}^{t} \int_{0}^{t_k} \cdots \int_{0}^{t_2} \, \phi_k(t_1,\ldots,t_k) \, dx_{t_1} \cdots dx_{t_k}, \quad  k\ge 1.
+\end{align}
+%  \begin{align*}
+%   J_{k}\phi_k(X_T) = \begin{cases}\phi_0, & k=0,\\ \int_{\triangle_{k,T}} \phi_k\, dx^{\otimes k} :=\int_{0}^{T} \int_{0}^{t_k} \cdots \int_{0}^{t_2} \, \phi_k(t_1,\ldots,t_k) \, dx_{t_1} \cdots dx_{t_k}, & k\ge 1.
+%   \end{cases}
+% \end{align*}
+When $\phi_k \equiv 1$, $J_k$ generates the $k-$fold \textit{It\^o iterated integral}, which we simply denote by $J_{k}(X_t)$.
+The image  %of $J_k$, namely 
+$\frakI_k: = J_k L^2(\triangle_{k,T})$ %=  \{J_k\phi_k \,|\, \phi_{k} \in L^2(\triangle_{k,T}) \}$ 
+is often called  \textit{Wiener-Itô chaos of order $k$}. Through repeated use of It\^o isometry, we easily obtain $\lVert J_{k}\phi_k \rVert_{L^2(\Lambda_{T})} = \lVert \phi_k  \rVert_{L^2(\triangle_{k,T})} $ with the norm $\lVert \cdot \rVert_{L^2(\Lambda_{T})}$ defined in $\eqref{eq:L(Lambda_t)}$. This explains why
+$\frakI_k \subseteq L^2(\Lambda_T)$ as implicitly claimed above. The Wiener-Itô Chaos Expansion adapted to  $T-$functionals is stated below.
+
+\begin{theorem}\textnormal{(\textbf{Wiener-Itô Chaos Expansion for $T-$functionals})}
+\label{thm:Wiener1} The space of square integrable $T-$functionals can be expressed as a direct sum of chaos, namely
+$$L^2(\Lambda_T) = \bigoplus_{k=0}^\infty \frakI_k. $$
+That is, for all $g \in L^2(\Lambda_T)$, there exists  a unique sequence $\{\phi_k \in L^2(\triangle_{k,T})\}_{k \in \N}$  such that  $\sum_{k=0}^{K} J_k \phi_k$
+converges to $g$ in $L^2(\Lambda_T)$ as $K \uparrow \infty$. %$ \sum_{k=0}^{\infty} J_k \phi_k \overset{L^2(\Lambda_T)}{\rightarrow} g$.  
+Furthermore, %one has the identity
+$\lVert g \rVert^2_{L^2(\Lambda_T)} = \sum_{k=0}^{\infty} \lVert\phi_k \rVert^2_{L^2(\triangle_{k,T})}$.
+
+\end{theorem}
+
+\begin{proof}
+See \cite[Theorem 1.10]{DiNunno}.
+\end{proof} 
+
+It is seen from $\eqref{eq:chaosOperator}$ that the Wiener-It\^o chaos expansion  expresses functionals in terms of infinitesimal Brownian increments. This is in contrast with pointwise expansions such as \textit{Volterra series} \cite{Volterra},
+ %We shall also mention the pointwise representation from 
+ \begin{align*}
+ g(X_T) &= \phi_0 + \sum_{k= 1}^{\infty} V_k \phi_k(X_T), \\ 
+   V_k \phi_k(X_t) &= \int_{\triangle_{k,t}}  \psi_k(t_1,\ldots,t_k) \, x_{t_1} \cdots x_{t_k}\, dt_1 \cdots dt_k, \quad  k\ge 1.
+ \end{align*}
+%which involves values of the underlying path directly. 
+For a comprehensive comparison between the Volterra and Wiener expansion, see  \citet{PalmPoggio}. 
+In particular, the authors  showed how $\psi_k, \ \phi_k$ relate to one another; when $\phi_k$ is smooth, then 
+$\psi_k = (-1)^k \partial_{t_1...t_k} \phi_k$. %  using integration by parts. 
+
+
+
+% To gain further insight, we present a heuristical derivation of the chaos expansion using the standard Taylor's theorem.  %we formally derive the chaos expansion 
+% Consider for fixed  $N\in \N$  the regular partition $\Pi_N = \{s_n = \frac{nT}{N} \,|\, 0 \le n \le N \}$
+% and define $g^N(X_T) = g(X^N_T)$, with 
+% $$X^N_T(t) = \sum_{n=0}^{N-1} x_{s_n} \mathds{1}_{[s_n,s_{n+1})}(t). $$
+%  %\overset{N  \uparrow \infty}{\longrightarrow}
+% %pointwise. 
+% Since $X$ is $\Q-$a.s. continuous, then $X^N$ converges to $X$ with probability one. 
+% Notice that $g^N$ depends on $X\big |_{\Pi_N} = \{x_{s_n}\}_{n=0}^N$ only. Moreover, as $x_0=0$ $\Q-$a.s., %as $\Q$ is the Wiener measure, 
+% the knowledge of the increments $\delta x_{s_n} = x_{s_n} - x_{s_{n-1}}$, $n=1,\ldots,N$, is sufficient. We can therefore write $g^N(X_T) = h^N(\delta x_{s_1},\ldots,\delta x_{s_N})$ for some function $h^N: \R^N \to \R$. 
+% %$g^N(X_T)= h^N(\Delta X^N_T)$, $\Delta X_T^N =(\Delta x_{s_1},\ldots,\Delta x_{s_N})^\top$. 
+% If $g$ is smooth, so is $h^N$ and Taylor's theorem gives
+% \begin{align*}
+%   g^N(X_T) &= h^N(\boldsymbol{0}) + \sum_{n=1}^N \partial_n h^N(\boldsymbol{0}) \delta x_{s_n} + \frac{1}{2}\sum_{n,m=1}^N \partial_{nm} h^N(\boldsymbol{0}) \delta x_{s_n}\delta x_{s_m} + \ldots %\\
+%     %&= h^N(\boldsymbol{0}) + \sum_{n=1}^N \partial_n h^N(\boldsymbol{0}) \delta x_{s_n} + \sum_{1 \le n \le m \le N} \partial_{nm} h^N(\boldsymbol{0}) \delta x_{s_n}\delta x_{s_m} + \ldots 
+% \end{align*}
+% It is worth noting that $\partial_nh^N$ is precisely the Malliavin derivative of $g^N$ at time $t_n$. 
+% Now writing 
+% \begin{align*}
+%     \phi^N_1(t_1) &= \sum_{n=1}^{N} \partial_n h^N(\boldsymbol{0}) \mathds{1}_{[s_{n-1},s_n)}(t_1), \\  \phi^N_2(t_1,t_2) &= \sum_{1 \le n \le m \le N} 2^{-\mathds{1}_{\{n=m\}}}\partial_{nm} h^N(\boldsymbol{0}) \, \mathds{1}_{[s_{n-1},s_n)\times [s_{m-1},s_m)}(t_1,t_2), \; \ldots
+% \end{align*}
+
+
+% and the limits  $\phi_k = \lim_{N \to \infty}\phi^N_k$, $k\ge 2$, we obtain
+% \begin{align*}
+%      \sum_{n=1}^N \partial_n h^N(\boldsymbol{0}) \delta x_{s_n}&= \sum_{n=1}^N \phi_1^N(s_{n-1}) \delta x_{s_n} \overset{N \uparrow \infty}{\xrightarrow{\hspace{1cm}}} J_1 \phi_1(X_T), \\ %\int_0^T \phi_1(t_1) dx_{t_1},\\
+%     \frac{1}{2}\sum_{n,m=1}^N \partial_{nm} h^N(\boldsymbol{0}) \delta x_{s_n}\delta x_{s_m} &= \sum_{1 \le n \le m \le N} \phi_2^N(s_{n-1},s_{m-1}) \delta x_{s_n}\delta x_{s_m}  \overset{N \uparrow \infty}{\xrightarrow{\hspace{1cm}}}  J_2 \phi_2(X_T). %\int_0^T \int_0^{t_2} \phi_2(t_1,t_2) dx_{t_1} dx_{t_2}.%=  \sum_{1 \le n \le m \le N} \phi_2^N(s_{n-1},s_{m-1}) \delta x_{s_n}\delta x_{s_m} = 
+% \end{align*}
+% A similar argument would hold for higher order term. 
+%  Finally, $g^N \longrightarrow  g$ as $g$ is in particular continuous, giving $g(X_T) = \sum_{k= 0}^{\infty} J_k \phi_k(X_T)$ as desired. 
+ 
+%  As can be seen, the Wiener-It\^o chaos expansion expresses functionals in term of infinitesimal Brownian increments. This is in contrast with other expansions such as the \textit{Volterra series} (\citet{Volterra}),
+%  \begin{align*}
+%      g(X_T) &= \sum_{k= 0}^{\infty} V_k \phi_k(X_T),\\
+%      V_k \phi_k(X_T) &= \begin{cases}\phi_0, & k=0,\\ \int_{0}^{T} \int_{0}^{t_k} \cdots \int_{0}^{t_2} \, \psi_k(t_1,\ldots,t_k) \, x_{t_1} \cdots x_{t_k}\, dt_1 \cdots dt_k, & k\ge 1,
+%   \end{cases}
+%  \end{align*}
+% which involves, as can be seen, values of the underlying path directly. %For a thorough comparison of the Volterra and Wiener is the 
+ 
+ % can be expressed as a weighted combination of infinitesimal Brownian increments.
+%$$g(X_T) = g(\boldsymbol{0})  + \int_0^T \phi_1(t_1) dx_{t_1} +  \int_0^T  \int_0^{t_2} \phi_2(t_1,t_2) dx_{t_1} dx_{t_2} + \ldots $$
+%However, $g(\boldsymbol{0}) \ne \E^{\Q}[g(X_T)]$!
+
+% and assume that $g\in L^2(\Lambda_T)$ depends on $X\big |_{\Pi_N} = \{x_{t_n}\}_{n=0}^N$ only. Since $x_0=0$ $\Q-$a.s. as $\Q$ is the Wiener measure, it is
+
+\subsection{Chaos Expansion for Functionals}
+
+It is well-known that the chaos expansion can be extended to stochastic processes. Indeed, if $Y $ % = (y_t)_{t\in [0,T]}$
+is a measurable square integrable process (but possibly non-adapted to the Brownian filtration), then one can apply  \Cref{thm:Wiener1} at each intermediate time. %This gives, 
+%$$y_t = \sum_{k=0}^{K} J_k \phi_{t,k}(X_T).$$ 
+%This gives a continuum of functions $\{\phi^t_k \in L^2(\triangle_{k,T})\}_{k \in \N, t \in [0,T]}$ which can be re-indexed  as $\{\bar{\phi}_k \in L^2(\triangle_{k+1,T})\}_{k \in \N}$ if  $\bar{\phi}_k(t_1,...,t_k,t) = \phi^t_k(t_1,...,t_k)$. 
+The chaos expansion for processes is of great importance in Malliavin calculus as it allows to define, among other things, the Skorokhod integral \cite{Skorokhod}. 
+
+As our focus is on non-anticipative functionals, we now suppose that $Y$ is adapted.  %and the integrals are on the simplex $\triangle_{k,t}$ instead. 
+An application of Doob's functional representation \cite[Lemma 1.13.]{kallenberg} shows that every  right-continuous process $Y$ adapted to the Brownian filtration (hence progressively measurable) 
+is paired with a functional $f:\Lambda \to \R$ such that $y_t=f(X_t)\,$ $\forall t \in [0,T]$. We therefore expect a chaos expansion for square-integrable functionals $f\in L^2(\Lambda)$ as well.  
+We examine this parallel in further depth. 
+% Let $L^2(\Lambda)$ be the space of functionals such that 
+% $$\lVert f \rVert_{L^2(\Lambda)} := \sup_{t \in [0,T]} \lVert f \rVert_{L^2(\Lambda_t)} < \infty.$$
+%  Clearly, $f\in L^2(\Lambda) $ implies that $f|_{\Lambda_t} \in L^2(\Lambda_t)$ $\forall \, t \in [0,T]$. The converse is however false, as shown by the deterministic functional $f|_{\Lambda_t}  \equiv \frac{1}{t}\mathds{1}_{\{t>0\}}$. The interested reader may verify that $\lVert \cdot \rVert_{L^2(\Lambda)}$ is a norm. % and  $L^2(\Lambda)$ a \rr{ Banach space (Proof?)} . %However, it seems difficult to define an inner product, so $L^2(\Lambda)$ is a priori not a Hilbert space.
+Introduce
+\begin{equation} \label{eq:shiftChaos}
+    \bar{J}_k\phi_{k+1}(X_t)= J_k\phi_{k+1}(\cdot,t)(X_t) =\int_{\triangle_{k,t}} \phi_{k+1}(\cdot, t)\, dx^{\otimes k}, \qquad \phi_{k+1} \in L^2(\triangle_{k+1,T}).
+\end{equation}
+As can be observed, the operator $\bar{J}_k$ freezes the last entry of  $\phi_{k+1}$ and thereafter acts exactly  as $J_k$. Similarly, we define the \textit{functional Wiener-Itô chaos of order $k$}  as  $\bar{\frakI}_k = \bar{J}_kL^2(\triangle_{k+1,T})$, $k \ge 0$. %\{\bar{J}_k\phi: \Lambda \to \R \,|\, \phi \in L^2(\triangle_{k+1,T})\}
+
+\begin{theorem}\textnormal{(\textbf{Wiener-Itô Chaos Expansion for Functionals})} 
+We have the following decomposition,
+$$L^2(\Lambda) = \bigoplus_{k=0}^\infty \bar{\frakI}_k. $$ %$\bar{\frakI}_k = \{\bar{J}_k\phi_{k+1}: \Lambda \to \R \,|\, \phi_{k+1} \in L^2(\triangle_{k+1,T})\}$ 
+In other words, each functional $f \in L^2(\Lambda)$ is associated to  a unique sequence $\{\phi_k \in L^2(\triangle_{k,T})\}_{k \ge 1}$  such that 
+$f= \sum_{k=0}^{\infty} \bar{J}_k \phi_{k+1}. $
+%Moreover, $\lVert f \rVert^2_{L^2(\Lambda)} = \sup_{t \in [0,T]} \, \sum_{k=0}^{\infty} \, \lVert\phi_{k+1}(\cdot,t) \rVert^2_{L^2(\triangle_{k,t})} .$
+% $$\lVert f \rVert^2_{L^2(\Lambda)} = \left \lVert \sum_{k=0}^{\infty} \, \lVert\phi_{k+1}(\bullet,\cdot) \rVert^2_{L^2(\triangle_{k,\cdot})} \right \rVert_{L^{\infty}([0,T])}.$$
+\end{theorem}
+%The dissection of $L^2(\Lambda)$ is illustrated in the diagram below:
+
+% \textbf{Illustration}
+% \begin{figure}[H]
+%     \centering
+%     \includegraphics[scale = 0.15]{Figures/Chaos_Functional.jpeg}
+%     \label{fig:Error_VarExp}
+% \end{figure}
+
+% \begin{center}
+%   \begin{tikzpicture}
+%   \matrix (m) [matrix of math nodes,row sep=4em,column sep=5em,minimum width=3em]
+%   { L^2(\triangle_{1,T}) & \bar{\frakI}_1 \\};
+%   \path[-stealth]
+%     (m-1-1) edge  node [above] {$\bar{J}_1 $} (m-1-2);
+% \end{tikzpicture} 
+
+% $\vdots$
+
+%   \begin{tikzpicture}
+%   \matrix (m) [matrix of math nodes,row sep=4em,column sep=5em,minimum width=3em]
+%   {L^2(\triangle_{k,T}) & \bar{\frakI}_k \\};
+%   \path[-stealth]
+%     (m-1-1) edge  node [above] {$\bar{J}_k $} (m-1-2);
+% \end{tikzpicture} 
+% \end{center}
+
+%==============================%
+%=========== DIAGRAM ============%
+% Input layer neurons'number
+% \newcommand{\inputnum}{4} 
+% % Hidden layer neurons'number
+% \newcommand{\hiddennum}{4}  
+% % Output layer neurons'number
+% \newcommand{\outputnum}{1} 
+% \begin{center}
+% \begin{tikzpicture}
+% % Input
+%  \node[yshift=(\hiddennum-\inputnum)*5 mm] (Input-1) at (Hidden,-1) {$L^2(\triangle_{1,T})$};
+% \node[yshift=(\hiddennum-\inputnum)*5 mm] (Input-2) at (Hidden,-2) {$\vdots$};
+% \node[yshift=(\hiddennum-\inputnum)*5 mm] (Input-3) at (Hidden,-3) {$L^2(\triangle_{k,T})$};
+% \node[yshift=(\hiddennum-\inputnum)*5 mm] (Input-4) at (Hidden,-4) {$\vdots$};
+% % Hidden
+% \node[yshift=(\hiddennum-\inputnum)*5 mm
+%     ] (Hidden-1) at (2.5,-1) {$\bar{\frakI}_1$};
+% \node[yshift=(\hiddennum-\inputnum)*5 mm
+%     ] (Hidden-2) at (2.5,-2) {$\vdots$};
+% \node[yshift=(\hiddennum-\inputnum)*5 mm
+%     ] (Hidden-3) at (2.5,-3) {$\bar{\frakI}_k$};
+% \node[yshift=(\hiddennum-\inputnum)*5 mm
+%     ] (Hidden-4) at (2.5,-4) {$\vdots$};
+% % Output
+% \node[yshift=(\outputnum-\inputnum)*5 mm] (Output-1) at (5,-1) {$\bigoplus$};
+% % Connect neurons In-Hidden
+% \draw[->, shorten >=1pt] (Input-1) -- node [above] {$\bar{J}_1 $} (Hidden-1);  
+% \draw[->, shorten >=1pt] (Input-3) -- node [above] {$\bar{J}_k $} (Hidden-3);  
+% % Connect neurons Hidden-Out
+% \foreach \i in {1,...,\hiddennum}
+% {
+%     \foreach \j in {1,...,\outputnum}
+%     {
+%         \draw[->, shorten >=1pt] (Hidden-\i) -- (Output-\j) ;
+%     }
+% }
+% % Outputs
+% \foreach \i in {1,...,\outputnum}
+% {            
+%     \draw[->] (Output-\i) --  ++(1,0) 
+%         node[right]{$L^2(\Lambda)$};
+% }
+% \end{tikzpicture}
+% \end{center}
+%==============================%
+%==============================%
+
+% \bb{Orthogonality of $\bar{J}_k$?} Strongly orthogonal as in the Kunita-Watanabe decomposition? Indeed, note first that $\bar{J}_k\phi \in \HH_0^2= \{f:\Lambda\to \R \,|\, f(X) \text{ is a square integrable martingale}\}$ for all $k\ge 0$. Then $\bar{J}_k\phi \perp \bar{J}_l\phi$, where
+% $$f \perp h \, \Longleftrightarrow fh \in \HH_0^2, \quad \forall \, f,h \in \HH_0^2.  $$
+
+% If $X$ is Brownian motion, then the Wiener-It\^o chaos expansion writes
+% $$g(X_T)= \sum_{k=0}^{\infty} J_k \phi_k (X_T), \quad g \in L^2(\Lambda_T),$$
+% for some $\phi_k \in L^2(\triangle_{k,T})$ ($L^2(\triangle_{0,T}) =\R$)
+% and the linear operators\footnote{To alleviate notations, we write  $J_k \phi_k(X_T)$ instead of $(J_k \phi_k)(X_T)$.} %However, the latter would be more accurate. } 
+% $J_k:L^2(\triangle_{k,T}) \to L^2(\Lambda_T), $ 
+%  \begin{align*}
+%      J_{0}\phi_0 &= \phi_0,\\ 
+%         J_{k}\phi_k(X_T) &= \int_{\triangle_{k,T}} \phi_k\, dx^{\otimes k} =\int_{0}^{T} \int_{0}^{t_k} \cdots \int_{0}^{t_2} \, \phi_k(t_1,\ldots,t_k) \, dx_{t_1} \cdots dx_{t_k}.%= \int_{\triangle_{k,t}} \circ \, dx_{t_1,\alpha_1} \cdots \circ dx_{t_k,\alpha_k}
+% \end{align*}
+
+\subsection{Martingale Representation Operators} \label{sec:MRO}
+For completeness, we restate It\^o's representation theorem in terms of Brownian functionals.      
+
+\begin{theorem}\label{thm:ClarkOcone}\textbf{(It\^o's Representation Theorem)}
+For every $g\in L^2(\Lambda_T)$, there exists a unique functional $\varphi \in L^2(\Lambda)$ such that
+\begin{equation}\label{eq:MRT} 
+    g(X_T) = \E^{\Q}[g(Y_T)] + \int_0^T \varphi(X_t) \ dx_t. 
+\end{equation}
+\end{theorem}
+Finding an explicit expression for the integrand in $\eqref{eq:MRT}$ is of great importance in hedging when $g$ is seen as the payoff of a path-dependent option. Indeed, the functional $\varphi(X_t)$ would correspond to the delta of the option at some time $t$.  
+%We are thus looking at the 
+%has been a challenging task for decades 
+For completeness, we restate the Clark-Ocone representation formula \cite{Clark,Ocone} for Brownian functionals. To this end, let $\D^{1,2}(\Lambda_T)$ be the space of $T-$functionals $g\in L^2(\Lambda_T)$
+such that its Malliavin derivative $ D g(X_T)$ exists and belongs to $L^2(\Q\times dt)$. 
+\begin{theorem}\label{thm:ClarkOcone}\textbf{(Clark-Ocone-Haussmann Formula)}
+Let $g\in \D^{1,2}(\Lambda_T)$. Then, we have the representation 
+\begin{equation}\label{eq:ClarkOcone} 
+    g(X_T) = \E^{\Q}[g(Y_T)] + \int_0^T \E^{\Q}[D_t g(Y_T) | X_t] \ dx_t. 
+\end{equation}
+\end{theorem}
+We can thus define the \textit{martingale representation operator} $$\calM_T: \D^{1,2} \to L^2(\Lambda), \quad
+\calM_T \! g(X_t) := \E^{\Q}[D_t g(Y_T) | X_t],$$ 
+ where  $\E^{\Q}[ \ \cdot \ | X_t]$ is termed a \textit{conditioned expectation}. % (\citet{Dupire}). 
+It is more broadly defined  as 
+$$\E^{\Q}[\varphi(Y_t)\,|\, X_s]=  \int_{\Lambda_{t-s}}\varphi(X_s \oplus Z) \Q(dZ),\quad  s \le t ,\quad \varphi\in L^1(\Lambda_t). $$ 
+ Note that  the letter $Y$ is employed %in conditioned expectations  
+ instead of $X$ to avoid ambiguity. 
+In contrast, the functional Itô calculus permits to rewrite the integrand in $\eqref{eq:ClarkOcone}$ in a non-anticipative way.  This is summarized in the next result. 
+
+\begin{theorem}\label{thm:FMRT}\textbf{(Functional Martingale Representation Theorem)}
+ For every $g \in L^1(\Lambda_T)$ %(\bb{or $L^2(\Lambda_T)$ needed?})
+ such that  $f(X_{t})= \E^{\Q}[g(Y_T) \,|\, X_{t}]$ is {spatially differentiable},
+then 
+\begin{equation}\label{eq:FMRT}
+   g(Y_T) = \E^{\Q}[g(X_T)] + \int_0^T \Delta_x f(Y_t) dy_t. 
+\end{equation}
+\end{theorem}
+Observe also that $\Q$ need not be the Wiener measure for  \Cref{thm:FMRT} to hold true. 
+%assuming that $f$ is vertically differentiable.
+We shall see that an expansion for $g(X_T)$ is achievable by  successive applications of the functional martingale representation theorem. %applying  the representation theorem.% to  $\Delta_x f(X_t)$, and so on. 
+To this end, consider the family of linear operators%\footnote{Again, $\calA_{t}\! f(X_s)$ is understood as $(\calA_{t}\! f)(X_s)$.}
+\begin{equation} \label{eq:opA}
+    \calA = (\calA_t)_{t\in [0,T]}, \quad   \calA_{t}\! f(X_s) = \Delta_x\E^{\Q}[f(Y_t) | X_s], \quad 0 \le s\le t,
+\end{equation}
+for $f\in L^1(\Lambda_t)$ such that the above expression is well-defined.   
+ It is worth noting that the domain of $\calM_T$ is strictly contained in the one of $\calA_T$. This essentially follows from the fact that integrating 
+ before differentiating gives in general more regularity than the other way around.  In fact, the uniqueness of the integrand in the martingale representation theorem implies that $\calA_Tg $ equals $\calM_Tg$ when the latter is  well defined.  
+Next, set sequentially $\calA_{t_1...t_k} = \calA_{t_1} \cdots \calA_{t_k}$, $(t_1,...,t_k) \in \triangle_{k,T}$, creating an entanglement of spatial derivatives and conditioned expectations. If $k=2$, this gives for instance
+$$\calA_{t_2t_3}\!  f(X_{t_1}) = \Delta_x \E^{\Q}\left[ \Delta_x \E^{\Q}[ f(Y_{t_3}) \, | \, Y_{t_2}]  \, \big | \, X_{t_1} \right].$$
+To safely apply the operator over and over, we introduce the \textit{domain of $\calA$}, namely
+$$\calD_{\calA} = \bigcap_{k=1}^\infty \{f:\Lambda \to \R\,|\, \, \calA_{t_1...t_k} \! f \text{ is well-defined } \forall \,  (t_1,...,t_k) \in \triangle_{k,T} \}.$$
+This ensures that  $\calA_t(\calD_{\calA}) \subseteq \calD_{\calA}$.
+For a $T-$functional $g:\Lambda_T \to \R$,  the  operator is only valid for $t=T$.  %namely
+%$\calA_{T} \! g(X_t) = \Delta_x\E^{\Q}[g(X_T) | X_t].$
+The recursive use of $\calA$ is %thereafter
+allowed as long as  $\calA_T \! g$, henceforth a running functional, belongs to  $\calD_{\calA}$. 
+% We recall that Malliavin calculus employs instead $\calM_T \! g(X_t) := \E^{\Q}[D_t g(X_T) | X_t]$, giving the integrand in the Clark-Ocone formula; see \citet[Chapter 4]{DiNunno}. 
+The next proposition highlights the role of the martingale representation operator to recover the  Wiener-Itô chaos expansion.
+
+\begin{proposition} \label{prop:MRT_Chaos}
+Let $g$ be a $T-$functional such that $\calA_T g \in \calD_{\calA}$. Then by choosing
+\begin{equation}\label{eq:integrandFunc}
+    \phi_0 = \calA_T \!  g(X_0) , \quad   \phi_k(t_1,...,t_k) = \E^{\Q}[\calA_{t_2...t_kT} \! g(Y_{t_1})], %\, | \, X_0],
+\end{equation}
+ we recover the  Wiener-Itô chaos expansion, i.e. 
+$g = \sum_{k=0}^{\infty} J_k \phi_k.$
+\end{proposition}
+
+\begin{proof}
+With the above notations,  the functional martingale representation of $g(X_T)$ writes 
+$ g(X_T) = J_0\phi_0(X_T) +\int_0^T \calA_{T}\!  g(X_{t}) dx_{t}.$ 
+For fixed $t \le T$, $\calA_{T}\!  g(X_{t})$ admits a martingale representation as well, namely
+\begin{align*}
+    \calA_{T}\!  g(X_{t}) &= \E^{\Q}[\calA_{T}\!  g(Y_{t})\, | \, X_0] + \int_0^{t} \Delta_x \E^{\Q}[\calA_{T}\!  g(Y_{t})\, | \, X_{s}]  dx_{s}
+    = \phi_1(t) + \int_0^{t} \calA_{t T}\!  g(X_{s}) dx_{s}.
+\end{align*}
+ Hence, a simple integration gives
+$$  g(X_T) 
+          = J_0\phi_0(X_T) +  J_1\phi_1(X_T)  + \int_0^T \int_0^{t}  (\calA_{t T} g)(X_{s}) dx_{s}  dx_{t}.$$
+Iterating %the argument 
+with the adequate %and adequately renaming the 
+time variable renaming yields the claim.
+\end{proof} 
+The representation  $\eqref{eq:integrandFunc}$ is in appearance similar to the expression  in Malliavin calculus \citep{Stroock}, 
+ \begin{equation}\label{eq:stroock}
+     \phi_k(t_1,...,t_k) = \E^{\Q}[D_{t_1,t_2,...,t_k}  g(Y_{T})],  \quad k\ge 0, %\, | \, X_0]
+ \end{equation}
+ with the higher order Malliavin derivatives $D_{t_1,t_2,...,t_k}=D_{t_1}\cdots D_{t_k}$.  However, the operators $D$, $\calA$ are drastically different in nature:  $(D_t g(Y_{T}))_{t\in [0,T]}$ is a family of $\calF_T-$measurable random variables, while $(\calA_t g(Y_T))_{t\in [0,T]}$ is  adapted. %process. %$D$ transform $g(X_{T})$ into a family of $\calF_T-$measurable random variables
+
+% \begin{remark}
+% The above result is in appearance similar to the representation established by \citet{Stroock}, 
+% $$\phi_k(t_1,...,t_k) = \E^{\Q}[D_{t_1,t_2,...,t_k}  g(X_{T})\, | \, X_0],  \quad k\ge 0, $$
+% with the higher order Malliavin derivative $D_{t_1,t_2,...,t_k}=D_{t_1}\cdots D_{t_k}$. However, the operators $D, \calA_T$ are drastically different in nature: $D_{\cdot}$ transforms $g(X_{T})$ into  family of $\calF_T-$measurable random variables, while $(\calA_t g(X_T))_{t\in [0,T]}$ is an adapted process. 
+
+% %$(D_{t}  g(X_{T}))_{t\in [0,T]}$ is a family of  $\calF_T-$measurable random variables, while 
+% %$(D_{t}  g(X_{T}))_{t\in [0,T]}$ is a family of  $\calF_T-$measurable random variables, while $(\calA_t g(X_T))_{t\in [0,T]}$ is an adapted process. 
+% %$D_t$ (respectively $\calA_T$) transforms a $T-$functional into a $T-$functional (resp. functional). %This is because the functional derivative creates an instantaneous shock while the Malliavin derivative alters the whole path after $t$. %, while  %
+% \end{remark}
+
+
+\subsection{Arithmetic Processes and Martingality of vertical Derivatives}   \label{sec:SpecialCase} 
+
+Establishing a parallel between the functional Taylor and Wiener-Itô chaos expansions proves to be simple in specific cases. In this section, we restrict ourselves to  %path-independent $T-$functionals
+path-independent  payoffs $g(X_T)=h(x_T)$, with $h: \R \to \R$. Further, we assume that $X$ is an $(\F,\Q)-$Markov process. This implies that the price functional $f(X_t) =\E^{\Q}[g(Y_T)\,|\,X_t]$, as seen in \Cref{sec:MRO}, is function of $x_t$ only. %We can therefore use $f(X_t)$, $f(x_t)$ and  $\Delta_x$, $\partial_x$ interchangeably. 
+We begin with a trivial yet important lemma. In the sequel, let $X^{t,x}$ be the path  on $[t,T]$ such that $x_t^{t,x}=x$ %$\Q-$a.s.
+and denote by $ \nabla{X}^{t,x}$ its \textit{ tangent process}  \cite[Chapter 5]{IkedaWatanabe}, 
+ $$ \nabla {x}_s^{t,x} = \lim_{\delta x \to 0} \frac{x_s^{t,x+\delta x}-x_s^{t,x}}{\delta x}, \quad s \in [t,T],$$%\mathring
+ when the latter is well-defined. As can be seen, the tangent process measures the effect of an instantaneous shock on a path at later dates. For example, if $\Q$ is the law of an Ornstein-Uhlenbeck process with unit mean reversion speed, %(and any volatility), 
+ then $\nabla{x}_s^{t,x} = e^{-(s-t)}$. In other words, the impact of a bump at  $t$ decays exponentially.
+ 
+%  For instance, if $X$ is Brownian motion, it is easily seen that $\mathring{X}^{t,x}  \equiv 1$.  We call processes with associated unit tangent process are called \textit{arithmetic}. The family of Bachelier models belongs to this class. 
+
+\begin{lemma}\label{lem:Tangent}
+Let $X$ be an $(\F,\Q)-$Markov process with bounded tangent process and $g(X_T)=h(x_T)$ for some $h\in \calC_b^{1}$. If $f(X_t) = \E^{\Q}[g(Y_T)\,|\,X_t]$, then
+  $$\Delta_{x}f(X_t) = \E^{\Q}[\Delta_{x}g(Y^{t,x}_T) \, \nabla y^{t,x}_T %\mathring{x}^{t,x}_T
+  ]\big |_{x=x_t}.$$
+\end{lemma}
+
+\begin{proof} 
+Thanks to the Markov property, we have 
+ $f(X_t) = \E^{\Q}[h(y^{t,x}_T)]\big|_{x=x_t}$. Moreover, the chain rule gives, as $\delta x$ tends to $0$,
+ $$\frac{h(y^{t,x+\delta x}_T) -h(y^{t,x}_T)}{\delta x} \, \longrightarrow \,  h'(y^{t,x}_T)\, \nabla{y}^{t,x}_T = \Delta_x g(Y^{t,x}_T)\, \nabla{y}^{t,x}_T.$$
+ The results follows from the bounded convergence theorem. 
+% \begin{align*}
+%     \Delta_{x}f(X_t) = \lim_{h\to 0} \frac{1}{h}\E^{\Q}[h(x^{t,x+h}_T) -h(x^{t,x}_T)]\big|_{x=x_t}= \E^{\Q}[g'(x^{t,x}_T) \nabla x^{t,x}_T]\big |_{x=x_t} = .%\\
+%     %&=  \int_{\R} h'(x_t + z) \Q(x_{T-t}\in dz)\\
+%     %&= \E^{\Q}[h'(x_T)\,|\, X_t].
+% \end{align*}
+
+%For $k> 1$, define $g= h^{(k-1)} \in \calC_b^{\infty}$ and proceed as above to obtain
+%$$\Delta_{\mathds{1}_k} f(X_t) = \Delta_x \E^{\Q}[g(x_T)\,|\, X_t] =  \E^{\Q}[g'(x_T)\,|\, X_t] =  \E^{\Q}[\Delta_{\mathds{1}_k}h(x_T)\,|\, X_t]. $$
+\end{proof}
+
+\begin{remark}
+One can rewrite  \Cref{lem:Tangent} in terms of the Malliavin derivative of $g(X_T)$  at time $t$ when the latter is well-defined. Indeed, one has $D_tg(X_T)= \Delta_{x}g(X^{t,x}_T) \, \nabla{x}^{t,x}_T$ as $g$ is path-independent. We thus recover the integrand in the Clark-Ocone formula as discussed in  \Cref{sec:MRO}.
+\end{remark}
+
+More can be said when $X$ has unit tangent process, namely $\nabla{X}^{t,x}  \equiv 1$. We describe such process as \textit{arithmetic}. An example in finance is the underlying of the Bachelier model. 
+In this case, $X$ is actually an arithmetic Brownian motion, 
+ whence the terminology. 
+ 
+The following result provides a characterization of path-independent $T-$functional and  brings us one step closer to the  connection between the functional and Wiener-It\^o expansions.
+
+\begin{proposition}\label{prop:Martingale}
+Let $X$ be an arithmetic $(\Q,\F)-$Markov process and  $f(X_t) = \E^{\Q}[g(X_T)\,|\,X_t]$ for a  spatially differentiable $T-$functional $g: \Lambda_T \to \R$.  Then the following assertions are equivalent: 
+\begin{itemize}
+\item[(i)] $g$ is path-independent. 
+\item[(ii)]  $\Delta_{\mathds{1}_k} f(X)$ is an $(\Q,\F)-$martingale for all $k\ge 0$. 
+\item[(iii)]  $g(X_T) = \sum_{k=0}^{\infty}\Delta_{\mathds{1}_k}f(\boldsymbol{0}) J_k(X_T)$.
+\end{itemize}
+\end{proposition}
+
+\begin{proof}
+See \cref{app:Martingale}.
+\end{proof}
+
+In derivatives pricing, we stress  that $X$ has to be interpreted as the source of risk, which usually differs from the asset.  
+For instance, a call option in the Black-Scholes with zero dividend and interest rate would read $g(X_T) = (\calI(X_T) -K)^+$, where $X$ is Brownian motion and $\calI$ is  the  It\^o map $\calI(X_T) = x_0 e^{\sigma x_T - \frac{1}{2}\sigma^2T}$.
+Exceptions include the Bachelier model, where $X$  is the asset itself. In this case, the spatial derivatives correspond to the option Delta, Gamma, and so on.
+
+
+\begin{corollary}
+Under the assumptions of  \Cref{prop:Martingale} and supposing that $g$ is path-independent, then the functional Wiener-Itô chaos expansion of $f$ writes
+$f(X_t) = \sum_{k=0}^{\infty}\Delta_{\mathds{1}_k}f(\boldsymbol{0}) J_k(X_t).$
+\end{corollary}
+
+\begin{proof}
+Take conditional expectation in  \cref{prop:Martingale} (iii) and use the martingality of $J_k(X)$. 
+\end{proof}
+
+%\subsection{Expansion of Iterated It\^o integrals}
+To finish this section, we show that the $k-$fold It\^o iterated integrals are linear combinations of finitely many elements of the signature.  %\textbf{In fact, the words with nonzero coefficients for each  It\^o iterated integral do not overlap and creates a partition.} 
+First, we recall that 
+ \begin{equation}\label{eq:Hermite}
+    J_{k}(X_t) = h_k(t,x_t), \quad  h_k(t,x) =  \frac{t^{k/2}}{k!}H_k\left(\frac{x}{\sqrt{t}}\right),  
+ \end{equation}
+where $H_k$ is the $k-$th probabilist's Hermite polynomial; see  \cite{DiNunno}. We can in fact write \begin{equation}\label{eq:exHermite}
+H_k(x) = \sum_{l=0}^{\lfloor k/2 \rfloor} c_{k,l} \, x^{k-2l}, \quad c_{k,l} = \frac{k!}{l! (k-2l)!} (-2)^{-l}, 
+\end{equation}
+with coefficients $(c_{k,l})_{l=0}^k$ retrieved  for instance from   the recurrence relation \cite[Section 5.4]{Szego},
+\begin{equation*}%\label{eq:recHermite}
+    H_{k+1}(x) = xH_{k}(x) - kH_{k-1}(x),\quad   H_1(x)=x, \quad H_0\equiv 1.
+\end{equation*}
+
+\begin{lemma}\label{lem:hermite}
+The It\^o iterated integrals are smooth functionals and have functional Taylor expansion
+  \begin{align*}
+      J_{k}
+      = \sum_{\alpha \in A_k} (-2)^{-|\alpha|_0}  \calS_{\alpha},  \quad k \ge 0,
+ \end{align*}
+%   \begin{align*}
+%       J_{k}(X_t) 
+%       = \sum_{\alpha \in A_k}  \tilde{c}_{k,\alpha}  \calS_{\alpha}(X_t),  
+%  \end{align*}
+with  the disjoint subsets 
+ $A_k = \left\{\alpha \, \big | \, \lVert \alpha\rVert = k \right\}$, $\lVert \alpha\rVert := 2|\alpha|_0 + |\alpha|_1$. 
+\end{lemma}
+
+\begin{proof}
+
+Fix $k\ge 0$. Thanks to $\eqref{eq:exHermite}$, we have 
+ \begin{equation}\label{eq:poly}
+     J_k(X_t) = \frac{t^{k/2}}{k!} \sum_{l=0}^{\lfloor k/2 \rfloor} c_{k,l} \, \left(\frac{x_t}{\sqrt{t}}\right)^{k-2l}  = \sum_{2l_0+l_1=k} (-2)^{-l_0}  \, \frac{t^{l_0} }{l_{0}!}\frac{ x_t^{l_1}}{ l_{1}!}. 
+ \end{equation}%\sum_{l=0}^{\lfloor k/2 \rfloor} \frac{(-2)^{-l}}{l! (k-2l)!}  \, t^{l} x_t^{k-2l}
+ Thus,  $J_k$ is a polynomial in $t$ and $x_t$. 
+%Hence $J_k$ is a polynomial in $t$ and $x_t$ with Taylor expansion
+%$$J_k(X_t) = \sum_{2l_0+l_1=k} \frac{c_{k,l}}{k!} \, t^{l_0} x_t^{l_1}.$$%c_{k,l_1}{k \choose l_1}^{-1}
+%Thanks to $\eqref{eq:Hermite}$,  $J_k$ is path-independent so we can invoke the  stochastic Taylor expansion (Example $\eqref{ex:classicTaylor}$). This gives
+%  \begin{align}\label{eq:itoTaylor}
+%      J_{k}(X_t) &= h_k(0,0) + \partial_t h_k(0,0) \calS_0(X_t) + \partial_x h_k(0,0) \calS_1(X_t) + \partial_{xx} h_k(0,0) \calS_{11}(X_t) \\
+%      &+ \partial_{tx} h_k(0,0) \left[\calS_{10}(X_t) + \calS_{01}(X_t) \right] + \ldots
+%  \end{align}
+To conclude, we invoke the following identity,
+ \begin{equation*}%\label{eq:Product}
+     \sum_{|\alpha|_0=l_0, \, |\alpha|_1=l_1 } \calS_{\alpha}(X_t) = \calS_{\boldsymbol{0}_{l_0}}(X_t)\, \calS_{\mathds{1}_{l_1}}(X_t) = \frac{t^{l_0} }{l_{0}!}\frac{ x_t^{l_1}}{ l_{1}!},
+ \end{equation*}
+ which can be  either seen as a consequence  of \cite[Proposition 5.2.10]{KP}  or a particular case of the shuffle product \cite{Ree}. Since $\bigcup\limits_{2l_0+l_1=k} \{\alpha\, |\,\, |\alpha|_0 =l_0, \, |\alpha|_1 =l_1\}=A_k$ with $A_k$ from the statement, the result follows. %, we finally obtain
+ %$$J_k(X_t) = \sum_{\alpha \in A_k}   \frac{c_{k,|\alpha|_1}}{k!} |\alpha|_0!\, |\alpha|_1 ! \calS_{\alpha}(X_t) = \sum_{\alpha \in A_k}  \tilde{c}_{k,\alpha}  \calS_{\alpha}(X_t) .$$
+ 
+% Therefore, 
+% \begin{align*}
+%       J_{k}(X_t) 
+%       = \sum_{2l_0 + l_1 = k} \frac{a_{k,l_1}}{k!} \frac{t^{l_{0}}x_t^{l_{1}}}{l_{0}!l_{1}!}
+%       = \sum_{\alpha \in A_k}  \frac{a_{k,|\alpha|}}{k!} \calS_{\alpha}(X_t), 
+%  \end{align*}
+\end{proof}
+An interpretation of  \cref{lem:hermite} is that  It\^o iterated integrals create a partition of all the words in the alphabet $\{0,1\}$ based on the weigthed length $\lVert \cdot \rVert$.  
+We finally bridge the gap between the functional Taylor formula and Wiener-It\^o chaos expansion for path-independent $T-$functionals. 
+\begin{proposition}
+Let $g$ be a bounded, analytic path-independent $T-$functional and $f(X_t) = \E^{\Q}[g(X_T)\,|\,X_t]$.  Under the assumptions of  \Cref{prop:Martingale}, we have
+   \begin{equation*}
+       g(X_T) = \sum_{k=0}^{\infty} J_k \phi_k (X_T) = \sum_{\alpha }
+   \Delta_{\alpha}f(\boldsymbol{0})    \calS_{\alpha}(X_T).
+   \end{equation*}
+\end{proposition} 
+
+
+\begin{proof}
+As $g$ is path-independent, 
+\cref{prop:Martingale} gives
+$
+g(X_T) = 
+\sum_{k=0}^{\infty}\Delta_{\mathds{1}_k}f(\boldsymbol{0}) J_k(X_T)
+$ and  $\Delta_{\mathds{1}_k} f(X)$ is a $(\Q,\F)-$ martingale for all $k\ge 0$. As $X$ is Brownian motion, the functional It\^o formula \cite{Dupire} implies that each $\Delta_{\mathds{1}_k} f$ solves  the path-dependent partial differential equation (PPDE) 
+\begin{equation}\label{eq:PPDE}
+  \calL \varphi :=  \left(\Delta_t + \frac{1}{2}\Delta_{xx} \right)\varphi=0. 
+\end{equation}
+%with different terminal condition (namely $\varphi(X_T) = \Delta_{\mathds{1}_k} g(X_T)$). 
+where $\calL$ is often called the \textit{functional} (or \textit{causal})  \textit{heat operator} \cite{Oberhauser}. 
+Put differently, any second spatial derivative can be converted into a temporal derivative by multiplying by the factor $-2$. Thus,  $\Delta_{\mathds{1}_k}f =  (-2)^{|\alpha|_0} \ \Delta_{\alpha} f$ for every word $\alpha \in A_k$. 
+   Together with \cref{lem:Tangent}, we finally obtain 
+  \begin{align*}
+  g(X_T) 
+      = \sum_{k=0}^{\infty} \sum_{\alpha \in A_k} \underbrace{\Delta_{\mathds{1}_k} f(\boldsymbol{0}) (-2)^{-|\alpha|_0} }_{= \Delta_{\alpha} f(\boldsymbol{0})}  \calS_{\alpha}(X_T)
+      = \sum_{\alpha} \Delta_{\alpha} f(\boldsymbol{0}) \calS_{\alpha}(X_T). 
+  \end{align*}
+\end{proof}
+
+
+
+
+% \subsection{Functional Taylor Expansion of Iterated It\^o integrals \bb{(Better?
+% )}}
+
+% In this section, we show that the $k-$fold It\^o iterated integrals are linear combinations of finitely many elements of the signature. 
+% We first recall that $\Delta_t J_k(X_T)=0$ for all $k$ and
+% $$\Delta_{x} J_k(X_T) = J_{k-1}(X_T), \quad k\ge 2,$$
+% and of course $\Delta_{x}J_1(X_T) = \Delta_{x}x_T = 1$. This implies that 
+% $\Delta_{\alpha}J_k(X_T) = 1$ if $\alpha = \mathds{1}_{k}$ and $0$ otherwise. \rr{But expansion is not unique}. As $X$ is Brownian motion and $J_k(X_t)=\E^{\Q}[J_k(X_T) \ | \ X_t]$, then $\Delta_t J_k(X_t) = -\frac{1}{2}\Delta_{xx} J_k(X_t)$. Therefore,
+% \begin{align*}
+%     J_1(X_T) &\rr{=} \Delta_x J_1(X_0) \calS_{1}(X_T)= \calS_{1}(X_T)= x_T \\
+%     J_2(X_T) &\rr{=} \Delta_{xx} J_2(X_0)\calS_{11}(X_T)= -\Delta_t J_2(X_0) \calS_{0}(X_T)  +  \frac{1}{2}\Delta_{xx} J_2(X_0)\calS_{11}(X_T) = -T + \frac{1}{2}x^2_T\\
+% \end{align*}
+
+
+% %   \begin{align*}
+% %      J_{k}(X_t) &= J_{k}(X_0) + \Delta_t J_{k}(X_0) \calS_0(X_t) + \Delta_x J_{k}(X_0) \calS_1(X_t) + \Delta_t J_{k}(X_0)  \calS_{11}(X_t) \\
+% %      &+  \Delta_{xt} J_{k}(X_0) \calS_{10}(X_t) + \Delta_{tx} J_{k}(X_0) \calS_{01}(X_t) + \ldots
+% %  \end{align*}
+ 
+   
+\subsection{Wiener-It\^o chaos and Functional Taylor Expansion, General Case}%Wiener-It\^o Chaos Expansion in the General Case}
+ 
+% We recall the differential operator $\calL = \Delta_t + \frac{1}{2}\Delta_{xx}$,  introduced in $\eqref{eq:PPDE}$. 
+ We split our main result into two intermediate lemmas and a theorem. 
+ \begin{lemma}\label{lem:chaos1}
+ Let $g$ be a $T-$functional with Wiener-It\^ o chaos expansion  $g(X_T) = \sum_{k=0}^{\infty} J_k \phi_k (X_T)$.  %and define as usual $f(X_t) = \E^{\Q}[g(Y_T) \ | \ X_t]$. 
+ Then the functional chaos $J_k \phi_k$  can be expressed as  
+%   \begin{equation}
+%       J_k \phi_k (X_T) =   \sum_{\alpha \in B_k} \Delta_{\alpha}f(\boldsymbol{0}) \calS_{\alpha}(X_T). 
+%   \end{equation} 
+
+ \begin{equation}\label{eq:chaos1}
+     J_k \phi_k (X_T) = \sum_{j=0}^{\infty} \sum_{\alpha \in A_k} (-2)^{-|\alpha|_{0}} \bar{\phi}^{(j)}_k(0)  \calS_{\boldsymbol{0}_j\alpha} (X_T), \quad k \ge 1, 
+ \end{equation}
+ 
+
+ %where $\alpha^{(j,k)} := \boldsymbol{0}_j \mathds{1}_k$  and 
+ with $\bar{\phi}_k(t) := \phi_k(t,\ldots,t)$. 
+%  $$g(X_T) = \sum_{k=0}^{\infty} J_k \phi_k (X_T) = \sum{k=0}^{\infty} \sum_{\calA_k} $$
+ \end{lemma}
+ 
+ \begin{proof}
+We fix $k\ge 1$ and compute the functional Maclaurin expansion of the functional $J_k \phi_k$. % $k\ge 1$. 
+First,  notice that %$\Delta_t  J_k\phi_k  \equiv  0$ and 
+$\Delta_x J_k \phi_k (X_t) = \bar{J}_{k-1} \phi_k  (X_t),$
+with $\bar{J}_k$ as in $\eqref{eq:shiftChaos}$. This implies that $\Delta_x J_k \phi_k (\boldsymbol{0}) = \phi_1(0)$ if $k=1$ and is zero otherwise.    %$\Delta_x J_k \phi_k (\boldsymbol{0}) = \phi_1(t) $  if $k=1$ and $\Delta_x J_k \phi_k (\boldsymbol{0}) = 0$ otherwise.
+%$$\Delta_x J_k \phi_k (\boldsymbol{0}) = \begin{cases} \phi_1(0), & k=1, \\
+%0, & \text{otherwise}.  
+%\end{cases}$$
+Iterating the argument, we conclude that 
+$$\Delta_{\mathds{1}_l} J_k \phi_k (\boldsymbol{0}) =  \bar{\phi}_k (0) \mathds{1}_{\{l=k\}}. $$ 
+
+We now compute $\Delta_{\alpha} J_k \phi_k $ where $\alpha$ contains $0'$s, i.e.  time derivatives. 
+%Assuming that $\bar{J}_{k-1} \phi_k \in L^2(\Q \otimes dt)$, then $J_k \phi_k(X_t) = \int_0^t \bar{J}_{k-1} \phi_k(X_s) dx_s$ 
+To this end, notice that $J_k \phi_k(X_t)$ is an It\^o integral, hence a $(\F,\Q)-$martingale. In particular, we have $\calL J_k \phi_k = 0$ and thus  $\Delta_{\mathds{1}_{k-2} t} J_k \phi_k = -\frac{1}{2} \bar{\phi}_k $. As $\Delta_{\mathds{1}_{l}} J_k \phi_k$ is also an It\^o integral for all $l < k$, we obtain the general formula $$\Delta_{\alpha} J_k \phi_k (\boldsymbol{0}) = (-2)^{-|\alpha|_{0}} \bar{\phi}_k(0), $$
+with $\alpha \in A_k$, i.e. $\lVert \alpha \rVert =k$. 
+We conclude that the  non-zero functional derivatives of $J_k \phi_k$ at the origin are thus given by 
+ $\Delta_{\boldsymbol{0}_j\alpha} J_k\phi_k(\boldsymbol{0}) = (-2)^{-|\alpha|_{0}} \bar{\phi}^{(j)}_k(0)$ with $\alpha \in A_k,$ $j\in \N$. The result  follows. 
+% := \boldsymbol{0}_j \mathds{1}_k$.   
+
+
+% If $k=1$, then $\Delta_t J_1\phi_1(X_t) \equiv 0$ and $\Delta_x J_1\phi_1(X_t) =\phi_1(t)$. Assuming that $\phi_1 \in \calC^{\infty}$,  the non-zero functional derivatives of $J_1 \phi_1$ are thus given by 
+% $$\Delta_{\alpha^{j,1}} J_1\phi_1(X_t) = \phi^{(j)}_1(t),$$
+% where $\alpha^{(j,1)}= \boldsymbol{0}_j 1= \underbrace{0...0}_{j}1$. Now recall from  \cref{prop:MRT_Chaos} that $\phi_1(t) = \E^{\Q}[\varphi(Y_t)]$, with $\varphi = \Delta_x f$.  
+
+ \end{proof}
+ 
+ \begin{lemma}\label{lem:chaos2}
+  Let $g$ be a $T-$functional such that $\calA_T g \in \calD_{\calA}$ and define as usual $f(X_t) = \E^{\Q}[g(Y_T) \ | \ X_t]$.  
+  Then $\bar{\phi}^{(j)}_k(0)  = (-2)^{-|\alpha|_0}\calL^{j} \Delta_{\alpha} f(\boldsymbol{0})$. Consequently, 
+ \begin{equation}
+      J_k \phi_k (X_T) = \sum_{j=0}^{\infty}   \sum_{\alpha \in A_k}  \calL^{j} \Delta_{\alpha} f(\boldsymbol{0}) \calS_{\boldsymbol{0}_j\alpha} (X_T), \quad k \ge 1, 
+ \end{equation}
+  with $\calL$ as in $\eqref{eq:PPDE}$. 
+ 
+ \end{lemma}
+ 
+ \begin{proof}
+ 
+Recall from  \cref{prop:MRT_Chaos} that 
+$\phi_k(t_1,...,t_k) = \E^{\Q}[\calA_{t_2...t_kT} \! g(Y_{t_1})]$. %  with $\calA$ defined in $\eqref{eq:opA}$. 
+Since $\calA_t \varphi(Y_t) = \Delta_x \varphi(Y_t)$ for any smooth functional $\varphi$, we have  $$\calA_{t_2...t_kT} g(Y_t)\big | _{t_2  =  \ldots  =  t_k =  t} = \calA_{t...t} \Delta_x f(Y_t) =\Delta_{\mathds{1}_k}f(Y_t),  $$
+hence $\bar{\phi}_k(t) = \E^{\Q}[\Delta_{\mathds{1}_k} f(Y_t)]$. If $k\ge 2$, we in fact have \begin{equation}\label{eq:claimOp}
+    \bar{\phi}_k(t) = (-2)^{|\alpha|_0}\E^{\Q}[\Delta_{\alpha} f(Y_t)], \quad \alpha \in A_k. 
+\end{equation}
+  Indeed, fix  $t\in[0,T]$ and consider the martingales 
+$$f_{l}(X_s) = 
+\E^{\Q}[\calA_{t_{l+1}...t_{k}T} g(Y_t)\ | \ X_s] , \quad s\in [0,t], \quad l \le k,$$ 
+such that $ \calA_{t_l...t_kT} g(Y_t) =  \Delta_x  f_{l}(Y_t)$. Note that we omit the dependence of $f_l$ on $t_{l+1},\ldots,t_k$ for simplicity. 
+Then, 
+\begin{align*}
+    \calA_{t_2...t_kT} g(Y_t)| _{t_2  =  \ldots  =  t_k =  t} 
+    &= \calA_{t_2,...,t_{l-2}}  \calA_{t_{l-1}} \Delta_x  f_{l}(Y_t)| _{t_2  =  \ldots  =  t_k =  t} \\ 
+    &= \calA_{t_2,...,t_{l-2}} \Delta_{xx} f_{l}(Y_t)| _{t_2  =  \ldots  =  t_k =  t}\\ 
+    &= -2 \calA_{t_2,...,t_{l-2}} \Delta_{t} f_{l}(Y_t)| _{t_2  =  \ldots  =  t_k =  t} \\
+    &= -2 \Delta_{\alpha}f(Y_t),
+\end{align*}
+with $\alpha = \underbrace{1,...,1}_{l-2} 0\underbrace{1,...,1}_{k-l} \in A_k$. The argument can be repeated to obtain $\eqref{eq:claimOp}$ for every word in  $A_k$.  
+%$$\calA_{t_2...t_kT} g(Y_t) = \calA_{t,...,t} \Delta_{xx} \tilde{f}(Y_t), \quad \tilde{f}(Y_s) = \E^{\Q}[\calA_{t...tT}] $$
+We now  verify that $$\bar{\phi}^{(j)}_k(t) = \E^{\Q}[\calL^j \Delta_{\mathds{1}_k} f(Y_t)], \quad j \in \N. $$ 
+Indeed, for any smooth functional $\varphi \in L^1(\Lambda)$ and small $\delta t \in \R $, then 
+\begin{align*}
+    \frac{1}{\delta t} \E^{\Q}\left[\varphi(Y_{t+\delta t}) - \varphi(Y_t)\right] =  \frac{1}{\delta t} \E^{\Q}\left[  \int_{0}^{\delta t} \calL \varphi(Y_{t+u}) du\right] + \frac{1}{\delta t} \underbrace{\E^{\Q}\left[  \int_{0}^{\delta t} \Delta_x \varphi(Y_{t+u}) dx_u\right] }_{=0}, 
+\end{align*}
+using the functional It\^o formula. 
+This gives $\frac{d}{dt} \E^{\Q}[\varphi(Y_t)] = \E^{\Q}[ \calL \varphi(Y_t)]$. The claim follows by choosing recursively $\varphi = \Delta_{\mathds{1}_k} f, \ \calL \Delta_{\mathds{1}_k} f, \ \calL^2\Delta_{\mathds{1}_k} f,... $  and setting $t=0$.    
+% We have thus shown that 
+% \begin{equation}
+%      g(X_T) = \sum_{k=0}^{\infty} J_k \phi_k (X_T) = \sum_{k,j=0}^{\infty}   \sum_{\alpha \in A_k}  \calL^{j} \Delta_{\alpha} f(\boldsymbol{0}) \calS_{\boldsymbol{0}_j\alpha} (X_T), \quad k \ge 1.  
+%  \end{equation}
+
+  
+ \end{proof}
+ 
+ 
+ \begin{theorem}
+ We have 
+  \begin{equation}
+     g(X_T) = \sum_{k=0}^{\infty} J_k \phi_k (X_T) = \sum_{\alpha}  \Delta_{ \alpha} f(\boldsymbol{0}) \calS_{\alpha} (X_T).
+ \end{equation}
+  
+
+  
+ \end{theorem}
+ 
+ \begin{proof} \bb{(In progress)} 
+Observe that 
+ $$\calL^j = \sum_{\beta \in B_j} 2^{-\frac{|\beta|_1}{2}} \Delta_{\beta},   $$
+ where $\beta \in B_j$ if and only if $\lVert \beta \rVert = 2j$  and  every block of $1$'s in $\beta$ has even cardinality. Therefore,
+ % = \{\beta  \ | \ \lVert \beta \rVert = 2j  \text{ and  every block of $1$'s in $\beta$ has even cardinality} \}$  and $\calL$ as in $\eqref{eq:PPDE}$. 
+ $$\calL^{j} \Delta_{\alpha} f(\boldsymbol{0}) = \sum_{\beta \in B_j} 2^{-\frac{|\beta|_1}{2}} \Delta_{\beta \alpha}f(\boldsymbol{0}) = \sum_{\beta \in B_j} 2^{|\beta|_0-j} \Delta_{\beta \alpha}f(\boldsymbol{0}) , \quad \alpha \in A_k.  $$
+ Together with \cref{lem:chaos1}, this gives
+  \begin{align*}
+      g(X_T) &= \sum_{k=0}^{\infty}  J_k \phi_k (X_T) \\ 
+      &= \sum_{k,j=0}^{\infty}  \sum_{\alpha \in A_k} \sum_{\beta \in B_j} 
+       2^{-\frac{|\beta|_1}{2}} \Delta_{\beta \alpha}f(\boldsymbol{0}) \calS_{\boldsymbol{0}_j\alpha} \\ 
+      &= \sum_{\alpha} \sum_{j=0}^{\infty} 
+      \sum_{\beta \in B_j}
+      2^{-\frac{|\beta|_1}{2}}
+      \Delta_{\beta \alpha}f(\boldsymbol{0}) \calS_{\boldsymbol{0}_j\alpha}\\ 
+      &=\sum_{\gamma} \Delta_{\gamma}f(\boldsymbol{0}) \sum_{(\beta,\alpha) \in \calE_{\gamma}}   
+      2^{-\frac{|\beta|_1}{2}} \calS_{\boldsymbol{0}_{\frac{\lVert \beta \rVert}{2}}\alpha}(X_T), 
+  \end{align*}
+  where $\calE_{\gamma} = \{(\beta,\alpha) \ | \ \beta \alpha = \gamma, \; \beta \in B_j \text{ for some } j\in \N\}$.  For instance, if  $\gamma = 1101$, then $\calE_{\gamma} = \{(\emptyset,1101),(11,01),(110,1)\}$.   
+  \bb{To show, using properties of the signature: } 
+  
+  $$\sum_{(\alpha,\beta) \in \calE_{\gamma}} 
+      2^{-\frac{|\beta|_1}{2}} \calS_{\boldsymbol{0}_{\frac{\lVert \beta \rVert}{2}}\alpha}(X_T) = \calS_{\gamma}(X_T)? $$
+     
+ \end{proof}
+
+ 
+%  \begin{enumerate}
+%      \item $k=1$: 
+     
+%      \begin{align*}
+%          \Delta_t J_1 \phi_1(X_t) &= \Delta_t \int_0^t \phi_1(t_1)dt_1 =0\\
+%       \Delta_x J_1 \phi_1(X_t) &= \phi_1(t)\\
+%   \Delta_{tx} J_1 \phi_1(X_t) &= \phi_1'(t)
+%      \end{align*}
+%      thus $\Delta_{\alpha^{(j,1)}}J_1 \phi_1(X_t)= \phi^{(j)}_1(t)$, where $\alpha^{(j,1)}=\underbrace{0...0}_{j}1$.
+   
+%     If $\calL = \Delta_t + \frac{1}{2} \Delta_{xx}$, then 
+%      $\phi^{(j)}_1(t) = \E^{\Q} [\calL^{j} \Delta_x f(Y_t)]. $
+%      Hence, 
+%      \begin{align*}
+%          J_1 \phi_1(X_t) &= \sum_{j=0}^{\infty} \phi^{(j)}_1(\boldsymbol{0}) \calS_{\alpha^{j}}(X_t) \\ 
+%          &= \sum_{j=0}^{\infty} \calL^{j} \Delta_x f(\boldsymbol{0}) \calS_{\alpha^{j}}(X_t)\\
+%          &= \sum_{\alpha \in \calA_1} 2^{\frac{1-|\alpha|_{1}}{2}}\Delta_{\alpha}f(\boldsymbol{0}) \calS_{\alpha}(X_t) ?
+%      \end{align*}
+%      where $\calA_1 = \{\alpha \ | \ \alpha_k = 1, \text{ 1's come in pairs} \}$. 
+     
+%      \item   $k=2$: Note that $\Delta_{t}J_2\phi_2(\boldsymbol{0}) = \Delta_{t}J_2\phi_2 (\boldsymbol{0}) = 0$ and $\Delta_{xx} J_2\phi_2(X_t) &= \phi_2(t,t) =: \bar{\phi}_2(t)$. Hence, 
+%      $$\Delta_{\alpha^{(j,2)}} J_2\phi_2(X_t) =  \bar{\phi}^{\ (j)}_2(t),$$
+%      with $\alpha^{(j,2)}=\underbrace{0...0}_{j}11$. Note that, 
+%      $$\bar{\phi}_2(t)  = \E^{\Q}[\Delta_x \E^{\Q}[ \Delta_x  f(Y_t) \ | \ Y_t ]] = \E^{\Q}[\Delta_{xx}f(Y_t)]. $$
+%      Hence, $\bar{\phi}^{\ (j)}_2(t) = \E^{\Q}[\calL^{j} \Delta_{xx}f(Y_t)] $ and 
+%      $$J_2 \phi_2(X_t) = \sum_{j=0}^{\infty} \calL^{j} \Delta_x f(\boldsymbol{0}) \calS_{\alpha^{j}}(X_t) =  \sum_{\alpha \in \calA_2} 2^{\frac{2-|\alpha|_{1}}{2}}\Delta_{\alpha}f(\boldsymbol{0}) \calS_{\alpha}(X_t) $$
+     
+     
+     
+    %   \begin{align*}
+    %      \Delta_x J_2\phi_2(X_t) &= \Delta_x \int_0^t \int_0^{t_2} \phi_2(t_1,t_2)dt_1 dt_2 = J_1 \phi_2(\cdot,t)(X_t)\\
+    %       \Delta_{xx} J_2\phi_2(X_t) &= \phi_2(t,t)\\
+    %     \Delta_{txx} J_2\phi_2(X_t) &= \mathds{1}^{\top}\nabla \phi_2(t,t)
+    %  \end{align*}
+     
+     
+     
+     
+     
+    %  \item Project $\phi_k$ in the $L^2(\triangle_{k,T})$ sense, i.e. 
+    %  $$\phi_k(t_1,...,t_k) = \sum_{\gamma} (\phi_k,F_{\gamma})_{L^2(\triangle_{k,T})}f^{\otimes \gamma}(t_1,...,t_k), $$
+    %  where $f^{\otimes \gamma}(t_1,...,t_k) = f_{\gamma_1}(t_1)\cdots f_{\gamma_k}(t_k) $
+ %\end{enumerate}
+
+ 
+ 
+%  Recall that 
+%   $$g(X_T) =  \sum_{k=0}^{\infty} (J_k \phi_k)(X_T)  = \sum_{k=0}^{\infty} \sum_{\gamma \in \N^k} \xi_{k,\gamma} \prod_{l=1}^{\infty}  H_{\bar{\gamma}_l}((v_l \bullet X )_T),$$
+%   with $F_{\gamma} = v^{\otimes \gamma} = \prod_{l=1}^{\infty} v_l^{\otimes \bar{\gamma}_l}$, $\bar{\gamma}_l = \sum_{j=1}^{k} \mathds{1}_{\{\gamma_j = l\}}$ and an ONB $(v_l)$ of $L^2([0,T])$.
+% Now compute the functional Taylor expansion of 
+%  $ H_{m}((v \bullet X )_T)$ for some $v \in L^2([0,T])$ and $m \in \N$. Again, $H_m(y) = \sum_{l=0}^{m} a_{m,l} \, y^l$, so that 
+%   $$ H_{m}((v \bullet X )_T) = \sum_{l=0}^{m} a_{m,l} \, (v \bullet X )_T^l $$
+  
+%   Taylor of $(v \bullet X )_T^l$?
+%   $l=1$: $u(X) = (v \bullet X )$. 
+%   \begin{align*}
+%       \Delta_x u(X_t) &= v(t)\\
+%       \Delta_t u(X_t) &= 0\\
+%       \Delta_{tx} u(X_t) &= v'(t)\\
+%   \end{align*}
+%   Hence, 
+%   $$u( X_T ) = \sum_{k=0}^{\infty} v^{(k)}(0) \, \calS_{\alpha^{(k)}}(X_T) =\sum_{k=0}^{\infty} v^{(k)}(0) \, \int_0^T \frac{t^k}{k!} (x_T-x_t) dt$$
+%   $\alpha^{(k)} = \underbrace{0...0}_{k+1}1 \in \{0,1\}^{k+2}$. 
+  
+%   \subsection{Functional derivative à la Malliavin}
+%   $g: \Lambda_T\to \R$ and $f\in \C^{\infty,\infty}$ such that $f|_{\Lambda_T}=g$ (smooth embedding). Then 
+%   $$g(X_T) = \sum_{\alpha} \Delta_{\alpha}f(X_0) \calS_{\alpha}(X_T).$$
+  
+% If $\alpha-=\alpha_1\ldots \alpha_{k-1}$, $|\alpha|=k, $ and $X$ is $\Q-$a.s. continuous, we have
+%   \begin{align*}
+%       \Delta_x g(X_T) :&= \sum_{\alpha} \Delta_{\alpha}f(X_0) \Delta_x \calS_{\alpha}(X_T)\\
+%       &= \sum_{k=0}^{\infty}\sum_{|\alpha|=k,\alpha_k=1} \Delta_{\alpha}f(X_0) \calS_{\alpha-}(X_T) \\
+%       &=  \sum_{\alpha} \Delta_{\alpha \oplus 1}f(X_0) \calS_{\alpha}(X_T)\\
+%     &=  \sum_{\alpha} \Delta_{\alpha}(\Delta_x f)(X_0) \calS_{\alpha}(X_T)\\
+%   \end{align*}
+% where $\alpha \oplus 1= \alpha_1 \ldots \alpha_k 1$.
+% Same with $\Delta_t$.
+% Recall that $H_k'= H_{k-1}$ and $H_k(0) = (-1)^{k/2} (k-1)!! \, \mathds{1}_{\{ k \text{ even} \}}$ 
+
+%Malliavin derivative:
+%$$D_tg(X_T) = \sum_{\alpha} \Delta_{\alpha}f(X_0) \calS_{\alpha}(X_T).$$
+
+% For $k\ge 0$,
+% \begin{align*}
+%     \Delta_{\mathds{0}_{l}} J_{k}(X_t) &= 0 \\ 
+%     \Delta_{\mathds{1}_{l}} J_{k}(X_t) &= J_{k-l}(X_t) \mathds{1}_{\{l \le k\}}\\ 
+%     \Delta_{tx} J_{k}(X_t)  &= J_{k-1}(X_t)
+% \end{align*}
+
+% \subsubsection{Chaos Regression}
+% Write $Y=g(X_T)$. 
+% \\
+
+% \textbf{Order $1$}
+
+% $$Y = \E[Y] + \int_0^T \phi(t_1) dx_{t_1} + r_2(Y) \approx \phi_0 + \sum_{i_1=1}^N \phi(t_{i_1}) \delta x_{t_{i_1}}, $$
+% with $\delta x_{t_i} = x_{t_{i+1}}- x_{t_{i}}$, $t_i = i\cdot \delta t$, $\delta t = \frac{T}{N}$. 
+% If $X$ L\'evy $\Rightarrow$ $(\delta x_{t_{i_1}})$ orthogonal. From a regression, we expect
+% $$\phi_1(t_i) =  \frac{(Y, \delta x_{t_{i_1}})_{L^2(\Q)}}{\lVert \delta x_{t_{i_1}} \rVert^2_{L^2(\Q)}} 
+% \qquad \left(= \frac{\E^{\Q}[Y \delta x_{t_{i_1}}]}{\delta t}
+% \right)$$
+
+% \textbf{Order $2$} 
+
+% \begin{align*}
+%     Y &= \E[Y] + \int_0^T \phi(t_1) dx_{t_1} + \int_0^T \int_0^{t_2} \phi(t_1,t_2) dx_{t_1} dx_{t_2} + r_3(X_T) \\
+%     &\approx \phi_0 + \sum_{i_1=1}^N \phi(t_{i_1}) \delta x_{t_{i_1}} + \sum_{i_1 < i_2} \phi(t_{i_1},t_{i_2}) \delta x_{t_{i_1}}\delta x_{t_{i_2}},
+% \end{align*}
+
+% We expect
+
+% \begin{itemize}
+%     \item $i_1 < i_2$
+%     $$\phi_2(t_{i_1},t_{i_2}) =  \frac{(Y, \delta x_{t_{i_1}}\delta x_{t_{i_2}})}{\lVert \delta x_{t_{i_1}} \, \delta x_{t_{i_2}} \rVert^2} = \frac{\E^{\Q}[Y \delta x_{t_{i_1}}\delta x_{t_{i_2}}]}{\delta t^2 }$$
+% \item $ i_1 = i_2$
+%     $$\phi_2(t_{i_1},t_{i_1}) =  \frac{\C (Y, \delta x_{t_{i_1}}^2) }{\V [\delta x^2_{t_{i_1}}]} = \frac{\E^{\Q}[Y \delta x^2_{t_{i_1}}] - \delta t\E^{\Q}[Y] }{2 \delta t^2 }$$
+
+% \end{itemize}

@@ -1,0 +1,10 @@
+\subsection{PBSDEs}
+This seems closely related to (F)BSDEs: if $Y=f(X)$, then 
+$$y_t = y_T - \int_t^T \varphi(s, Y_s, Z_s)ds -  \int_t^T z_s \circ dx_s, $$
+with $z_t = \Delta_x f(X_t)$, $\varphi(t,X_t) = \Delta_t f(X_t)$, or if 
+$$dx_t = \mu(X_t)dt + \sigma(X_t) \circ dw_t, $$
+then
+$$y_t = y_T - \int_t^T \varphi(s,Y_s,Z_s)ds -  \int_t^T z_s \circ dw_s, $$
+with $z_t = \sigma(X_s) \Delta_x f(X_t) $,\,  $\varphi(t,X_t,Z_t) = \frac{\mu(X_t)}{\sigma(X_t)} z_t + \Delta_t f(X_t)$ if $0 \notin \sigma(\Lambda) $  \textbf{(FBSDE)}.
+
+\bb{Peng and Wang}

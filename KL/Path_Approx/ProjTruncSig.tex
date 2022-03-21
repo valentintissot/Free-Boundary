@@ -1,0 +1,40 @@
+
+\newpage
+\subsection{$L^2(\Q \otimes dt)$ projection using truncated signature.}
+
+Given $(\calS_{\alpha})_{|\alpha|_0\,  \le \, K}$, solve
+
+$$\min_{\frakF } \left \lVert X^{K,\frakF} - X \right \rVert_{L^2(\Q \otimes dt)}, \quad x^{K,\frakF}_t = \sum_{|\alpha|_0\,  \le \, K} \calS_{\alpha} F_\alpha(t),$$
+for a family of deterministic functions $\frakF = (F_{\alpha})$.
+\begin{example}
+(Legendre Polynomials) Set $F_{\alpha^{(j)}} = G_j$ (see previous part) and $F_{\alpha} = 0$ otherwise.
+\end{example}
+
+\subsection{Nonlinear combination}
+Take $T =1$, $x_0 = 0$ $\Q-$a.s. and $K=3$. Relevant quantities up to order $3$ (see figure on next page) are 
+
+\begin{itemize}
+\item \textbf{Order $0$}: $\calS_{\emptyset} = 1$.  (\textbf{Constant})
+    \item \textbf{Order $1$}: $\calS_{(1)} = x_1 =: x$.  (\textbf{Terminal value})
+    \item \textbf{Order $2$}: $\calS_{(1,0)} = \int_0^1 x_t dt  =: \bar{x}$.  (\textbf{Average})
+    \item \textbf{Order $3$}: $ \int_0^1 (x_t - \bar{x})^2 dt  =: \bar{\bar{x}}$.  (\textbf{Variation}), $ \int_0^1 (x_t - \bar{x}) t dt  =: \underbar{\bar{x}}$  (\textbf{Chronology}). 
+\end{itemize}
+Note that $\bar{\bar{x}}$ and $\underbar{\bar{x}}$ are functions of signature elements up to order $3$, since 
+\begin{align*}
+\bar{\bar{x}} &= \int_0^1 x_t^2 dt - \bar{x}^2 = 2 \calS_{(1,1,0)} - \bb{\calS_{(1,0)}^2}, \\
+\underbar{\bar{x}} &=  \underbrace{\calS_{(1,0)} -\calS_{(1,0,0)}}_{= \, \int_0^1 x_t\, t dt }  - \underbrace{\frac{1}{2}\calS_{(1,0)}}_{= \, \int_0^1 \bar{x}\, t dt } = \frac{1}{2}\calS_{(1,0)} - \calS_{(1,0,0)}.
+\end{align*}
+Now look at a  nonlinear combination, i.e. 
+$$ x^{K,\frakF}_t = \sum_{|\alpha|_0\,  \le \, K}  g_{\alpha}(\calS_{\alpha}) F_\alpha(t)$$
+(e.g. take \bb{$g_{(1,0)}(s) = s^2$  for $\bar{\bar{x}}$}), such that
+
+$$\{\alpha \, | \, F_{\alpha} \ne 0\} \subseteq \{\emptyset, (1), (1,0), (1,1,0), (1,0,0)\}.$$
+
+\newpage
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[scale=0.3]{KL/Figures/Path_Construction_Sig.jpg}
+\end{figure}
+
+\newpage
