@@ -93,35 +93,27 @@ colframe = black,
 \begin{document}
  
 %=============================%
+\input{TitlePage}
 \renewcommand{\thefootnote}{\arabic{footnote}}
 %=============================%
 \cleardoublepage
 \pagenumbering{roman}
+\tableofcontents
 %=============================%
 %\listoffigures
 %\listoftables
 %=============================%
 \cleardoublepage
 \pagenumbering{arabic}
-\input{Abstract}
-\tableofcontents
-\input{Intro}
-%========= Section 1 ==========%
-\input{Section 1/main}
-%========= Section 2 ==========%
-\input{Section 2/main}
-%========= Section 3 ==========%
-\input{Section 3/main}
-%========= Section 4 ==========%
-\input{Section 4/main}
-
-%======= Conclusion ===========%
-\input{Conclusion}
-\appendix 
-\input{Appendix/A}
+%\input{Abstract}
+\input{Introduction}
+\input{FB/Chapter 2}
+%\input{Conclusion}
 %=============================%
 \bibliography{refFB.bib}
 %=============================%
+%\appendix
+%\input{Appendix}
 
 \end{document}
 
