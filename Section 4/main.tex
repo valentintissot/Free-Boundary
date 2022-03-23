@@ -64,31 +64,29 @@ Consider the Bermudan put option from the previous section ($S_0 =K=40$, $T=1$, 
    d\calV_t &= (\kappa(\bar{\nu}-\calV_t) - \gamma^{\Q}\calV_t)dt + \sigma_{\calV} \sqrt{\calV_t}\  d\tilde{W}_t, 
 \end{align*}
 with $\calV_0 = \nu_0 \in \R^2_+$ and $\frac{d\langle W, \tilde{W} \rangle_t}{dt} = \rho  \in  (-1,1)$. 
- 
 We choose the parameters
  $r = 6\%$, $\delta = 0\%$, $\kappa = 1$, $\nu_0 = \bar{\nu} = (40\%)^2$, $\gamma^{\Q} =0$, $\sigma_{\calV} =10\%$, and $\rho =-0.5$. In particular, 
 the Feller condition $\kappa \,  \bar{\nu} \ge  \frac{\sigma_{\calV}^2}{2}$ is satisfied.  
-
 For a fair comparison,  we set the initial value and long term mean of $\calV$ equal to the Black-Scholes variance $\sigma^2$ from \cref{sec:putBS}.   Moreover, we use importance sampling with same Girsanov parameter, i.e. $\lambda \equiv \frac{r-\delta + 0.05}{\sigma}  = 0.275$.
 
 As seen in \cref{ex:vanilla}, the threshold function 
 depends on time $t$ and the spot variance $\calV_t =\nu$.  
-When $\varphi$ is convex and bounded (which is the case here)   \citet{LambertonHeston} showed that the value function $v(t,x)$, $x=(s,\nu)$, is  non-decreasing in $\nu$ for all $t\in [0,T]$. Consequently, the map $\nu \mapsto f(t,\nu)$ is non-increasing. In figure..., it turns out that the same holds for the trained neural network $G(\cdot,\cdot;\theta^M)$. 
-Moreover, as $s \to v(t,s,\nu)$ is non-increasing for fixed $(t,\nu)$,  we expect that the  rectangle $[0,s]\times [0,\nu]$ 
+When $\varphi$ is convex and bounded (which is the case here)   \citet{LambertonHeston} showed that the value function $v(t,x)$, $x=(s,\nu)$, is  non-decreasing in $\nu$ for all $t\in [0,T]$. Consequently, the map $\nu \mapsto f(t,\nu)$ is non-increasing. As can be seen in  \cref{fig:heston1}, it turns out that the same holds for the trained neural network $G(\cdot,\cdot;\theta^M)$.
+Notice also that $\nu \mapsto f(t,\nu)$ becomes less steep as $t$ approaches maturity. This is line with the fact that the Vega  decreases over time until the option is exercised.  
+As $s \to v(t,s,\nu)$ is non-increasing for fixed $(t,\nu)$,  we therefore expect that the  rectangle $[0,s]\times [0,\nu]$ 
 is contained in $\calS_t$ whenever $(s,\nu) \in \calS_t$. This is confirmed in  \cref{fig:heston1}. 
 
-Table \cref{tab:resultPutHeston} compares the price of the claim when the stopping decision exploit the spot variance and when it does not. We observe that the price obtained with the "blind" strategy is significantly lower. Interestingly, the neural network coincides with the optimal boundary in the Black-Scholes model.%, as shown in Figure \cref{fig:heston1}
-
-Figure \cref{fig:heston2} displays a trajectory for $(X,\calV)$ together with the threshold process $G(\cdot,\calV;\theta^M)$. As can be seen, the threshold is typically above the Black-Scholes boundary when $\calV_t$ is below its mean ($0.16$) and vice versa. 
+ \cref{tab:resultPutHeston} compares the price of the claim when the stopping decision exploit the spot variance ($f = f(t,\nu)$) and when it does not ($f = f(t)$). We observe that the price obtained with the "blind" strategy is significantly lower. Interestingly, the neural network coincides with the optimal boundary in the Black-Scholes model. %, as shown in Figure \cref{fig:heston1}
+ Finally, \cref{fig:heston2} displays a trajectory for $(X,\calV)$ together with the threshold process $G(\cdot,\calV;\theta^M)$. As can be seen, the threshold is typically below the Black-Scholes boundary when $\calV_t$ is above its mean $\bar{\nu} = 0.16$ and vice versa. 
 
 \begin{table}[ht]
   \centering
   \caption{Price of a Bermudan Put Option in the Heston model. \bb{(std to be reduced)}  
  }
-  \begin{tabular}{|c| c| c| c| }
- \hline
+  \begin{tabular}{c c c c }
+ \hline  \hline
   Threshold function &  Price&  Std& Runtime  \\
-  \hline 
+  \hline  \hline
     $f(t,\nu)$ & 5.295 & 0.005 &  57.5 \\
   $f(t)$ & 5.281 & 0.006 &  57.5  \\
   \hline
@@ -111,7 +109,7 @@ Figure \cref{fig:heston2} displays a trajectory for $(X,\calV)$ together with th
 \begin{figure}[t]
     \centering
      \caption{Stock price, variance and threshold process (Bermudan put, Heston model).}
-    \includegraphics[scale = 0.42]{Figures/BdryHeston.pdf}
+    \includegraphics[scale = 0.42]{Figures/BdryHeston2.pdf}
     \label{fig:heston2}
 \end{figure}
 
@@ -121,7 +119,7 @@ Let $\alpha(s) = \max_{i=1,...,d}s_i$, $\beta\equiv 0$, $\eta=1$ and consider th
 \begin{align}\label{eq:BSAsym}
     d S_t = \text{diag}(S_t) \left[ (r\mathds{1} - \delta)dt + \sigma dW_t\right],
 \end{align}
-where $W$ is Brownian motion in $\R^d$, $r \in \R ,\sigma > 0$ and $\delta \in \R_+^d$. We employ the parameters from Section of \cite{Becker2}, which are $s_0 =100 $, $r=5\%$, $\delta =10\%$ and $\sigma = 20 \%$. 
+where $W$ is Brownian motion in $\R^d$, $r \in \R ,\sigma > 0$ and $\delta \in \R_+^d$. We employ the parameters from Section 4.4.1 in \cite{Becker2}, which are $s_0 =100 $, $r=5\%$, $\delta =10\%$ and $\sigma = 20 \%$. 
 
 As both the payoff and assets are symmetric, it is easily shown that  $\calS_t$ is symmetric as well; see \cref{sec:symmetry}. This property can be exploited to reduce the dimension of our problem. Indeed, observe that it suffices to characterize the $t-$sections of the stopping region in the \textit{cone of ordered stocks}  
  $\calO = \{s\in \R_+^d \,|\, s_1 \geq \ldots \geq s_d\}$. We can therefore arrange $\Xi(S_t) = \frac{S_t}{\alpha(S_t)}\in [0,1]^d$ in decreasing order and give the outcome to $G(t,\cdot; \theta)$. If $\bar{S}_t \in \calO$ denotes the ordered version of $S_t$, then the last component of $\bar{S}_t$ are of little relevance to our stopping decision. 
@@ -130,6 +128,32 @@ As both the payoff and assets are symmetric, it is easily shown that  $\calS_t$ 
  
  We illustrate this argument with $d=20$ assets and a cutoff of $d'=5$. 
 
+
+
+\begin{table}[ht]
+\caption{Max Option on $d \in\{5,10,20,50\}$ symmetric assetes}
+\label{lab:symMaxOpt}
+  \centering
+  \begin{tabular}{ c c c c c c}
+ \hline  \hline
+   $d$ &  {\bf{Price}}&  {\bf{Std}}&  {\bf{Price in \cite{Becker2}}}&
+    {\bf{Max Price}} & {\bf{Its Std}}\\
+  \hline \hline
+  5   & 26.1295 &  0.0095 & 26.147 &26.1506 &  0.0094 \\
+ %\hline
+  10   & 38.2735 &  0.0538 & 38.272 & 38.3351 &  0.0089  \\
+    20   &  &   & 51.572 &  &    \\
+ %\hline
+  50  &  &   & 69.572  &  &   \\
+ \hline
+\end{tabular}
+
+\vspace{2mm
+}
+ \scriptsize{
+\textit{Notes: The second and third column show the average and standard deviation of ten experiments, respectively.  }}
+  \end{table}
+  
 \subsection{Max Option on $d=2$ Asymmetric Assets}\label{sec:maxCallAsym}
 Consider the multi-dimensional Black-Scholes model, i.e. 
 \begin{align}\label{eq:BSAsym}
@@ -138,7 +162,7 @@ Consider the multi-dimensional Black-Scholes model, i.e.
 where $W$ is Brownian motion in $\R^d$, $r \in \R ,\sigma > 0$ and $\delta \in \R_+^d$. 
 Define the connected components $\calS^{(i)}_t = \calS_t \cap \{\alpha(s) = s_i\}$, $i=1,2$ and the involution   $\varsigma(s_1,s_2) := (s_2,s_1)$.  
 
-\begin{proposition} Consider a max option on $d=2$ assets with $S$ having dynamics as in $\eqref{eq:BSAsym}$. IF $\delta_1 \ge \delta_2$, then $\varsigma(\calS^{(1)}_t) \subseteq \calS^{(2)}_t$. \rr{(to be verified numerically...)}
+\begin{proposition} Consider a max option on $d=2$ assets with $S$ having dynamics as in $\eqref{eq:BSAsym}$. If $\delta_1 \le \delta_2$, then $\varsigma(\calS^{(1)}_t) \subseteq \calS^{(2)}_t$. \rr{(to be verified numerically...)}
 \end{proposition}
 
 \begin{proof} (\bb{attempts...})
