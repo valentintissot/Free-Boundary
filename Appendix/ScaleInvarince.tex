@@ -1,16 +1,17 @@
 \subsection{Scale Invariance}
 Suppose that the payoff involves a parameter $K>0$, e.g. the strike of a vanilla option.  We write $\varphi_K$, $v_K$, $\calS_{t,K}$ and $f_K$ with the obvious notations. 
 \begin{asm} \label{asm:homo}
-The payoff is homogeneous in the sense that $\varphi_{K\gamma}(\gamma x)=\gamma \varphi_{K}(x)$, $\forall \  \gamma>0$. 
+The payoff is homogeneous in the sense that $\varphi_{K}( x)=K \varphi_{1}(x/K)$, $\forall \ K>0$. %$\varphi_{K\gamma}(\gamma x)=\gamma \varphi_{K}(x)$, $\forall \  \gamma>0$. 
 \end{asm}
 
+\cref{asm:homo} for instance satisfied by all payoffs of the form $\eqref{eq:payoff}$  that the provided projection functions $\alpha, \ \beta$ are homogeneous of degree $1$. 
 \begin{proposition}\label{lem:homogen}
 If  \cref{asm:scale} and \ref{asm:homo} hold,
 then 
 $\calS_{t,K}=K\calS_{t,1}:= \{Ks \,|\, s \in \calS_{t,1}\}.$
 \end{proposition}
 \begin{proof}
-If $\varphi_K$ is homogeneous, then for all $t\in [0,T]$ and $\tau \in \calT_t$,
+If $\varphi_K$ is homogeneous, then for all $t\in [0,T]$ and $\tau \in \calT_{\!t}$,
 $$ \E[D_{t,\tau}\varphi_K(X^{t,x}_{\tau})] = \E[D_{t,\tau}\varphi_K(K X^{t,x/K}_{\tau})] =  K \E[D_{t,\tau} \varphi_1(X^{t,x/K}_{\tau})].$$
 Thus $v_K(t,x) = K v(t,x/K)$, which finally gives 
 \begin{align*}
@@ -20,21 +21,24 @@ Thus $v_K(t,x) = K v(t,x/K)$, which finally gives
 \end{align*}
 \end{proof}
 
-% \begin{corollary}
-% Suppose that the inverse function $A^{-1}: \R \times \calR \mapsto \R_+^d$ is homogeneous of degree $1$, i.e. $A^{-1}(a\gamma,x\gamma) = \gamma A^{-1}(a,x)$, $\gamma>0$. Then the exercise boundary satisfies
-% $$f_K(t,x)= K \, f_1(t,x/K), \quad x \in \calR.$$
-% \end{corollary}
+\begin{corollary}\label{cor:scale}
+Suppose that the inverse function $A^{-1}: \calA\times \calE \to \calX$ is homogeneous of degree $1$ with respect to $a$, i.e. $A^{-1}(a\gamma,\xi) = \gamma A^{-1}(a,\xi)$, $\gamma>0$. Then the threshold function in $\eqref{eq:thres}$ satisfies
+$$f_K(t,\xi)= K \, f_1(t,\xi/K), \quad \xi \in \calE.$$
+\end{corollary}
 
-% \begin{proof}
-% Lemma \ref{lem:homogen} and the definition of $f_K$ directly give
-% \begin{align*}
-%     f_K(t,x) &= \sup \{a \in \R \,|\, A^{-1}(a,x) \in \calS_{t,K} \}\\
-% &= \sup \{a \in \R \,|\, A^{-1}(a,x) \in K\calS_{t,1} \}\\
-% &= \sup \left \{a \in \R \,|\, A^{-1}(a/K,x/K) \in \calS_{t,1}\right \}\\
-% &= K f_1(t,x/K).
-% \end{align*}
 
-% \end{proof}
+\begin{proof}
+Lemma \ref{lem:homogen} and the definition of $f_K$ directly give
+\begin{align*}
+    f_K(t,x) &= \inf \{a \in \R \,|\, A^{-1}(a,\xi) \in \calS_{t,K} \}\\
+&= \sup \{a \in \R \,|\, A^{-1}(a,x) \in K\calS_{t,1} \}\\
+&= \sup \left \{a \in \R \,|\, A^{-1}(a/K,x/K) \in \calS_{t,1}\right \}\\
+&= K f_1(t,x/K).
+\end{align*}
+
+\end{proof}
+
+Note that the homogeneity condition in \cref{cor:scale} is fulffiled by the inverse map $A^{-1}(a,\xi)=a\xi$, associated to the homeomorphism in \cref{prop:star}. 
 
 % \begin{example}
 % Consider a basket

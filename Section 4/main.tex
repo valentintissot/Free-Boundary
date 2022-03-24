@@ -25,23 +25,34 @@ The initial price is computed using the sharp boundary and $J= 2^{22} = 4,194,30
 \subsection{Put Option in the Black-Scholes Model} \label{sec:putBS}
 Consider an ATM Bermudan put option ($\varphi(s) = (K-s)^+$) in the Black Scholes model. We take the same parameters as in  Section 4.3.1.2 of \cite{Becker2}, namely
 $S_0=K=40$, $r = 6\%$, $\delta = 0\%$, $\sigma = 40\%$, with maturity $T=1$ and  $N=50$ exercise dates.  
-As the stock price must reach low values to cross the boundary, we can use importance sampling to make the drift of $S-$which is positive under $\Q-$negative under an equivalent measure. We can for instance set $\lambda \equiv \frac{r-\delta + 0.05}{\sigma}  = 0.275$ so $S$ becomes a submartingale under $\Q^{\lambda}$ with $5\%$ negative drift. Notice that the fuzzy boundary width is approximately equal to $\epsilon = K\sigma \sqrt{T/N}$.  \cref{tab:resultPutBS} summarizes the result, in comparison with the value found by \citet{Becker1}. 
+As the stock price must reach low values to cross the boundary, we can use importance sampling to make the drift of $S-$which is positive under $\Q-$negative under an equivalent measure. We can for instance set $\lambda \equiv \frac{r-\delta + 0.05}{\sigma}  = 0.275$ so $S$ becomes a submartingale under $\Q^{\lambda}$ with $5\%$ negative drift. Notice that the fuzzy boundary width is approximately equal to $\epsilon = K\sigma \sqrt{T/N}$.  \cref{tab:resultPutBS} summarizes the result, in comparison with the value found by \citet{Becker1}.
 
 \begin{table}[ht]
   \centering
   \caption{Bermudan Put Option ($N=50$), Black-Scholes model.  
  }
-  \begin{tabular}{|c| c| c| c| c|}
- \hline
-     Price&  Std& Runtime  & Price in \cite{Becker2}\\
-  \hline 
-  5.308 & 0.003 &  57.5 & 5.311 \\
-  \hline
+ 
+ \vspace{-2mm}
+ 
+  \begin{tabular}{cccc}
+ \hline \hline
+    Average Price  & Highest Price & Runtime  & Price in \cite{Becker2}  \\
+  \hline  \hline
+  5.308 (0.003)  &  5.313 (0.003) &  57.9 & 5.311 \\
+  \hline \\[-1em]
+  
+  \multicolumn{4}{l}{%
+  \begin{minipage}{9.cm}%
+    \tiny \textit{First  column:  average  of ten experiments (standard deviation in brackets). Second column: highest price  among the realisations and its standard deviation in brackets.  Third column:  average runtime (in seconds) per experiment for the training phase.}%
+  \end{minipage}%
+}
+
 \end{tabular}
 \vspace{2mm}
-
-\scriptsize{
-\textit{Notes: The first and second column show the average and standard deviation of ten experiments, respectively. The third column is the average runtime (in seconds) per experiment for the training phase. }}
+% \begin{flushleft}
+% \scriptsize{
+% \textit{Notes:  }}
+% \end{flushleft}
 \label{tab:resultPutBS}
   \end{table}
 
@@ -59,15 +70,15 @@ Figure \ref{fig:putBS} displays the initial boundary (left chart) with the train
 
 Consider the Bermudan put option from the previous section ($S_0 =K=40$, $T=1$, $N=50$) in the Heston model. Our goal is to see how stochastic volatility impacts the exercise boundary and  corresponding  price.   
  Let $m=1, \ k=0$ and assume the stock and factor dynamics
-\begin{align*}
+\begin{align}
    \frac{dS_t}{S_t} &= (r-\delta)dt + \sqrt{\calV_t}\  dW_t, \\
-   d\calV_t &= (\kappa(\bar{\nu}-\calV_t) - \gamma^{\Q}\calV_t)dt + \sigma_{\calV} \sqrt{\calV_t}\  d\tilde{W}_t, 
-\end{align*}
+   d\calV_t &= (\kappa(\bar{\nu}-\calV_t) - \gamma^{\Q}\calV_t)dt + \sigma_{\calV} \sqrt{\calV_t}\  d\tilde{W}_t, \label{eq:varSDE}
+\end{align}
 with $\calV_0 = \nu_0 \in \R^2_+$ and $\frac{d\langle W, \tilde{W} \rangle_t}{dt} = \rho  \in  (-1,1)$. 
 We choose the parameters
  $r = 6\%$, $\delta = 0\%$, $\kappa = 1$, $\nu_0 = \bar{\nu} = (40\%)^2$, $\gamma^{\Q} =0$, $\sigma_{\calV} =10\%$, and $\rho =-0.5$. In particular, 
 the Feller condition $\kappa \,  \bar{\nu} \ge  \frac{\sigma_{\calV}^2}{2}$ is satisfied.  
-For a fair comparison,  we set the initial value and long term mean of $\calV$ equal to the Black-Scholes variance $\sigma^2$ from \cref{sec:putBS}.   Moreover, we use importance sampling with same Girsanov parameter, i.e. $\lambda \equiv \frac{r-\delta + 0.05}{\sigma}  = 0.275$.
+For a fair comparison,  we set the initial value and long term mean of $\calV$ equal to the Black-Scholes variance $\sigma^2$ from \cref{sec:putBS}.   Moreover, we use importance sampling with same Girsanov parameter, i.e. $\lambda \equiv \frac{r-\delta + 0.05}{\sigma}  = 0.275$. The  variance process is simulated using the Milstein-Platen scheme \cite{KP} for $\eqref{eq:varSDE}$ with $N' =4N=200$ time steps.  %on a thinner partition $\Pi_{N'}$ with $N' =200$. 
 
 As seen in \cref{ex:vanilla}, the threshold function 
 depends on time $t$ and the spot variance $\calV_t =\nu$.  
@@ -76,25 +87,32 @@ Notice also that $\nu \mapsto f(t,\nu)$ becomes less steep as $t$ approaches mat
 As $s \to v(t,s,\nu)$ is non-increasing for fixed $(t,\nu)$,  we therefore expect that the  rectangle $[0,s]\times [0,\nu]$ 
 is contained in $\calS_t$ whenever $(s,\nu) \in \calS_t$. This is confirmed in  \cref{fig:heston1}. 
 
- \cref{tab:resultPutHeston} compares the price of the claim when the stopping decision exploit the spot variance ($f = f(t,\nu)$) and when it does not ($f = f(t)$). We observe that the price obtained with the "blind" strategy is significantly lower. Interestingly, the neural network coincides with the optimal boundary in the Black-Scholes model. %, as shown in Figure \cref{fig:heston1}
+ \cref{tab:resultPutHeston} compares the price of the claim when the stopping decision exploit the spot variance ($f = f(t,\nu)$) and when it does not ($f = f(t)$). We observe that the price obtained with the "blind" strategy is only slightly inferior. Interestingly, the neural network coincides with the optimal boundary in the Black-Scholes model.  Note also the longer runtime compared to \cref{tab:resultPutBS} due to the thin partition needed to simulate $\calV$. %, as shown in Figure \cref{fig:heston1}
  Finally, \cref{fig:heston2} displays a trajectory for $(X,\calV)$ together with the threshold process $G(\cdot,\calV;\theta^M)$. As can be seen, the threshold is typically below the Black-Scholes boundary when $\calV_t$ is above its mean $\bar{\nu} = 0.16$ and vice versa. 
 
 \begin{table}[ht]
   \centering
-  \caption{Price of a Bermudan Put Option in the Heston model. \bb{(std to be reduced)}  
- }
+  \caption{Bermudan Put Option ($N=50$), Heston model.}  
+ 
+ \vspace{-2mm}
+ 
   \begin{tabular}{c c c c }
  \hline  \hline
-  Threshold function &  Price&  Std& Runtime  \\
+  Threshold &  Average Price& Highest Price & Runtime  \\
   \hline  \hline
-    $f(t,\nu)$ & 5.295 & 0.005 &  57.5 \\
-  $f(t)$ & 5.281 & 0.006 &  57.5  \\
-  \hline
+    $f(t,\nu)$ & 5.290 (0.004) & 5.294 (0.003) &  194.3 \\
+  $f(t)$ & 5.288 (0.004) & 5.293 (0.003) &  193.9  \\
+  \hline\\[-1em]
+    
+  \multicolumn{4}{l}{%
+  \begin{minipage}{9.cm}%
+    \tiny \textit{Second  column:  average  of ten experiments (standard deviation in brackets). Third column: highest price  among the realisations and its standard deviation in brackets.  Fourth column:  average runtime (in seconds) per experiment for the training phase.}%
+  \end{minipage} }
 \end{tabular}
 \vspace{2mm}
 
 \scriptsize{
-\textit{Notes: The second and third column show the average and standard deviation of ten experiments, respectively.  }}
+\textit{Notes: The second and third column show the average and standard deviation of ten experiments, respectively. }}
 \label{tab:resultPutHeston}
   \end{table}
   
@@ -126,32 +144,37 @@ As both the payoff and assets are symmetric, it is easily shown that  $\calS_t$ 
  Indeed, over a short horizon, the maximum is  likely to be attained by the current best performing assets. %a stock having a high value today. 
  We can therefore set a cutoff $2 \le d' \ll d$ and feed the neural network with $(\frac{\bar{S}_{t,2}}{\alpha(S_t)},\ldots,\frac{\bar{S}_{t,d'}}{\alpha(S_t)})$ only.\footnote{Note that $\frac{\bar{S}_{t,1}}{\alpha(S_t)} \equiv 1$ is also removed from the neural network input as it doesn't carry any information.} Although one still needs to simulate $d$ assets, the size of the neural network can be significantly reduced, which in turn accelerates the training phase.  
  
- We illustrate this argument with $d=20$ assets and a cutoff of $d'=5$. 
-
-
+ \cref{tab:symMaxOpt} summarizes the results for the max option on $d \in\{5,10,20,50\}$ assets with  $d'=5$. Despite a low cutoff, the  obtained prices are close or above the benchmark \cite{Becker2}. Moreover, the runtime remains moderate as $d$ increases. 
 
 \begin{table}[ht]
 \caption{Max Option on $d \in\{5,10,20,50\}$ symmetric assetes}
-\label{lab:symMaxOpt}
+
+\vspace{-2mm}
+\label{tab:symMaxOpt}
   \centering
-  \begin{tabular}{ c c c c c c}
+  \begin{tabular}{ c c c c c }
  \hline  \hline
-   $d$ &  {\bf{Price}}&  {\bf{Std}}&  {\bf{Price in \cite{Becker2}}}&
-    {\bf{Max Price}} & {\bf{Its Std}}\\
+   $d$ & Average Price& Highest Price & Runtime& Price in \cite{Becker2}\\
   \hline \hline
-  5   & 26.1295 &  0.0095 & 26.147 &26.1506 &  0.0094 \\
+  5   & 26.130 (0.010)  & 26.151 (0.009) & 31.8  & 26.147 \\
  %\hline
-  10   & 38.2735 &  0.0538 & 38.272 & 38.3351 &  0.0089  \\
-    20   &  &   & 51.572 &  &    \\
+  10   & 38.336 (0.015) &   38.355 (0.011)& 33.1 & 38.272 \\
+    20   & 51.728 (0.018) & 51.753 (0.011)  & 36.0 & 51.572    \\
  %\hline
-  50  &  &   & 69.572  &  &   \\
- \hline
+  50  & 69.860 (0.012) & 69.881 (0.011) & 43.5 & 69.572     \\
+ \hline\\[-1em]
+ 
+ \multicolumn{5}{l}{%
+  \begin{minipage}{10.5cm}%
+    \tiny \textit{Second  column:  average  of ten experiments (standard deviation in brackets). Third column: highest price  among the realisations and its standard deviation in brackets.  Fourth column:  average runtime (in seconds) per experiment for the training phase.}%
+  \end{minipage}%
+}
 \end{tabular}
 
-\vspace{2mm
-}
- \scriptsize{
-\textit{Notes: The second and third column show the average and standard deviation of ten experiments, respectively.  }}
+% \vspace{2mm
+% }
+%  \scriptsize{
+% \textit{Notes: The second and third column show the average and standard deviation of ten experiments, respectively.  }}
   \end{table}
   
 \subsection{Max Option on $d=2$ Asymmetric Assets}\label{sec:maxCallAsym}
