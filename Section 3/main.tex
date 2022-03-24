@@ -151,14 +151,16 @@ drawdown (drawup) of the stock. See \citet{DaiKwok} for a thorough treatment of 
 
 \begin{table}[H]
     \centering
-    \begin{tabular}{r|c|c|c}
-        Option & $\Phi(\SSS_t)$ & $\alpha(x)$ & $\beta(x)$ \\ \hline \hline
-         Fixed Strike Call & $(\max_{u\in[0,t]} S_u - K)^{+} $ & $y_1$ & $0$ \\[0.2em] \hline
-       Fixed Strike Put & $(K - \min_{u\in[0,t]}S_u )^{+} $ & $y_2$ & $0$ \\[0.2em] \hline
-        Floating Strike Call & $S_t - \gamma\min_{u\in[0,t]} S_u$  & $s$ & $\gamma  y_2$ \\[0.2em] \hline
-        Floating Strike Put & $\gamma\max_{u\in[0,t]} S_u - S_t$ & $\gamma y_1$ & $s$ \\[0.2em] \hline \hline
-    \end{tabular}
     \caption{Lookback Options, $x=(s,y_1,y_2)$.}
+    \begin{tabular}{rccc}
+    \hline \hline
+        Option & $\Phi(\SSS_t)$ & $\alpha(x)$ & $\beta(x)$ \\ \hline \hline
+         Fixed Strike Call & $(\max_{u\in[0,t]} S_u - K)^{+} $ & $y_1$ & $0$ \\[0.5em] %\hline
+       Fixed Strike Put & $(K - \min_{u\in[0,t]}S_u )^{+} $ & $y_2$ & $0$ \\[0.5em] %\hline
+        Floating Strike Call & $S_t - \gamma\min_{u\in[0,t]} S_u$  & $s$ & $\gamma  y_2$ \\[0.5em] %\hline
+        Floating Strike Put & $\gamma\max_{u\in[0,t]} S_u - S_t$ & $\gamma y_1$ & $s$ \\[0.3em] \hline 
+    \end{tabular}
+    
     \label{tab:lkbk}
 \end{table}
 
