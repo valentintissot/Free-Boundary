@@ -67,8 +67,7 @@ Using $\eqref{eq:payoff}$ and the fact that $\varphi(x)>0$ when $x\in \calS_t$, 
 $$x \in \calS_t \ \Longleftrightarrow \ \varphi(x) \ge c(t,x) \ \Longleftrightarrow \ \alpha(x) \ge K + \beta(x) + c(t,x).$$
 Thus, $f(t,\Xi(x)) = K+ \beta(x)  +  c(t,x)$. The knowledge of the threshold function is therefore equivalent to the knowledge of the continuation value.  Parametrizing  the latter
  has given rise to efficient pricing algorithms as demonstrated by \citet{LSMC} using least square regression and 
- \citet{Kohler} using neural networks.
-
+ \citet{Kohler} using neural networks. 
 The key advantage of our  approach  is the guarantee of producing  rational decisions$-$in the sense of Proposition \ref{prop:star}$-$as we exploit the geometric structure of the problem. 
 \end{remark}
 
@@ -146,19 +145,19 @@ $$ \Phi(\SSS_t) = \left( \frac{1}{t} \int_0^t w_u^{\top} S_u du - K\right)^{+}, 
 \textit{Lookback options} 
 provides exposure to the minimum or maximum values attained by the stock so far. This suggests to choose $$Y_t=\Upsilon(\SSS_t) = \left(\max_{u\in[0,t]} S_u,\min_{u\in[0,t]} S_u\right).$$
 It is easily seen that $X=(S,Y)$ is a  Markov process with state space $\calX = \{x=(s,y_1,y_2) \in \R_+^3 \ | \ y_2 \le s \le y_1\}$. Both fixed and floating contracts exist as in Example \ref{ex:Asian}. The most common contracts with their corresponding projection functions are listed in Table \ref{tab:lkbk}. The scaling factor $\gamma$ appearing in the payoff of floating strike options is introduced to reduce the price of these otherwise expensive contracts. We therefore choose $\gamma \in [1,\infty)$ and $\gamma \in (0,1]$ for call and put options, respectively.  
-When $\gamma=1$, the payoff of a floating strike lookback call (put) option is precisely the
+When $\gamma=1$, the floating strike lookback put (call) option delivers precisely the
 drawdown (drawup) of the stock. See \citet{DaiKwok} for a thorough treatment of American lookback claims.  
 
 \begin{table}[H]
     \centering
     \caption{Lookback Options, $x=(s,y_1,y_2)$.}
-    \begin{tabular}{rccc}
+    \begin{tabular}{lcrcc}
     \hline \hline
-        Option & $\Phi(\SSS_t)$ & $\alpha(x)$ & $\beta(x)$ \\ \hline \hline
-         Fixed Strike Call & $(\max_{u\in[0,t]} S_u - K)^{+} $ & $y_1$ & $0$ \\[0.5em] %\hline
-       Fixed Strike Put & $(K - \min_{u\in[0,t]}S_u )^{+} $ & $y_2$ & $0$ \\[0.5em] %\hline
-        Floating Strike Call & $S_t - \gamma\min_{u\in[0,t]} S_u$  & $s$ & $\gamma  y_2$ \\[0.5em] %\hline
-        Floating Strike Put & $\gamma\max_{u\in[0,t]} S_u - S_t$ & $\gamma y_1$ & $s$ \\[0.3em] \hline 
+        Option & $\Phi(\SSS_t)$ & $\eta$ & $\alpha(x)$ & $\beta(x)$ \\ \hline \hline
+         Fixed Strike Call & $(\max_{u\in[0,t]} S_u - K)^{+} $ & $1$ & $y_1$ & $0$ \\[0.5em] %\hline
+       Fixed Strike Put & $(K - \min_{u\in[0,t]}S_u )^{+} $ & $-1$ & $y_2$ & $0$ \\[0.5em] %\hline
+        Floating Strike Call & $(S_t - \gamma\min_{u\in[0,t]} S_u)^+$  & $1$ & $s$ & $\gamma  y_2$ \\[0.5em] %\hline
+        Floating Strike Put & $(\gamma\max_{u\in[0,t]} S_u - S_t)^+$ & $-1$ & $s$ &  $\gamma y_1$ \\[0.3em] \hline 
     \end{tabular}
     
     \label{tab:lkbk}

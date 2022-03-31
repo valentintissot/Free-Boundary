@@ -58,8 +58,8 @@ with associated reward  $\calR(\theta)$ as defined  in $\eqref{eq:reward}$.
 \subsection{Deep Monte Carlo Optimization} \label{sec:DMCO}
 We adapt the \textit{Deep Monte Carlo Optimization} algorithm \cite{HanJentzenE} to our framework. Let $\calG_p$ be a family of feedforward neural networks  with a total of $p$ parameters. If the optimal threshold function $f$ is continuous, then the universal approximation property of neural networks  \cite{Cybenko,Hornik} guarantees the existence of $p\in \N$ and parameter $\theta \in \Theta_p$ such that $G(\cdot,\cdot;\theta)$ is arbitrarily close to $f$.  
 
-To find a near-optimal parameter vector, we employ  \textit{stochastic gradient ascent} (SGA), which we explain now. First, we discretize time along a partition $\Pi_N = \{0 = t_0 < \ldots < t_N=T\}$, $N\in \N$. Therefore, the stopping times $\tau^{\theta}$ in $\eqref{eq:stopTime}$ take value in   $\calT_N = \calT \cap \ \Pi_N$. %\calT_N := 
-If there are finitely many exercise date, we simply set $\Pi_N = \calT$, i.e. $\calT_N = \calT$. 
+To find a near-optimal parameter vector, we employ  \textit{stochastic gradient ascent} (SGA), which we explain now. First, we discretize time along a partition $\Pi_N = \{0 = t_0 < \ldots < t_N=T\}$, $N\in \N$. Therefore, the stopping times $\tau^{\theta}$ in $\eqref{eq:stopTime}$ take value in   $\calT_{\!N} = \calT \cap \ \Pi_N$. %\calT_N := 
+If there are finitely many exercise date, we simply set $\Pi_N = \calT$, i.e. $\calT_{\!N} = \calT$. 
 Second, the reward function $\calR$ in $\eqref{eq:reward}$ is replaced by its empirical counterpart, namely
 \begin{equation}\label{eq:empReward1}
     \hat{\calR}_B(\theta) = \frac{1}{B}\sum_{j=1}^B   D_{0,\tau^{\theta,j}}  \ \varphi(X_{\tau^{\theta,j}}^j),

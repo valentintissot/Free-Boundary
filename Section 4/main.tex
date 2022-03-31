@@ -16,16 +16,15 @@ and puts
     If the payoff function is of the form
     $\eqref{eq:payoff}$ (which is the case in all the examples below), the fuzzy boundary width is chosen to be    
     $\epsilon_n = K \sqrt{\V^{\Q}[ \alpha(X^{t_{n-1},1}_{t_n})]}$, $t_n \in \calT_N$. 
-
      The strike $K$ takes account the scale of the payoff$-$and in turn, the threshold function$-$while  the second in $\epsilon_n$ reflects the typical variation 
-     of the  process $\alpha(X)$ between exercise dates.  
+     of the  process $\alpha(X)$ between exercise dates. When the exercise dates are equally spaced, we simply write $\epsilon$ instead of $\epsilon_n$. 
 \end{enumerate}
 The initial price is computed using the sharp boundary and $J= 2^{22} = 4,194,304$ Monte Carlo simulations. 
 
 \subsection{Put Option in the Black-Scholes Model} \label{sec:putBS}
 Consider an ATM Bermudan put option ($\varphi(s) = (K-s)^+$) in the Black Scholes model. We take the same parameters as in  Section 4.3.1.2 of \cite{Becker2}, namely
-$S_0=K=40$, $r = 6\%$, $\delta = 0\%$, $\sigma = 40\%$, with maturity $T=1$ and  $N=50$ exercise dates.  
-As the stock price must reach low values to cross the boundary, we can use importance sampling to make the drift of $S-$which is positive under $\Q-$negative under an equivalent measure. We can for instance set $\lambda \equiv \frac{r-\delta + 0.05}{\sigma}  = 0.275$ so $S$ becomes a submartingale under $\Q^{\lambda}$ with $5\%$ negative drift. Notice that the fuzzy boundary width is approximately equal to $\epsilon = K\sigma \sqrt{T/N}$.  \cref{tab:resultPutBS} summarizes the result, in comparison with the value found by \citet{Becker1}.
+$S_0=K=40$, $r = 6\%$, $\delta = 0\%$, $\sigma = 40\%$, with maturity $T=1$ and exercise dates $\calT_{\!N} = \{\frac{n}{N} \ | \ n=0,\ldots,N\}$, $N=50$.  
+As the stock price must reach low values to cross the boundary, we can use importance sampling to make the drift of $S-$which is positive under $\Q-$negative under an equivalent measure. We can for instance set $\lambda \equiv \frac{r-\delta + 0.05}{\sigma}  = 0.275$ so $S$ becomes a submartingale under $\Q^{\lambda}$ with $5\%$ negative drift. Notice that the fuzzy boundary width is approximately equal to $\epsilon = K\sigma \sqrt{T/N}$.  \cref{tab:resultPutBS} summarizes the result, in comparison with the value found by \citet{Becker1}. The first column is the average price of ten experiments and the second column the highest price. In practice, we would of course retain the trained boundary yielding the highest price. 
 
 \begin{table}[ht]
   \centering
@@ -87,6 +86,14 @@ Notice also that $\nu \mapsto f(t,\nu)$ becomes less steep as $t$ approaches mat
 As $s \to v(t,s,\nu)$ is non-increasing for fixed $(t,\nu)$,  we therefore expect that the  rectangle $[0,s]\times [0,\nu]$ 
 is contained in $\calS_t$ whenever $(s,\nu) \in \calS_t$. This is confirmed in  \cref{fig:heston1}. 
 
+ 
+\begin{figure}[H]
+    \centering
+     \caption{Stopping and continuation regions (Bermudan put, Heston model).}
+    \includegraphics[scale = 0.42]{Figures/2DPlotHestonWide.pdf}
+    \label{fig:heston1}
+\end{figure}
+
  \cref{tab:resultPutHeston} compares the price of the claim when the stopping decision exploit the spot variance ($f = f(t,\nu)$) and when it does not ($f = f(t)$). We observe that the price obtained with the "blind" strategy is only slightly inferior. Interestingly, the neural network coincides with the optimal boundary in the Black-Scholes model.  Note also the longer runtime compared to \cref{tab:resultPutBS} due to the thin partition needed to simulate $\calV$. %, as shown in Figure \cref{fig:heston1}
  Finally, \cref{fig:heston2} displays a trajectory for $(X,\calV)$ together with the threshold process $G(\cdot,\calV;\theta^M)$. As can be seen, the threshold is typically below the Black-Scholes boundary when $\calV_t$ is above its mean $\bar{\nu} = 0.16$ and vice versa. 
 
@@ -110,62 +117,59 @@ is contained in $\calS_t$ whenever $(s,\nu) \in \calS_t$. This is confirmed in  
   \end{minipage} }
 \end{tabular}
 \vspace{2mm}
-
-\scriptsize{
-\textit{Notes: The second and third column show the average and standard deviation of ten experiments, respectively. }}
 \label{tab:resultPutHeston}
   \end{table}
-  
-\begin{figure}[t]
-    \centering
-     \caption{Stopping and continuation regions (Bermudan put, Heston model).}
-    \includegraphics[scale = 0.42]{Figures/2DPlotHestonWide.pdf}
-    \label{fig:heston1}
-\end{figure}
+ 
 
-
-\begin{figure}[t]
+\begin{figure}[H]
     \centering
      \caption{Stock price, variance and threshold process (Bermudan put, Heston model).}
-    \includegraphics[scale = 0.42]{Figures/BdryHeston2.pdf}
+    \includegraphics[scale = 0.4]{Figures/BdryHeston2.pdf}
     \label{fig:heston2}
 \end{figure}
 
 
 \subsection{High-dimensional Max Option on Symmetric Assets}\label{sec:maxCallSym}
-Let $\alpha(s) = \max_{i=1,...,d}s_i$, $\beta\equiv 0$, $\eta=1$ and consider the multi-dimensional Black-Scholes model with independent and symmetric assets, i.e. 
-\begin{align}\label{eq:BSAsym}
-    d S_t = \text{diag}(S_t) \left[ (r\mathds{1} - \delta)dt + \sigma dW_t\right],
+Consider a Bermudan max option (see \cref{ex:max}) %($\alpha(s) = \max_{i=1,...,d}s_i$, $\beta\equiv 0$, $\eta=1$) 
+with strike $K=100$, maturity $T=3$ and triannual exercise dates, i.e. $\calT_{\! N} = \{\frac{n}{3} \ | \ n=0,\ldots,N\}$, $N=9$.  Consider the multi-dimensional Black-Scholes model with independent and symmetric assets, i.e. 
+\begin{align}\label{eq:multiBS}
+    d S_t = \text{diag}(S_t) \left[ (r - \delta)\mathds{1} dt + \sigma dW_t\right],
 \end{align}
-where $W$ is Brownian motion in $\R^d$, $r \in \R ,\sigma > 0$ and $\delta \in \R_+^d$. We employ the parameters from Section 4.4.1 in \cite{Becker2}, which are $s_0 =100 $, $r=5\%$, $\delta =10\%$ and $\sigma = 20 \%$. 
+where $W$ is Brownian motion in $\R^d$, $\mathds{1} = (1,\ldots,1) \in \R^d$, and $r,\delta,\sigma$ are nonnegative scalars. 
+We employ the parameters from Section 4.4.1 in \cite{Becker2}, that is $s_0 =100 $, $r=5\%$, $\delta =10\%$ and $\sigma = 20 \%$. 
+
+ First, notice that the drift of $\alpha(S_t) = \max_{i=1,...,d}S_{t,i}$  increases with the number of assets $d$. More precisely, we observed that the additional drift is of order $\calO(\log d)$. To ensure that the maximum doesn't exceed the threshold function too soon, we use importance sampling with $\lambda_d = \frac{r-\delta + \mu_d}{\sigma}$, where $\mu_d = 0.01 \log d\ $ gives satisfactory results. % as we shall see below.  %\bb{Drift $\mu_d$}
 
 As both the payoff and assets are symmetric, it is easily shown that  $\calS_t$ is symmetric as well; see \cref{sec:symmetry}. This property can be exploited to reduce the dimension of our problem. Indeed, observe that it suffices to characterize the $t-$sections of the stopping region in the \textit{cone of ordered stocks}  
- $\calO = \{s\in \R_+^d \,|\, s_1 \geq \ldots \geq s_d\}$. We can therefore arrange $\Xi(S_t) = \frac{S_t}{\alpha(S_t)}\in [0,1]^d$ in decreasing order and give the outcome to $G(t,\cdot; \theta)$. If $\bar{S}_t \in \calO$ denotes the ordered version of $S_t$, then the last component of $\bar{S}_t$ are of little relevance to our stopping decision. 
- Indeed, over a short horizon, the maximum is  likely to be attained by the current best performing assets. %a stock having a high value today. 
- We can therefore set a cutoff $2 \le d' \ll d$ and feed the neural network with $(\frac{\bar{S}_{t,2}}{\alpha(S_t)},\ldots,\frac{\bar{S}_{t,d'}}{\alpha(S_t)})$ only.\footnote{Note that $\frac{\bar{S}_{t,1}}{\alpha(S_t)} \equiv 1$ is also removed from the neural network input as it doesn't carry any information.} Although one still needs to simulate $d$ assets, the size of the neural network can be significantly reduced, which in turn accelerates the training phase.  
+ $\calO = \{s\in \R_+^d \,|\, s_1 \geq \ldots \geq s_d\}$. We can therefore arrange $\Xi(S_t) = \frac{S_t}{\alpha(S_t)}\in [0,1]^d$ in decreasing order and give the outcome to $G(t,\cdot; \theta)$. If $\bar{S}_t \in \calO$ denotes the ordered version of $S_t$, then the last components of $\bar{S}_t$ are of little relevance to our stopping decision. 
+ Indeed, over a short horizon, the maximum stock value is likely to be attained by one of the current best performing assets. %a stock having a high value today. at the next exercise date
+ We can therefore set a cutoff $2 \le d' \ll d$ and feed the neural network with $(\frac{\bar{S}_{t,2}}{\alpha(S_t)},\ldots,\frac{\bar{S}_{t,d'}}{\alpha(S_t)})$ only.\footnote{Note that $\frac{\bar{S}_{t,1}}{\alpha(S_t)} \equiv 1$ is also removed from the neural network input as it doesn't carry any information.} Although one still needs to simulate $d$ assets, the size of the neural network can be significantly reduced, which in turn accelerates the training phase. 
  
- \cref{tab:symMaxOpt} summarizes the results for the max option on $d \in\{5,10,20,50\}$ assets with  $d'=5$. Despite a low cutoff, the  obtained prices are close or above the benchmark \cite{Becker2}. Moreover, the runtime remains moderate as $d$ increases. 
+We compute the initial price of the max option on $d \in\{2,5,10,20,50\}$ assets with cutoff   $d'=5$.    
+ \cref{tab:symMaxOpt} summarizes the results. Despite a low cutoff, the  obtained prices are close or above the benchmark.
+ Moreover, the runtime remains moderate as $d$ increases. The case $d=5$ is a classical example first concocted by \citet{BroadieGlasserman} and well-studied in the literature. We added in  \cref{tab:symMaxOpt} the tight confidence interval obtained by \citet{BroadieCao} using a primal-dual method. As can be seen, our average price lies between the lower and upper bound.
 
 \begin{table}[ht]
-\caption{Max Option on $d \in\{5,10,20,50\}$ symmetric assetes}
+\caption{Max Option on $d \in\{5,10,20,50\}$ symmetric assets}
 
 \vspace{-2mm}
 \label{tab:symMaxOpt}
   \centering
-  \begin{tabular}{ c c c c c }
+  \begin{tabular}{ c c c c c c}
  \hline  \hline
-   $d$ & Average Price& Highest Price & Runtime& Price in \cite{Becker2}\\
+   $d$ & Average Price& Highest Price & Runtime& Price in \cite{Becker2} & Confidence Intervals \\ %\shortstack{ ($d=2$: \cite{AndersenBroadie}, $d=5$: \cite{BroadieCao} )}  \\
   \hline \hline
-  5   & 26.130 (0.010)  & 26.151 (0.009) & 31.8  & 26.147 \\
+2   & 13.883 (0.009)  &  13.898 (0.008) & 29.1  & 13.901 & [13.892, 13.934] \; (\cite{AndersenBroadie}) \\
+  5   & 26.130 (0.010)  & 26.151 (0.009) & 31.8  & 26.147 & [26.115, 26.164] \; (\cite{BroadieCao})\\
  %\hline
-  10   & 38.336 (0.015) &   38.355 (0.011)& 33.1 & 38.272 \\
-    20   & 51.728 (0.018) & 51.753 (0.011)  & 36.0 & 51.572    \\
+  10   & 38.336 (0.015) &   38.355 (0.011)& 33.1 & 38.272 &\\
+    20   & 51.728 (0.018) & 51.753 (0.011)  & 36.0 & 51.572  &  \\
  %\hline
-  50  & 69.860 (0.012) & 69.881 (0.011) & 43.5 & 69.572     \\
+  50  & 69.860 (0.012) & 69.881 (0.011) & 43.5 & 69.572   &  \\
  \hline\\[-1em]
  
- \multicolumn{5}{l}{%
-  \begin{minipage}{10.5cm}%
+ \multicolumn{6}{l}{%
+  \begin{minipage}{14cm}%
     \tiny \textit{Second  column:  average  of ten experiments (standard deviation in brackets). Third column: highest price  among the realisations and its standard deviation in brackets.  Fourth column:  average runtime (in seconds) per experiment for the training phase.}%
   \end{minipage}%
 }
@@ -177,68 +181,146 @@ As both the payoff and assets are symmetric, it is easily shown that  $\calS_t$ 
 % \textit{Notes: The second and third column show the average and standard deviation of ten experiments, respectively.  }}
   \end{table}
   
-\subsection{Max Option on $d=2$ Asymmetric Assets}\label{sec:maxCallAsym}
-Consider the multi-dimensional Black-Scholes model, i.e. 
-\begin{align}\label{eq:BSAsym}
-    d S_t = \text{diag}(S_t) \left[ (r\mathds{1} - \delta)dt + \sigma dW_t\right],
-\end{align}
-where $W$ is Brownian motion in $\R^d$, $r \in \R ,\sigma > 0$ and $\delta \in \R_+^d$. 
-Define the connected components $\calS^{(i)}_t = \calS_t \cap \{\alpha(s) = s_i\}$, $i=1,2$ and the involution   $\varsigma(s_1,s_2) := (s_2,s_1)$.  
+\subsection{Max Option on $d=2$ Asymmetric Assets }\label{sec:maxCallAsym}
 
-\begin{proposition} Consider a max option on $d=2$ assets with $S$ having dynamics as in $\eqref{eq:BSAsym}$. If $\delta_1 \le \delta_2$, then $\varsigma(\calS^{(1)}_t) \subseteq \calS^{(2)}_t$. \rr{(to be verified numerically...)}
-\end{proposition}
+Let us investigate the Bermudan max option from the previous section (with same characteristics) when the assets are  asymmetric. For simplicity, we take $d=2$ 
+stocks in the multi-dimensional Black-Scholes model $\eqref{eq:multiBS}$ with same volatility $\sigma$ but different dividend rates. We employ the same parameters for $(s_0,r,\sigma)$ and $\delta = (\delta_1,\delta_2) = (5 \%,15 \%)$, where $\delta_i$ is the dividend rate of the $i-$th stock, $i=1,2$. Using Girsanov's theorem, note that we may make the assets symmetric under an equivalent measure. More precisely, we can choose $\lambda = \frac{(r+\mu)\mathds{1} - \delta}{\sigma} \in \R^2$ such that both assets have drift $\mu \in \R$ under $\Q^{\lambda}$.  The asymmetry is now captured by the Radon-Nikodym derivative appearing in the reward function, that is 
+\begin{equation}\label{eq:GirsanovAsym}
+    \E^{\Q}[D_{0,\tau}\, \varphi(S_{\tau})] =  \E^{\Q^{\lambda}}[\underbrace{Z^{\lambda}_{\tau}}_{\mathclap{\text{depends on $\delta$}}}\, D_{0,\tau} \varphi(\ \underbrace{S_{\tau}}_{\mathclap{\text{symmetric}}} \ )]. 
+\end{equation}
 
-\begin{proof} (\bb{attempts...})
-Let $t\in [0,T)$ and take any $\tau \in \calT_t$. Then, defining the event $B = \{S^{t,s_1}_{\tau,1} \ge  S^{t,s_2}_{\tau,2}\}$, this gives
-\begin{align*}
-    \E^{\Q}[D_{t,\tau} \varphi(S^{t,s}_{\tau}) ] &= \E^{\Q}[D_{t,\tau} (S^{t,s_1}_{\tau,1}-K)^+ \ \mathds{1}_{B} ] + \E^{\Q}[D_{t,\tau} (S^{t,s_2}_{\tau,2}-K)^+ \ \mathds{1}_{B^c} ]. 
-\end{align*}
-Since $\gamma := e^{(\delta_1-\delta_2)(\tau-t)} \le 1$, then  $\{\gamma S^{t,s_1}_{\tau,1} \ge  \gamma^{-1} S^{t,s_2}_{\tau,2}\} \subseteq B$. Moreover, note that $(\gamma S^{t,s_1}_{\tau,1},\gamma^{-1} S^{t,s_2}_{\tau,2}) \overset{d}{=} \varsigma(S^{t,\varsigma(s)}_{\tau})$. 
-\begin{equation*}
-    \E^{\Q}[D_{t,\tau} (S^{t,s_1}_{\tau,1}-K)^+ \ \mathds{1}_{B} ] \ge  \E^{\Q}\left[D_{t,\tau} (\gamma S^{t,s_1}_{\tau,1}-K)^+ \ \mathds{1}_{\{\gamma S^{t,s_1}_{\tau,1} \ge  \gamma^{-1} S^{t,s_2}_{\tau,2}\}} \right ] = \E^{\Q}[D_{t,\tau} ( S^{t,s_1}_{\tau,2}-K)^+ \ \mathds{1}_{B'} ],
-\end{equation*}
-with $B':= \{ S^{t,s_1}_{\tau,2} \ge  S^{t,s_2}_{\tau,1}\}$. On the other hand, note that $S^{t,s_2}_{\tau,2} \ge S^{t,s_1}_{\tau,1} \ge S^{t,s_2}_{\tau,1} $ on $B^c$. Hence, 
-\begin{align*}
-    \E^{\Q}[D_{t,\tau} (S^{t,s_2}_{\tau,2}-K)^+ \ \mathds{1}_{B^c} ] &\ge  \E^{\Q}[D_{t,\tau} (S^{t,s_2}_{\tau,1}-K)^+ \ \mathds{1}_{B^c} ]\\
-    &\rr{\ge} \E^{\Q}[D_{t,\tau} (S^{t,s_2}_{\tau,1}-K)^+ \ \mathds{1}_{(B')^c} ].
-\end{align*}
-But $B^c \subseteq B$!
+%(\rr{Symmetrization using Girsanov?})
 
-We would conclude: 
-\begin{align*}
-    \E^{\Q}[D_{t,\tau} \varphi(S^{t,s}_{\tau}) ] &\ge \E^{\Q}[D_{t,\tau} ( S^{t,s_1}_{\tau,2}-K)^+ \ \mathds{1}_{B'} ] + \E^{\Q}[D_{t,\tau} (S^{t,s_2}_{\tau,1}-K)^+ \ \mathds{1}_{(B')^c} ]\\ 
-    &= \E^{\Q}[D_{t,\tau} \varphi(S^{t,\varsigma(s)}_{\tau}) ]. 
-\end{align*}
+The average and highest price after $10$ realisations are given in \cref{tab:asymMaxOpt}. The last column  is a benchmark price obtained from the Least Square Monte Carlo (LSMC) algorithm \cite{LSMC}  with $J =2^{22}$  simulations. As can be seen, our method gives in average a price almost equal to the benchmark but may produce better  stopping strategies (second column). Notice also that having different dividends gives a premium over the symmetric case (first row of \cref{tab:symMaxOpt}).  % Indeed, the maximum is more likely to be attained by asset $1$, which has a larger drift than   %, i.e. $\delta_1 = \delta_2 = 10 \%$. 
 
-...
+\begin{table}[H]
+\caption{Max Option on $d=2$ asymmetric assets}
 
-To show: 
-$$\E^{\Q}[ \varphi(S^{t,s}_{u}) ] \ge \E^{\Q}[ \varphi(S^{t,\varsigma(s)}_{u}) ], \quad \forall \ u \in [t,T].  $$
-And multiply by $D_{t,u}$. 
+\vspace{-2mm}
+\label{tab:asymMaxOpt}
+  \centering
+  \begin{tabular}{ c c c c }
+ \hline  \hline
+    Average Price& Highest Price & Runtime & LSMC Price\\
+  \hline \hline
+ 15.409 (0.034)  & 15.469 (0.009) & 29.0 & 15.408 (0.008) \\
+ \hline\\[-1em]
+ 
+ \multicolumn{3}{l}{%
+  \begin{minipage}{7.5cm}%
+   % \tiny \textit{First  column:  average  of ten experiments (standard deviation in brackets). Second column: highest price  among the realisations and its standard deviation in brackets.  Third column:  average runtime (in seconds) per experiment for the training phase.}%
+  \end{minipage}%
+}
+\end{tabular}
+  \end{table}
+  
+\cref{fig:asymCall} displays the stopping and continuation
+region over time. 
+If  $\calS^{(i)}_t = \calS_t \cap \{\alpha(s) = s_i\}$, $i=1,2$ denote the connected components of $\calS_t$ and $\varsigma$ the involution   $\varsigma(s_1,s_2) := (s_2,s_1)$, then we observe $\varsigma(\calS^{(1)}_t)$ (light red region in \cref{fig:asymCall}) is contained in $\calS^{(2)}_t$. Intuitively, if stopping at $S_t = (s_1,s_2)$ with $s_1 > s_2$ is optimal, then the same is true for   $\varsigma(S_t)=(s_2,s_1)$ since $S^{t,s_1}_{\cdot,2}-$which is the current best performing stock$-$ has a smaller drift than $S^{t,s_1}_{\cdot,1}$. 
 
-E.g., use stochastic dominance $\alpha(S^{t,s}_{u}) \succ \alpha(S^{t,\varsigma(s)}_{u})$. And therefore, if $\varphi = \psi \circ \alpha$ with $\psi(a) \to 0$ as $a\to \infty$
-\begin{align*}
-    \E^{\Q}[\varphi(S^{t,s}_{u}) ] &= \int_0^{\infty} \psi(a) d\Q(\alpha(S^{t,s}_{u}) \le a) \\ 
-    &=  - \int_0^{\infty} \Q(\alpha(S^{t,s}_{u}) \le a) d \psi(a) \\ 
-    &\ge  - \int_0^{\infty} \Q(\alpha(S^{t,\varsigma(s)}_{u}) \le a) d \psi(a) \\ 
-     &\ge  \E^{\Q}[\varphi(S^{t,\varsigma(s)}_{u}) ].
-\end{align*}
- If needed,  use $\psi^N \uparrow \psi$  and the monotone convergence theorem.  
-%$M^{t,s}_{u} \succ M^{t,\varsigma(s)}_{u} $, where $M^{t,s}_{u} = \alpha(S^{t,s}_{u})$. 
-\end{proof}
 
-\begin{figure}
+  
+  
+% \subsubsection*{\bb{Proof of  $\varsigma(\calS^{(1)}_t) \subseteq \calS^{(2)}_t$}}
+% ... 
+
+% \begin{proposition} Consider a max option on $d=2$ assets with $S$ having dynamics as in $\eqref{eq:BSAsym}$. If $\delta_1 \le \delta_2$, then $\varsigma(\calS^{(1)}_t) \subseteq \calS^{(2)}_t$. \rr{(to be verified numerically...)}
+% \end{proposition}
+
+% \begin{proof} (\bb{attempts...})
+% Let $t\in [0,T)$ and take any $\tau \in \calT_t$. Then, defining the event $B = \{S^{t,s_1}_{\tau,1} \ge  S^{t,s_2}_{\tau,2}\}$, this gives
+% \begin{align*}
+%     \E^{\Q}[D_{t,\tau} \varphi(S^{t,s}_{\tau}) ] &= \E^{\Q}[D_{t,\tau} (S^{t,s_1}_{\tau,1}-K)^+ \ \mathds{1}_{B} ] + \E^{\Q}[D_{t,\tau} (S^{t,s_2}_{\tau,2}-K)^+ \ \mathds{1}_{B^c} ]. 
+% \end{align*}
+% Since $\gamma := e^{(\delta_1-\delta_2)(\tau-t)} \le 1$, then  $\{\gamma S^{t,s_1}_{\tau,1} \ge  \gamma^{-1} S^{t,s_2}_{\tau,2}\} \subseteq B$. Moreover, note that $(\gamma S^{t,s_1}_{\tau,1},\gamma^{-1} S^{t,s_2}_{\tau,2}) \overset{d}{=} \varsigma(S^{t,\varsigma(s)}_{\tau})$. 
+% \begin{equation*}
+%     \E^{\Q}[D_{t,\tau} (S^{t,s_1}_{\tau,1}-K)^+ \ \mathds{1}_{B} ] \ge  \E^{\Q}\left[D_{t,\tau} (\gamma S^{t,s_1}_{\tau,1}-K)^+ \ \mathds{1}_{\{\gamma S^{t,s_1}_{\tau,1} \ge  \gamma^{-1} S^{t,s_2}_{\tau,2}\}} \right ] = \E^{\Q}[D_{t,\tau} ( S^{t,s_1}_{\tau,2}-K)^+ \ \mathds{1}_{B'} ],
+% \end{equation*}
+% with $B':= \{ S^{t,s_1}_{\tau,2} \ge  S^{t,s_2}_{\tau,1}\}$. On the other hand, note that $S^{t,s_2}_{\tau,2} \ge S^{t,s_1}_{\tau,1} \ge S^{t,s_2}_{\tau,1} $ on $B^c$. Hence, 
+% \begin{align*}
+%     \E^{\Q}[D_{t,\tau} (S^{t,s_2}_{\tau,2}-K)^+ \ \mathds{1}_{B^c} ] &\ge  \E^{\Q}[D_{t,\tau} (S^{t,s_2}_{\tau,1}-K)^+ \ \mathds{1}_{B^c} ]\\
+%     &\rr{\ge} \E^{\Q}[D_{t,\tau} (S^{t,s_2}_{\tau,1}-K)^+ \ \mathds{1}_{(B')^c} ].
+% \end{align*}
+% But $B^c \subseteq B$!
+
+% We would conclude: 
+% \begin{align*}
+%     \E^{\Q}[D_{t,\tau} \varphi(S^{t,s}_{\tau}) ] &\ge \E^{\Q}[D_{t,\tau} ( S^{t,s_1}_{\tau,2}-K)^+ \ \mathds{1}_{B'} ] + \E^{\Q}[D_{t,\tau} (S^{t,s_2}_{\tau,1}-K)^+ \ \mathds{1}_{(B')^c} ]\\ 
+%     &= \E^{\Q}[D_{t,\tau} \varphi(S^{t,\varsigma(s)}_{\tau}) ]. 
+% \end{align*}
+
+% ...
+
+% To show: 
+% $$\E^{\Q}[ \varphi(S^{t,s}_{u}) ] \ge \E^{\Q}[ \varphi(S^{t,\varsigma(s)}_{u}) ], \quad \forall \ u \in [t,T].  $$
+% And multiply by $D_{t,u}$. 
+
+% E.g., use stochastic dominance $\alpha(S^{t,s}_{u}) \succ \alpha(S^{t,\varsigma(s)}_{u})$. And therefore, if $\varphi = \psi \circ \alpha$ with $\psi(a) \to 0$ as $a\to \infty$
+% \begin{align*}
+%     \E^{\Q}[\varphi(S^{t,s}_{u}) ] &= \int_0^{\infty} \psi(a) d\Q(\alpha(S^{t,s}_{u}) \le a) \\ 
+%     &=  - \int_0^{\infty} \Q(\alpha(S^{t,s}_{u}) \le a) d \psi(a) \\ 
+%     &\ge  - \int_0^{\infty} \Q(\alpha(S^{t,\varsigma(s)}_{u}) \le a) d \psi(a) \\ 
+%      &\ge  \E^{\Q}[\varphi(S^{t,\varsigma(s)}_{u}) ].
+% \end{align*}
+%  If needed,  use $\psi^N \uparrow \psi$  and the monotone convergence theorem.  
+% %$M^{t,s}_{u} \succ M^{t,\varsigma(s)}_{u} $, where $M^{t,s}_{u} = \alpha(S^{t,s}_{u})$. 
+% \end{proof}
+
+\begin{figure}[H]
     \centering
     \caption{Stopping and continuation regions (max option, $d=2$ assets, $T=3$).}
-    \includegraphics[scale = 0.42]{Figures/AsymMaxCall.pdf}
+    \includegraphics[scale = 0.42]{Figures/Asym2 Max Call, d = 2, N = 9 (4 dates).pdf}
     \label{fig:asymCall}
     
     \scriptsize{
-\textit{Notes: The light red region is the reflected image of $\calS_t^{(1)}$ through the diagonal, i.e. $\varsigma(\calS_t^{(1)})$.}} %This is to  illustrate that $\varsigma(\calS_t^{(1)}) \subseteq \calS_t^{(2)}$.  }}
+\textit{Note: The light red region is the reflection of $\calS_t^{(1)} = \calS_t \cap \{s_1 \ge s_2\}$ through the diagonal. %, i.e. $\varsigma(\calS_t^{(1)})$.
+}} %This is to  illustrate that $\varsigma(\calS_t^{(1)}) \subseteq \calS_t^{(2)}$.  }}
 \end{figure}
+
 
 %\subsection{Spread Option}
 %\subsection{Floating Strike Asian Option} \label{sec:Asian}
-\subsection{Fixed Strike  Lookback Option} \label{sec:Lkbk}
+\subsection{American Lookback Call Option} \label{sec:Lkbk}
 
+
+%Floating Strike Lookback Put Option
+Consider a fixed strike American lookback option, i.e.  $\Phi(\SSS_t) = (\max_{u\in[0,t]} S_u - K)^+$,  in the Black-Scholes world.  %$\Phi(\SSS_t) = (\gamma \max_{u\in[0,t]} S_u - S_t)^+$,
+As seen in \cref{ex:lookback} and \cref{tab:lkbk}, we can take $X_t = (S_t,Y_t)$, $Y_t = \max_{u\in[0,t]} S_u$  and $\eta=1$, $\alpha(x) = y$, $\beta(x) = 0$ (note that the running minimum is not needed here). 
+We employ the parameters $T=1/2$,   $r=2\%$, $\delta =4\%$ and $\sigma = 30 \%$. 
+These values are taken from  \citet{DaiKwok}, where the authors investigate analytical and geometric properties of the American lookback options. In particular, we aim at visualizing the stopping region in the $(s,y)$ plane, similar to Fig. $3$ in \cite{DaiKwok}.   %where the authors use a finite difference scheme to compute the initial price. 
+
+To approximate the American price, we use a regular partition  with $N=200$ subintervals giving the exercise dates $\calT_{\!N} = \{\frac{n}{2N} \ | \ n=0,\ldots,N\}$.  Moreover, we employ an even thinner  partition $\Pi_{N'}$, $N'=4\cdot N = 800$ to obtain accurate estimates of  the "true" running maximum. we use importance sampling with $\lambda = \frac{r-\delta}{\sigma}$
+
+\cref{tab:resultLkbk} summarizes the result for $s_0=K=100$. The European price, denoted by $v^{\text{European}}$ gives a lower bound on the American price.\footnote{Although explicit formulae exist for European lookback options in the Black-Scholes model \cite{Conze}, the price has been computed with Monte Carlo and same  partition for $[0,T]$. Indeed, the closed-form formula may well dominate the American price as the running maximum is negatively biased when  discretizing time. }   
+The  last  column is the  forward value of European price, i.e.  $\frac{1}{D_{0,T}}v^{\text{European}} = e^{rT}v^{\text{European}}$, which  gives an upper bound for the American price.\footnote{Indeed, $(Y_{T}-K)^{+}$ dominates  $D_{0,\tau}(Y_{\tau}-K)^{+}$ pathwise for all stopping time $\tau \in \vartheta([0,T])$. Hence, $ v(0,S_0) \le \E^{\Q}[(Y_{T}-K)^{+}] = \frac{1}{D_{0,T}}v^{\text{European}}$. See also \citet{Conze}. } Since here $e^{rT} \approx 1.01$, the American option only offers little premium over its European counterparts. This is nevertheless  fortunate from a performance perspective as it gives a tight interval in which the American price must lie (see, e.g., \cite{Conze}).  
+
+
+
+
+\begin{table}[ht]
+  \centering
+  \caption{American Lookback Call, Black-Scholes model.  
+ }
+ 
+ \vspace{-2mm}
+ 
+  \begin{tabular}{cccccc}
+ \hline \hline
+    Average Price  & Highest Price & Runtime  & LSMC Price & European Price & Upper Bound\\
+  \hline  \hline 
+  16.880   ()  &  () &  & () &  16.846 & 17.016 \\
+  \hline \\[-1em]
+  \multicolumn{4}{l}{%
+  \begin{minipage}{9.cm}%
+    \tiny \textit{First  column:  average  of ten experiments (standard deviation in brackets). Second column: highest price  among the realisations and its standard deviation in brackets.  Third column:  average runtime (in seconds) per experiment for the training phase. Fourth column: price using the Least Square Monte Carlo (LSMC) algorithm. Last column: upper bound given by the forward value of the European price. }%
+  \end{minipage}%
+}
+\end{tabular}
+\vspace{2mm}
+% \begin{flushleft}
+% \scriptsize{
+% \textit{Notes:  }}
+% \end{flushleft}
+\label{tab:resultLkbk}
+  \end{table}
 
