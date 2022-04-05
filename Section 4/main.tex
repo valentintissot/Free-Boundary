@@ -288,48 +288,36 @@ If  $\calS^{(i)}_t = \calS_t \cap \{\alpha(s) = s_i\}$, $i=1,2$ denote the conne
 
 
 %Floating Strike Lookback Put Option
-Consider an  American lookback call option (fixed strike), i.e.  $\Phi(\SSS_t) = (\max_{u\in[0,t]} S_u - K)^+$,  in the Black-Scholes world.  %$\Phi(\SSS_t) = (\gamma \max_{u\in[0,t]} S_u - S_t)^+$,
-As seen in \cref{ex:lookback} and \cref{tab:lkbk}, we can take $X_t = (S_t,Y_t)$, $Y_t = \max_{u\in[0,t]} S_u$  and $\eta=1$, $\alpha(x) = y$, $\beta(x) = 0$ (note that the running minimum is not needed here). 
-We employ the parameters $T=1/2$ ($6$M),   $r=2\%$, $\delta =4\%$ and $\sigma = 30 \%$. 
+In the Black-Scholes world, consider an  American lookback option (\cref{ex:lookback}) with payoff $\Phi(\SSS_t) = (\max_{u\in[0,t]} S_u - K)^+$. In other words, it is a fixed strike lookback call of American type.  %$\Phi(\SSS_t) = (\gamma \max_{u\in[0,t]} S_u - S_t)^+$,
+ As the running minimum is not needed, we can take $X_t = (S_t,Y_t)$, $Y_t = \max_{u\in[0,t]} S_u$ (hence $\calX = \{x=(s,y) \in \R_+^2 \ | \ s \le y\}$) and $\eta=1$, $\alpha(x) = y$, $\beta(x) = 0$ as in \cref{tab:lkbk}.    The ratio $\Xi(x) = \frac{s}{y}\in [0,1]$  is fed into the neural network. Notice that $1-\Xi(x) = \frac{y-s}{y}$ is the relative drawdown of the stock. 
+We employ the parameters 
+$$ T=1/2 \text{ ($6$ months)}, \quad  r=2\%, \quad \delta =4\%, \quad  \sigma = 30 \%.$$ 
 These values are taken from  \citet{DaiKwok}, where the authors investigate analytical and geometric properties of the American lookback options. In particular, we aim at visualizing the stopping region in the $(s,y)$ plane, similar to Fig. $3$ in \cite{DaiKwok}.   %where the authors use a finite difference scheme to compute the initial price. 
 
-To approximate the American price, we use a regular partition  with $N=200$ exercise dates prior to maturity. % giving  $\calT_{\!N} = \{\frac{n}{2N} \ | \ n=0,\ldots,N\}$. 
-Moreover, we employ an even thinner  partition $\Pi_{N'}$, $N'=4\cdot N = 800$ to obtain accurate estimates of  the running maximum. Due to the lookback feature,  taking $N < N'$ has little effect on the reward. Indeed, if the maximum up to time $t_n\in \Pi_{N}$  is attained at $t_m' \in [t_{n-1},t_{n}]$,  $t_m'\in \Pi_{N'},$ then $\varphi(X_{t_n})=\varphi(X_{t'_m})$ so the difference in reward  when exercising at $t_n$ instead of $t_m'$ is only due to the time value of money. 
+To approximate the American price, we use a regular partition  with $N=200$ exercise opportunities prior to maturity. % giving  $\calT_{\!N} = \{\frac{n}{2N} \ | \ n=0,\ldots,N\}$. 
+Moreover, we employ an even thinner  partition $\Pi_{N'}$, $N'=4 N = 800$ to obtain accurate estimates of  the running maximum. Due to the lookback feature,  taking $N \ll N'$ has little effect on the reward. Indeed, if the maximum up to time $t_n\in \Pi_{N}$  is attained at $t_m' \in [t_{n-1},t_{n}]$,  $t_m'\in \Pi_{N'},$ then $\varphi(X_{t_n})=\varphi(X_{t'_m})$ so the loss arising from exercising at $t_n$ instead of $t_m'$ is only due to the time value of money. 
+After several experiments, we decided not to use importance sampling as it led to worse results.\footnote{Intuitively, a positive drift  increases the probability of exceeding the threshold, but at the same time the ratio $\frac{s}{y}$ is typically closer to $1$ and  favors continuation. On the flip side, a negative drift tends to increase the relative drawdown $\frac{y-s}{y}$ and in turn the odds of being in the stopping region, but the running maximum (hence the payoff) is reduced as well.} %with $\lambda = \frac{r-\delta}{\sigma}$
 %only differs by the time decay $e^{-r(t_n - t'_{m})} \approx -\frac{rT}{N}$. %is only due to the time value of money.  %relative difference is only given by the time value of money, that is 
 %}
-%$\frac{D_{0,t'_{m}}\varphi(X_{t_m'})-D_{0,t_{n}}\varphi(X_{t_n})}{D_{0,t'_{m}}\varphi(X_{t_m'})} = 1-e^{-r(t_n - t'_{m})}  \approx \frac{1}{N}$.   We use importance sampling with $\lambda = \frac{r-\delta}{\sigma}$
-
-\cref{tab:resultLkbk} summarizes the result for $s_0=K=100$. The European price, denoted by $v^{\text{European}}$ gives a lower bound on the American price.\footnote{Although explicit formulae exist for European lookback options in the Black-Scholes model \cite{Conze}, the price has been computed with Monte Carlo and same  partition for $[0,T]$. Indeed, the closed-form formula may well dominate the American price as discretizing time makes the resulting running maximum  negatively biased. }   
-The  last  column is the  forward value of European price, i.e.  $\frac{1}{D_{0,T}}v^{\text{European}} = e^{rT}v^{\text{European}}$, which  gives an upper bound for the American price.\footnote{Indeed, $(Y_{T}-K)^{+}$ dominates  $D_{0,\tau}(Y_{\tau}-K)^{+}$ pathwise for all stopping time $\tau \in \vartheta([0,T])$. Hence, $ v(0,S_0) \le \E^{\Q}[(Y_{T}-K)^{+}] = \frac{1}{D_{0,T}}v^{\text{European}}$. See also \citet{Conze}. } Since here $e^{rT} \approx 1.01$, the American option only offers little premium over its European counterparts. This is nevertheless  fortunate from a performance perspective as it gives a tight interval in which the American price must lie (see, e.g., \cite{Conze}).  
-
-\begin{figure}[H]
-    \centering
-    \caption{Stopping and continuation regions (lookback option, $T=6$M).}
-    \includegraphics[scale = 0.42]{Figures/Best Lookback Call, d = 1, N = 126, lbda = -0.23, no rdm.pdf}
-    \label{fig:asymCall}
-    
-    \scriptsize{
-\textit{
-}}
-\end{figure}
+%$\frac{D_{0,t'_{m}}\varphi(X_{t_m'})-D_{0,t_{n}}\varphi(X_{t_n})}{D_{0,t'_{m}}\varphi(X_{t_m'})} = 1-e^{-r(t_n - t'_{m})}  \approx \frac{1}{N}$.   
 
 
-\begin{table}[ht]
+\begin{table}[H]
   \centering
-  \caption{American Lookback Call, Black-Scholes model.  
+  \caption{American lookback call,  $K=100$, $T=6$M.
  }
  
  \vspace{-2mm}
  
-  \begin{tabular}{cccccc}
+  \begin{tabular}{ccccc}
  \hline \hline
-    Average Price  & Highest Price & Runtime  & LSMC Price & European Price & Upper Bound\\
+    Average Price  & Highest Price & Runtime   & European Price & Upper Bound\\
   \hline  \hline 
-  16.827   (0.008)  &  16.844 (0.007) & 216.7 & 16.751 (0.007) &  16.809 & 16.979 \\
+  16.827   (0.008)  &  16.844 (0.007) & 216.7  &  16.809 & 16.979 \\
   \hline \\[-1em]
-  \multicolumn{6}{l}{%
-  \begin{minipage}{14cm}%
-    \tiny \textit{First  column:  average  of ten experiments (standard deviation in brackets). Second column: highest price  among the realisations and its standard deviation in brackets.  Third column:  average runtime (in seconds) per experiment for the training phase. Fourth column: price using the Least Square Monte Carlo (LSMC) algorithm. Last column: upper bound given by the forward value of the European price. }%
+  \multicolumn{5}{c}{%
+  \begin{minipage}{13cm}%
+    \tiny \textit{First  column:  average  of ten experiments (standard deviation in brackets). Second column: highest price  among the realisations and its standard deviation in brackets.  Third column:  average runtime (in seconds) per experiment for the training phase.  Last column: upper bound given by the forward value of the European price. }%
   \end{minipage}%
 }
 \end{tabular}
@@ -340,4 +328,21 @@ The  last  column is the  forward value of European price, i.e.  $\frac{1}{D_{0,
 % \end{flushleft}
 \label{tab:resultLkbk}
   \end{table}
+  
+\cref{tab:resultLkbk} summarizes the result for $s_0=K=100$. The European price, denoted by $v^{\text{European}}$ gives a lower bound on the American price. Although explicit formulae exist for European lookback options in the Black-Scholes model \cite{Conze}, the price has been computed with Monte Carlo and same  partition for $[0,T]$. Indeed, the closed-form formula may well dominate the American price as discretizing time makes the %resulting
+running maximum  negatively biased. 
+The  last  column is the  forward value of European price, i.e.  $\frac{1}{D_{0,T}}v^{\text{European}} = e^{rT}v^{\text{European}}$, which  gives an upper bound for the American price.\footnote{Indeed, $(Y_{T}-K)^{+}$ dominates  $D_{0,\tau}(Y_{\tau}-K)^{+}$ pathwise for all stopping time $\tau \in \vartheta([0,T])$. Hence, $ v(0,S_0) \le \E^{\Q}[(Y_{T}-K)^{+}] = \frac{1}{D_{0,T}}v^{\text{European}}$. See also \citet{Conze}. } Since here $e^{rT} \approx 1.01$, the American option only offers little premium over its European counterparts. This is nevertheless  fortunate from a performance perspective as it gives a tight interval in which the American price must lie (see, e.g., \cite{Conze}).  We indeed obtain prices that are within the bounds. %Furthermore, we LSMC
+
+We display the stopping and continuation region in \cref{fig:lkbkCall}. Obtaining an overall accurate boundary turns out to be challenging. Indeed,  visiting all the pairs $(s,y) \in \calX$ is difficult, especially when $s \ll y$. To deal with this issue, we randomize $s_0\in \calX$ and set the initial running maximum to $y_0 = K \vee s_0$. As in Fig. $3$ in \cite{DaiKwok}, we observe a flat boundary when $s\ll K$. That is, the neural network correctly set $G(t,s/y;\theta)$ approximately equal to the strike when $s/y \ll 1$, i.e. when the relative drawdown is large.  %$\xi \ll 1$.  % as $X_t$ tend to revert towards (and reflect at) the diagonal $\{s=y\}$ when $S$ beats the maximum. 
+
+\begin{figure}[H]
+    \centering
+    \caption{Stopping and continuation regions (lookback call, $K=100$, $T=6$M).}
+    \includegraphics[scale = 0.42]{Figures/Best Lookback Call, d = 1, N = 126, lbda = -0.23, no rdm.pdf}
+    \label{fig:lkbkCall}
+    
+    \scriptsize{
+\textit{
+}}
+\end{figure}
 
