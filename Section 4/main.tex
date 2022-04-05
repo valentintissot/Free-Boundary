@@ -3,11 +3,15 @@
 We now provide numerical evidence of the efficiency of our method. All the  experiments have been carried out  with Tensorflow 2.7  on a 2021 Macbook pro with 64GB unified memory and Apple M1 Max chip. The code is implemented in Python and run on CPU (10-core) only.  
 Throughout the examples, we use the same neural network architecture and training parameters,  given  below:
 \begin{enumerate}
-\item The feedforward neural network consists of $2$ hidden layers, each having $20 + \text{dim}(\calE)$  nodes  with leaky rectified linear unit (Leaky ReLU) activation function. The output layer uses the standard rectified linear unit (ReLU)  activation. The  bias in the output layer can be used to set  an initial threshold level $\theta_0 \in \R_+$.     In other words, the  threshold function reads
-$$G(t,\xi; \theta) = \left(\theta_0 + \theta_1^{\top} G_{-1}(t,\xi; \theta_{-1})\right)^+, \quad (\theta_{-1}, \theta_{0}, \theta_1) = \theta, $$ %, \quad \theta_1 \in \R^{50+\bar{d}}
-where  $G_{-1}(t,\xi; \theta_{-1}) \in \R^{20+\bar{d}}$ is the value of the neural network before entering the output layer. From our observations, the algorithm is not sensitive to the initial bias, as long as it is set to a reasonable value.  For example, if the payoff is of the form   $\eqref{eq:payoff}$, we  choose $\theta_0=\frac{3K}{2}$,  $\theta_0=\frac{K}{2}$ for  calls 
+\item The feedforward neural network consists of $2$ hidden layers, each having $20 + \text{dim}(\calE)$  nodes  with leaky rectified linear unit (Leaky ReLU) activation function. The output layer uses the standard rectified linear unit (ReLU)  activation. Moreover, the  bias in the output layer, say $\theta_0 \in \R$, can be used to set  an initial threshold level. From our observations, the algorithm is not sensitive to $\theta_0$, as long as it is set to a reasonable value.  For fixed strike payoffs of the form  $\eqref{eq:payoff}$, we  choose $\theta_0=\frac{3K}{2}$,  $\theta_0=\frac{K}{2}$ for  calls 
 and puts
-,  respectively. 
+,  respectively.
+
+%  In other words, the  threshold function reads
+% $$G(t,\xi; \theta) = \left(\theta_0 + \theta_1^{\top} G_{-1}(t,\xi; \theta_{-1})\right)^+, \quad (\theta_{-1}, \theta_{0}, \theta_1) = \theta, $$ %, \quad \theta_1 \in \R^{50+\bar{d}}
+% where  $G_{-1}(t,\xi; \theta_{-1}) \in \R^{20+\bar{d}}$ is the value of the neural network before entering the output layer.
+
+
 
 \item The number of training iterations is set to $M=3,000$ and batch size to $B = 512$. 
     \item The learning rates $(\zeta_m)$ are obtained from the widely accepted Adam optimizer \cite{Kingma}.
@@ -19,7 +23,7 @@ and puts
      The strike $K$ takes account the scale of the payoff$-$and in turn, the threshold function$-$while  the second in $\epsilon_n$ reflects the typical variation 
      of the  process $\alpha(X)$ between exercise dates. When the exercise dates are equally spaced, we simply write $\epsilon$ instead of $\epsilon_n$. 
 \end{enumerate}
-The initial price is computed using the sharp boundary and $J= 2^{22} = 4,194,304$ Monte Carlo simulations. 
+Once the training phase is completed,  we compute the initial price using the sharp boundary and $J= 2^{22} = 4,194,304$ Monte Carlo simulations. 
 
 \subsection{Put Option in the Black-Scholes Model} \label{sec:putBS}
 Consider an ATM Bermudan put option ($\varphi(s) = (K-s)^+$) in the Black Scholes model. We take the same parameters as in  Section 4.3.1.2 of \cite{Becker2}, namely
@@ -138,7 +142,7 @@ with strike $K=100$, maturity $T=3$ and triannual exercise dates, i.e. $\calT_{\
 where $W$ is Brownian motion in $\R^d$, $\mathds{1} = (1,\ldots,1) \in \R^d$, and $r,\delta,\sigma$ are nonnegative scalars. 
 We employ the parameters from Section 4.4.1 in \cite{Becker2}, that is $s_0 =100 $, $r=5\%$, $\delta =10\%$ and $\sigma = 20 \%$. 
 
- First, notice that the drift of $\alpha(S_t) = \max_{i=1,...,d}S_{t,i}$  increases with the number of assets $d$. More precisely, we observed that the additional drift is of order $\calO(\log d)$. To ensure that the maximum doesn't exceed the threshold function too soon, we use importance sampling with $\lambda_d = \frac{r-\delta + \mu_d}{\sigma}$, where $\mu_d = 0.01 \log d\ $ gives satisfactory results. % as we shall see below.  %\bb{Drift $\mu_d$}
+ First, notice that the drift of $\alpha(S_t) = \max_{i=1,...,d}S_{t,i}$  increases with $d$. More precisely, we observed that the additional drift is of order $\calO(\log d)$. To ensure that the maximum doesn't exceed the threshold function too soon, we use importance sampling with $\lambda_d = \frac{r-\delta + \mu_d}{\sigma}$, where $\mu_d = 0.01 \log d\ $ gives satisfactory results. % as we shall see below.  %\bb{Drift $\mu_d$}
 
 As both the payoff and assets are symmetric, it is easily shown that  $\calS_t$ is symmetric as well; see \cref{sec:symmetry}. This property can be exploited to reduce the dimension of our problem. Indeed, observe that it suffices to characterize the $t-$sections of the stopping region in the \textit{cone of ordered stocks}  
  $\calO = \{s\in \R_+^d \,|\, s_1 \geq \ldots \geq s_d\}$. We can therefore arrange $\Xi(S_t) = \frac{S_t}{\alpha(S_t)}\in [0,1]^d$ in decreasing order and give the outcome to $G(t,\cdot; \theta)$. If $\bar{S}_t \in \calO$ denotes the ordered version of $S_t$, then the last components of $\bar{S}_t$ are of little relevance to our stopping decision. 
@@ -184,12 +188,12 @@ We compute the initial price of the max option on $d \in\{2,5,10,20,50\}$ assets
 \subsection{Max Option on $d=2$ Asymmetric Assets }\label{sec:maxCallAsym}
 
 Let us investigate the Bermudan max option from the previous section (with same characteristics) when the assets are  asymmetric. For simplicity, we take $d=2$ 
-stocks in the multi-dimensional Black-Scholes model $\eqref{eq:multiBS}$ with same volatility $\sigma$ but different dividend rates. We employ the same parameters for $(s_0,r,\sigma)$ and $\delta = (\delta_1,\delta_2) = (5 \%,15 \%)$, where $\delta_i$ is the dividend rate of the $i-$th stock, $i=1,2$. Using Girsanov's theorem, note that we may make the assets symmetric under an equivalent measure. More precisely, we can choose $\lambda = \frac{(r+\mu)\mathds{1} - \delta}{\sigma} \in \R^2$ such that both assets have drift $\mu \in \R$ under $\Q^{\lambda}$.  The asymmetry is now captured by the Radon-Nikodym derivative appearing in the reward function, that is 
+stocks in the multi-dimensional Black-Scholes model $\eqref{eq:multiBS}$ with same volatility $\sigma$ but different dividend rates. We employ the same parameters for $(s_0,r,\sigma)$ and $\delta = (\delta_1,\delta_2) = (5 \%,15 \%)$, where $\delta_i$ is the dividend rate of the $i-$th stock, $i=1,2$. Using Girsanov's theorem, note that we may make the assets symmetric under an equivalent measure. More precisely, we can choose $\lambda = \frac{(r+\mu)\mathds{1} - \delta}{\sigma} \in \R^2$ such that both assets have drift $\mu \in \R$ under $\Q^{\lambda}$. As in the previous section, we choose  $\mu = \mu_2=0.01 \log 2$. The asymmetry is now captured by the Radon-Nikodym derivative appearing in the reward function, that is 
 \begin{equation}\label{eq:GirsanovAsym}
     \E^{\Q}[D_{0,\tau}\, \varphi(S_{\tau})] =  \E^{\Q^{\lambda}}[\underbrace{Z^{\lambda}_{\tau}}_{\mathclap{\text{depends on $\delta$}}}\, D_{0,\tau} \varphi(\ \underbrace{S_{\tau}}_{\mathclap{\text{symmetric}}} \ )]. 
 \end{equation}
-
 %(\rr{Symmetrization using Girsanov?})
+
 
 The average and highest price after $10$ realisations are given in \cref{tab:asymMaxOpt}. The last column  is a benchmark price obtained from the Least Square Monte Carlo (LSMC) algorithm \cite{LSMC}  with $J =2^{22}$  simulations. As can be seen, our method gives in average a price almost equal to the benchmark but may produce better  stopping strategies (second column). Notice also that having different dividends gives a premium over the symmetric case (first row of \cref{tab:symMaxOpt}).  % Indeed, the maximum is more likely to be attained by asset $1$, which has a larger drift than   %, i.e. $\delta_1 = \delta_2 = 10 \%$. 
 
@@ -203,7 +207,7 @@ The average and highest price after $10$ realisations are given in \cref{tab:asy
  \hline  \hline
     Average Price& Highest Price & Runtime & LSMC Price\\
   \hline \hline
- 15.409 (0.034)  & 15.469 (0.009) & 29.0 & 15.408 (0.008) \\
+15.551 (0.014)  & 15.575 (0.011) & 30.9 & 15.558 (0.009) \\
  \hline\\[-1em]
  
  \multicolumn{3}{l}{%
@@ -269,11 +273,11 @@ If  $\calS^{(i)}_t = \calS_t \cap \{\alpha(s) = s_i\}$, $i=1,2$ denote the conne
 \begin{figure}[H]
     \centering
     \caption{Stopping and continuation regions (max option, $d=2$ assets, $T=3$).}
-    \includegraphics[scale = 0.42]{Figures/Asym2 Max Call, d = 2, N = 9 (4 dates).pdf}
+    \includegraphics[scale = 0.42]{Figures/AsymCropped Max Call, d = 2, N = 9 (4 dates).pdf}
     \label{fig:asymCall}
     
     \scriptsize{
-\textit{Note: The light red region is the reflection of $\calS_t^{(1)} = \calS_t \cap \{s_1 \ge s_2\}$ through the diagonal. %, i.e. $\varsigma(\calS_t^{(1)})$.
+\textit{Note: The light red region is the reflection of $\calS_t^{(1)} = \calS_t \cap \ \{s_1 \ge s_2\}$ through the diagonal. %, i.e. $\varsigma(\calS_t^{(1)})$.
 }} %This is to  illustrate that $\varsigma(\calS_t^{(1)}) \subseteq \calS_t^{(2)}$.  }}
 \end{figure}
 
@@ -284,17 +288,30 @@ If  $\calS^{(i)}_t = \calS_t \cap \{\alpha(s) = s_i\}$, $i=1,2$ denote the conne
 
 
 %Floating Strike Lookback Put Option
-Consider a fixed strike American lookback option, i.e.  $\Phi(\SSS_t) = (\max_{u\in[0,t]} S_u - K)^+$,  in the Black-Scholes world.  %$\Phi(\SSS_t) = (\gamma \max_{u\in[0,t]} S_u - S_t)^+$,
+Consider an  American lookback call option (fixed strike), i.e.  $\Phi(\SSS_t) = (\max_{u\in[0,t]} S_u - K)^+$,  in the Black-Scholes world.  %$\Phi(\SSS_t) = (\gamma \max_{u\in[0,t]} S_u - S_t)^+$,
 As seen in \cref{ex:lookback} and \cref{tab:lkbk}, we can take $X_t = (S_t,Y_t)$, $Y_t = \max_{u\in[0,t]} S_u$  and $\eta=1$, $\alpha(x) = y$, $\beta(x) = 0$ (note that the running minimum is not needed here). 
-We employ the parameters $T=1/2$,   $r=2\%$, $\delta =4\%$ and $\sigma = 30 \%$. 
+We employ the parameters $T=1/2$ ($6$M),   $r=2\%$, $\delta =4\%$ and $\sigma = 30 \%$. 
 These values are taken from  \citet{DaiKwok}, where the authors investigate analytical and geometric properties of the American lookback options. In particular, we aim at visualizing the stopping region in the $(s,y)$ plane, similar to Fig. $3$ in \cite{DaiKwok}.   %where the authors use a finite difference scheme to compute the initial price. 
 
-To approximate the American price, we use a regular partition  with $N=200$ subintervals giving the exercise dates $\calT_{\!N} = \{\frac{n}{2N} \ | \ n=0,\ldots,N\}$.  Moreover, we employ an even thinner  partition $\Pi_{N'}$, $N'=4\cdot N = 800$ to obtain accurate estimates of  the "true" running maximum. we use importance sampling with $\lambda = \frac{r-\delta}{\sigma}$
+To approximate the American price, we use a regular partition  with $N=200$ exercise dates prior to maturity. % giving  $\calT_{\!N} = \{\frac{n}{2N} \ | \ n=0,\ldots,N\}$. 
+Moreover, we employ an even thinner  partition $\Pi_{N'}$, $N'=4\cdot N = 800$ to obtain accurate estimates of  the running maximum. Due to the lookback feature,  taking $N < N'$ has little effect on the reward. Indeed, if the maximum up to time $t_n\in \Pi_{N}$  is attained at $t_m' \in [t_{n-1},t_{n}]$,  $t_m'\in \Pi_{N'},$ then $\varphi(X_{t_n})=\varphi(X_{t'_m})$ so the difference in reward  when exercising at $t_n$ instead of $t_m'$ is only due to the time value of money. 
+%only differs by the time decay $e^{-r(t_n - t'_{m})} \approx -\frac{rT}{N}$. %is only due to the time value of money.  %relative difference is only given by the time value of money, that is 
+%}
+%$\frac{D_{0,t'_{m}}\varphi(X_{t_m'})-D_{0,t_{n}}\varphi(X_{t_n})}{D_{0,t'_{m}}\varphi(X_{t_m'})} = 1-e^{-r(t_n - t'_{m})}  \approx \frac{1}{N}$.   We use importance sampling with $\lambda = \frac{r-\delta}{\sigma}$
 
-\cref{tab:resultLkbk} summarizes the result for $s_0=K=100$. The European price, denoted by $v^{\text{European}}$ gives a lower bound on the American price.\footnote{Although explicit formulae exist for European lookback options in the Black-Scholes model \cite{Conze}, the price has been computed with Monte Carlo and same  partition for $[0,T]$. Indeed, the closed-form formula may well dominate the American price as the running maximum is negatively biased when  discretizing time. }   
+\cref{tab:resultLkbk} summarizes the result for $s_0=K=100$. The European price, denoted by $v^{\text{European}}$ gives a lower bound on the American price.\footnote{Although explicit formulae exist for European lookback options in the Black-Scholes model \cite{Conze}, the price has been computed with Monte Carlo and same  partition for $[0,T]$. Indeed, the closed-form formula may well dominate the American price as discretizing time makes the resulting running maximum  negatively biased. }   
 The  last  column is the  forward value of European price, i.e.  $\frac{1}{D_{0,T}}v^{\text{European}} = e^{rT}v^{\text{European}}$, which  gives an upper bound for the American price.\footnote{Indeed, $(Y_{T}-K)^{+}$ dominates  $D_{0,\tau}(Y_{\tau}-K)^{+}$ pathwise for all stopping time $\tau \in \vartheta([0,T])$. Hence, $ v(0,S_0) \le \E^{\Q}[(Y_{T}-K)^{+}] = \frac{1}{D_{0,T}}v^{\text{European}}$. See also \citet{Conze}. } Since here $e^{rT} \approx 1.01$, the American option only offers little premium over its European counterparts. This is nevertheless  fortunate from a performance perspective as it gives a tight interval in which the American price must lie (see, e.g., \cite{Conze}).  
 
-
+\begin{figure}[H]
+    \centering
+    \caption{Stopping and continuation regions (lookback option, $T=6$M).}
+    \includegraphics[scale = 0.42]{Figures/Best Lookback Call, d = 1, N = 126, lbda = -0.23, no rdm.pdf}
+    \label{fig:asymCall}
+    
+    \scriptsize{
+\textit{
+}}
+\end{figure}
 
 
 \begin{table}[ht]
@@ -308,10 +325,10 @@ The  last  column is the  forward value of European price, i.e.  $\frac{1}{D_{0,
  \hline \hline
     Average Price  & Highest Price & Runtime  & LSMC Price & European Price & Upper Bound\\
   \hline  \hline 
-  16.880   ()  &  () &  & () &  16.846 & 17.016 \\
+  16.827   (0.008)  &  16.844 (0.007) & 216.7 & 16.751 (0.007) &  16.809 & 16.979 \\
   \hline \\[-1em]
-  \multicolumn{4}{l}{%
-  \begin{minipage}{9.cm}%
+  \multicolumn{6}{l}{%
+  \begin{minipage}{14cm}%
     \tiny \textit{First  column:  average  of ten experiments (standard deviation in brackets). Second column: highest price  among the realisations and its standard deviation in brackets.  Third column:  average runtime (in seconds) per experiment for the training phase. Fourth column: price using the Least Square Monte Carlo (LSMC) algorithm. Last column: upper bound given by the forward value of the European price. }%
   \end{minipage}%
 }
